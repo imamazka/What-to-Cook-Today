@@ -18,13 +18,13 @@ function Shopping(props) {
 
 const styles = StyleSheet.create({
     item :{
-        backgroundColor: "#fff",
-        padding: 15,
+        backgroundColor: "#D9D9D9",
+        padding: 25,
         borderRadius: 10,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 20
+        marginBottom: 15
     },
     itemLeft :{
         flexDirection: 'row',
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     square :{
         width: 24,
         height: 24,
-        backgroundColor: '#D9D9D9',
+        backgroundColor: '#fff',
         borderRadius: 5,
         marginRight: 15
     },
@@ -42,11 +42,11 @@ const styles = StyleSheet.create({
         maxWidth: '80%'
     },
     circular :{
-        width: 12,
-        height: 12,
-        borderColor: "#000000",
+        width: 15,
+        height: 15,
+        borderColor: "#000",
         backgroundColor: "#fff",
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderRadius: 8,
     },
 })

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, Platform, StatusBar } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, TouchableOpacity } from 'react-native';
 
 import Ingredient from '../components/Ingredient'
 
@@ -8,6 +8,7 @@ function IngredientList(props) {
     return (
         <View style={styles.container}>
             <ScrollView>
+                <View style={styles.topBar}></View>
             <View style={styles.listWrapper}>
                 <Text style={styles.sectionTitle}>List Your Ingredient!</Text>
                 
@@ -25,6 +26,11 @@ function IngredientList(props) {
                 </View>
             </View>
            </ScrollView>
+           <TouchableOpacity>
+            <View style={styles.continueWrapper}>
+                <Text style={styles.continueText}>Continue</Text>
+            </View>
+           </TouchableOpacity>
         </View>
     );
 }
@@ -35,8 +41,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
     },
+    topBar: {
+        width: '100%',
+        height: 50,
+        backgroundColor: '#22CB65'
+    },
     listWrapper: {
-        paddingTop: 50,
+        paddingTop: 30,
         paddingHorizontal: 20
     },
     sectionTitle: {
@@ -46,8 +57,34 @@ const styles = StyleSheet.create({
     },
     items: {
         marginTop: 30
-    }
+    },
+    continueWrapper: {
+        width:200,
+        height: 50,
+        backgroundColor: "#22CB65",
+        borderRadius: 60,
+        position: 'absolute',
+        bottom: 15,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        alignSelf: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        
+        elevation: 14,
 
+elevation: 9,
+    },
+    continueText: {
+        fontSize: 20,
+        color: "#FFF",
+    }
 })
 
 export default IngredientList;

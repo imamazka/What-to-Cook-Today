@@ -5,16 +5,16 @@ const Ingredient = (props) => {
 
     return (
 
-        <View style={styles.item}>
+        <TouchableOpacity style={styles.item} onPress={()=>{console.log('pressed');}}>
             <View style={styles.itemLeft}>
                 <View style={styles.square}></View>
                 <Text style={styles.itemText}>{props.text}</Text>
             </View>
-            <TouchableOpacity style={styles.circular} onPress={()=>{console.log('pressed');}}>
+            <TouchableOpacity style={styles.circular}>
                 
             </TouchableOpacity>
         
-        </View>
+        </TouchableOpacity>
     );
 }
 
