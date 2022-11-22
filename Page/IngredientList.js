@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, TouchableOpacity } from 'react-native';
 
-import Ingredient from '../components/Ingredient'
+import Ingredient from '../components/Ingredient';
+import colors from '../config/colors';
 
 function IngredientList(props) {
 
@@ -38,13 +39,13 @@ function IngredientList(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
     },
     topBar: {
         width: '100%',
         height: 50,
-        backgroundColor: '#22CB65'
+        backgroundColor: colors.mainGreen
     },
     listWrapper: {
         paddingTop: 30,
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     continueWrapper: {
         width:200,
         height: 50,
-        backgroundColor: "#22CB65",
+        backgroundColor: colors.mainGreen,
         borderRadius: 60,
         position: 'absolute',
         bottom: 15,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center",
         alignSelf: "center",
-        shadowColor: "#000",
+        shadowColor: colors.black,
         shadowOffset: {
             width: 0,
             height: 7,
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
         },
     continueText: {
         fontSize: 20,
-        color: "#FFF",
+        color: colors.white,
         fontWeight: "bold"
     }
 })

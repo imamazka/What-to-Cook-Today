@@ -3,6 +3,7 @@ import { Text, Image, ImageBackground, StyleSheet, View, StatusBar, ScrollView, 
 
 import { Ionicons } from "@expo/vector-icons"
 const { height } = Dimensions.get("window");
+import colors from '../config/colors';
 
 function FoodPage(props) {
     return (
@@ -12,7 +13,7 @@ function FoodPage(props) {
                     <ImageBackground style={styles.image} source={require("../assets/FoodPage.jpg")}>
                         
                         <TouchableOpacity style={styles.backButton}>
-                            <Ionicons name="chevron-back-outline" size={23} color="dimgrey"/>
+                            <Ionicons name="chevron-back-outline" size={23} color={colors.darkGrey}/>
                         </TouchableOpacity>
                     </ImageBackground>
 
@@ -22,14 +23,14 @@ function FoodPage(props) {
                                 <Text style={styles.titleText}>Ayam Bakar</Text>
                             </View>
                             <View style={styles.rating}>
-                                <Ionicons name="star" color="black" size={17}/>
+                                <Ionicons name="star" color={colors.black} size={17}/>
                                 <Text style={styles.ratingText}>4.7</Text>
                             </View>
                         </View>
                         <View style= {{ flexDirection: "row", justifyContent: "space-between" }}>
 
                             <View style={styles.tags}>
-                                <Ionicons name="time" color="dimgrey" size={17}/>
+                                <Ionicons name="time" color={colors.darkGrey} size={17}/>
                                 <Text style={styles.tagsText}>30 min</Text>
                             </View>
 
@@ -40,18 +41,18 @@ function FoodPage(props) {
                             <Text style={styles.ingredient}>Ingredients</Text>
 
                             <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }}>
-                                <View style={{ width: 10, height: 10, backgroundColor: "lightgrey", borderRadius: 10, }}></View>
-                                    <Text style={{ fontSize: 17, fontWeight: "600", color: "grey", marginLeft: 10, }}>Ingredient 1</Text>
+                                <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
+                                    <Text style={{ fontSize: 17, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 1</Text>
                             </View>
 
                             <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }}>
-                                <View style={{ width: 10, height: 10, backgroundColor: "lightgrey", borderRadius: 10, }}></View>
-                                    <Text style={{ fontSize: 17, fontWeight: "600", color: "grey", marginLeft: 10, }}>Ingredient 2</Text>
+                                <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
+                                    <Text style={{ fontSize: 17, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 2</Text>
                             </View>
 
                             <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }}>
-                                <View style={{ width: 10, height: 10, backgroundColor: "lightgrey", borderRadius: 10, }}></View>
-                                    <Text style={{ fontSize: 17, fontWeight: "600", color: "grey", marginLeft: 10, }}>Ingredient 3</Text>
+                                <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
+                                    <Text style={{ fontSize: 17, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 3</Text>
                             </View>
 
                             <Text style={styles.description}>Description</Text>
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     backButton: {
         height: 37,
         width: 37,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 40,
@@ -94,17 +95,17 @@ const styles = StyleSheet.create({
         marginTop: -30,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        backgroundColor: "#fff"
+        backgroundColor: colors.white
     },
     titleText: {
         fontSize: 30,
-        color: "black",
+        color: colors.black,
         fontWeight: "700"
     },
     rating: {
         padding: 5,
         paddingHorizontal: 30,
-        backgroundColor: "#22CB65",
+        backgroundColor: colors.mainGreen,
         flexDirection: "row",
         borderRadius: 10,
         justifyContent: "center",
@@ -114,12 +115,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "600",
         marginLeft: 5,
-        color: "black"
+        color: colors.black
     },
     tags: {
         padding: 5,
         paddingHorizontal: 30,
-        backgroundColor: "lightgrey",
+        backgroundColor: colors.lightGrey,
         flexDirection: "row",
         borderRadius: 10,
         justifyContent: "center",
@@ -129,31 +130,31 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "600",
         marginLeft: 5,
-        color: "dimgrey"
+        color: colors.darkGrey
     },
     ingredient: {
         fontSize: 20,
         fontWeight: "700",
-        color: "black"
+        color: colors.black
     },
     description: {
         fontSize: 20,
         fontWeight: "700",
-        color: "black",
+        color: colors.black,
         marginBottom: 10,
         top: 20
     },
     descriptionText: {
         fontSize: 17,
         fontWeight: "500",
-        color: "grey",
+        color: colors.grey,
         top: 10,
         lineHeight: 20
     },
     viewButton: {
         width: "100%",
         padding: 15,
-        backgroundColor: "#22CB65",
+        backgroundColor: colors.mainGreen,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     },
     visitText: {
         fontSize: 17,
-        color: "#fff",
+        color: colors.white,
         fontWeight: "700",
     }
 })
