@@ -28,9 +28,9 @@ function IngredientList(props) {
             </View>
            </ScrollView>
            <TouchableOpacity>
-            <View style={styles.continueWrapper}>
-                <Text style={styles.continueText}>Continue</Text>
-            </View>
+                <View style={styles.continueWrapper}>
+                    <Text style={styles.continueText}>Continue</Text>
+                </View>
            </TouchableOpacity>
         </View>
     );
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         shadowRadius: 9.11,
         elevation: 14,
         elevation: 9,
-        },
+    },
     continueText: {
         fontSize: 20,
         color: colors.white,

@@ -6,10 +6,12 @@ import ShoppingCart from './Page/ShoppingCart';
 import Login from "./Page/Login";
 import Register from "./Page/Register";
 import FoodPage from './Page/FoodPage';
+import FoodList1 from './Page/FoodList1';
+import FoodList2 from './Page/FoodList2';
 
 export default function App() {
   return (
-    <ShoppingCart />
+    <FoodList2 />
   );
 }
 
