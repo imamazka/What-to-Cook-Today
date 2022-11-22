@@ -76,14 +76,13 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.41,
         shadowRadius: 9.11,
-        
         elevation: 14,
-
-elevation: 9,
-    },
+        elevation: 9,
+        },
     continueText: {
         fontSize: 20,
         color: "#FFF",
+        fontWeight: "bold"
     }
 })
 

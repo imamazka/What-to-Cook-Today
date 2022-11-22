@@ -8,7 +8,7 @@ import FoodPage from './Page/FoodPage';
 
 export default function App() {
   return (
-    <Login/>
+    <FoodPage />
   );
 }
 

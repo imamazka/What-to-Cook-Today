@@ -25,7 +25,7 @@ const Register = () => {
     const [visiblePassword, setVisiblePassword] = useState(false)
     const [visibleConfirmPassword, setVisibleConfirmPassword] = useState(false)
     return (
-        <ScrollView vertical={true} showsVerticalScrollIndicator>    
+        <ScrollView vertical={true} showsVerticalScrollIndicator={true}>    
             <View style={{flex: 1, backgroundColor: "#FFF"}}>
                 <View style={Styles.containerLogin}>
                     <Text style={Styles.loginText}>REGISTER</Text>

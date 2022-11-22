@@ -28,7 +28,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [visiblePassword, setVisiblePassword] = useState(false);
   return (
-    <ScrollView showsVerticalScrollIndicator="true">
+    <ScrollView showsVerticalScrollIndicator={true}>
       <View style={{ flex: 1, backgroundColor: "#FFF" }}>
         <View style={Styles.containerLogin}>
           <Text style={Styles.loginText}>LOGIN</Text>
