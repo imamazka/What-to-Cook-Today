@@ -10,57 +10,67 @@ import {
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 
-const InputText = (props) => {
+const InputText = ({ password, error, ...props }) => {
+  const [hidePassword, setHidePassword] = useState(password);
   return (
-    <TextInput
-      style={Styles.inputText}
-      value={props.state}
-      placeholder={props.placeholder}
-      onChangeText={(text) => props.setState(text)}
-      secureTextEntry={props.secure}
-    />
+    <View style={{ marginTop: 22, marginHorizontal: 25 }}>
+      <View
+        style={[
+          Styles.inputText,
+          {
+            flexDirection: "row",
+            alignItems: "center",
+            paddingRight: password ? 47 : 20,
+          },
+        ]}>
+        <TextInput
+          secureTextEntry={hidePassword}
+          style={{ flex: 1 }}
+          {...props}
+        />
+        {password && (
+          <Feather
+            name={hidePassword ? "eye-off" : "eye"}
+            size={20}
+            color="grey"
+            style={{ position: "absolute", right: 20 }}
+            onPress={() => setHidePassword(!hidePassword)}
+          />
+        )}
+      </View>
+    </View>
   );
 };
 
 const Login = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [showPassword, setShowPassword] = useState(false);
-  const [visiblePassword, setVisiblePassword] = useState(false);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleOnChange = (text, input) => {
+    setData((prevState) => ({ ...prevState, [input]: text }));
+  };
+
   return (
-    <ScrollView showsVerticalScrollIndicator={true}>
+    <ScrollView showsVerticalScrollIndicator="true">
       <View style={{ flex: 1, backgroundColor: "#FFF" }}>
         <View style={Styles.containerLogin}>
           <Text style={Styles.loginText}>LOGIN</Text>
         </View>
         <InputText
-          state={email}
+          autoCapitalize="none"
+          autoCorrect={false}
           placeholder="Email"
-          setState={setEmail}
-          secure={false}
+          onChangeText={(text) => handleOnChange(text, "email")}
         />
-        <View style={{ marginTop: 20 }}>
-          <InputText
-            styles={Styles.inputText}
-            state={password}
-            placeholder="Password"
-            setState={setPassword}
-            secure={visiblePassword ? false : true}
-          />
-          <TouchableOpacity
-            style={{ position: "absolute", right: 40, top: 15, zIndex: 1 }}
-            onPress={() => {
-              setShowPassword(!showPassword);
-              setVisiblePassword(!visiblePassword);
-            }}
-            activeOpacity={0.9}>
-            <Feather
-              name={showPassword ? "eye" : "eye-off"}
-              size={20}
-              color="grey"
-            />
-          </TouchableOpacity>
-        </View>
+        <InputText
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="Password"
+          onChangeText={(text) => handleOnChange(text, "password")}
+          password
+        />
         <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
           <TouchableOpacity activeOpacity={0.5}>
             <Text style={Styles.forgotPass}>forgot password?</Text>
@@ -91,12 +101,6 @@ const Login = () => {
 };
 
 const Styles = StyleSheet.create({
-  containerLogin: {
-    justifyContent: "center",
-    alignSelf: "center",
-    marginTop: 150,
-    marginBottom: 22,
-  },
   loginText: {
     fontSize: 45,
     fontWeight: "bold",
@@ -105,11 +109,10 @@ const Styles = StyleSheet.create({
   },
   inputText: {
     backgroundColor: "#F6F6F6",
-    //marginTop: 22,
-    marginHorizontal: 25,
     borderRadius: 30,
     height: 50,
-    paddingHorizontal: 20,
+    paddingLeft: 20,
+    //paddingRight: 20,
     elevation: 6,
   },
   forgotPass: {

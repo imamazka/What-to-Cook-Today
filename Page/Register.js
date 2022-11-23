@@ -20,12 +20,12 @@ const InputText = ({ password, error, ...props }) => {
           {
             flexDirection: "row",
             alignItems: "center",
-            paddingRight: password ? 42 : 20,
+            paddingRight: password ? 47 : 20,
           },
         ]}>
         <TextInput
           secureTextEntry={hidePassword}
-          style={{ backgroundColor: "red", flex: 1 }}
+          style={{ flex: 1 }}
           {...props}
         />
         {password && (
@@ -53,20 +53,25 @@ const Register = ({ navigation }) => {
     name: "",
     password: "",
     confirmPassword: "",
+    userNamse: "",
   });
+
   const [errors, setErrors] = useState({});
-  /*   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [visiblePassword, setVisiblePassword] = useState(false);
-  const [visibleConfirmPassword, setVisibleConfirmPassword] = useState(false); */
 
   const validate = () => {
+    if (data.password.length < 8 || data.confirmPassword.length < 8) {
+      handleOnError(
+        "Your password must contain at least 8 character",
+        "password"
+      );
+      handleOnError(
+        "Your password must contain at least 8 character",
+        "confirmPassword"
+      );
+    }
     if (data.confirmPassword !== data.password) {
       handleOnError("Your password is not same", "confirmPassword");
       handleOnError("Your password is not same", "password");
-    } else {
-      handleOnError(null, "confirmPassword");
-      handleOnError(null, "password");
     }
   };
 
@@ -80,10 +85,24 @@ const Register = ({ navigation }) => {
 
   return (
     <ScrollView vertical={true} showsVerticalScrollIndicator>
-      <View style={{ flex: 1, backgroundColor: "#FFF" }}>
-        <View style={Styles.containerLogin}>
-          <Text style={Styles.loginText}>REGISTER</Text>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#FFF",
+          marginTop: "25%",
+        }}>
+        <View
+          style={{
+            alignItems: "center",
+          }}>
+          <Text style={[Styles.loginText]}>REGISTER</Text>
         </View>
+        <InputText
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="Username"
+          onChangeText={(text) => handleOnChange(text, "userName")}
+        />
         <InputText
           autoCapitalize="none"
           autoCorrect={false}
@@ -137,11 +156,6 @@ const Register = ({ navigation }) => {
 };
 
 const Styles = StyleSheet.create({
-  containerLogin: {
-    justifyContent: "center",
-    alignSelf: "center",
-    marginTop: 150,
-  },
   loginText: {
     fontSize: 45,
     fontWeight: "bold",
