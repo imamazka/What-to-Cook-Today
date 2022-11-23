@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, Touchable, TouchableOpacity} from 'react-native';
 
+import colors from '../config/colors';
+
 function Shopping(props) {
     return (
         <View style={styles.item}>
@@ -18,7 +20,7 @@ function Shopping(props) {
 
 const styles = StyleSheet.create({
     item :{
-        backgroundColor: "#D9D9D9",
+        backgroundColor: '#d9d9d9',
         padding: 25,
         borderRadius: 10,
         flexDirection: "row",
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
     square :{
         width: 24,
         height: 24,
-        backgroundColor: '#fff',
+        backgroundColor: colors.white,
         borderRadius: 5,
         marginRight: 15
     },
@@ -44,8 +46,8 @@ const styles = StyleSheet.create({
     circular :{
         width: 15,
         height: 15,
-        borderColor: "#000",
-        backgroundColor: "#fff",
+        borderColor: colors.black,
+        backgroundColor: colors.white,
         borderWidth: 0.5,
         borderRadius: 8,
     },

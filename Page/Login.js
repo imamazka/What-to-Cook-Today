@@ -53,14 +53,9 @@ const Login = () => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={true}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#FFF",
-          marginVertical: "33%",
-        }}>
-        <View style={{ alignItems: "center" }}>
+    <ScrollView showsVerticalScrollIndicator="true">
+      <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+        <View style={Styles.containerLogin}>
           <Text style={Styles.loginText}>LOGIN</Text>
         </View>
         <InputText

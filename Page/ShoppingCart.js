@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard} from 'react-native';
 
-import Shopping from '../components/Shopping'
+import Shopping from '../components/Shopping';
+import colors from '../config/colors';
 
 function ShoppingCart(props) {
     const [ingredient, setIngredient] = useState();
@@ -80,13 +81,13 @@ function ShoppingCart(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
     topBar: {
         width: '100%',
         height: 50,
-        backgroundColor: '#22CB65'
+        backgroundColor: colors.mainGreen
     },
     listWrapper: {
         paddingTop: 30,
@@ -112,11 +113,11 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         paddingHorizontal: 15,
         width: 250,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         borderRadius: 60,
         borderColor: '#c0c0',
         borderWidth: 1,
-        shadowColor: "#000",
+        shadowColor: colors.black,
         shadowOffset: {
             width: 0,
             height: 3,
@@ -129,11 +130,11 @@ const styles = StyleSheet.create({
     addWrapper: {
         width: 60,
         height: 60,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         borderRadius: 60,
         justifyContent: "center",
         alignItems: "center",
-        shadowColor: "#000",
+        shadowColor: colors.black,
         shadowOffset: {
             width: 0,
             height: 3,
