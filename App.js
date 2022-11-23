@@ -9,10 +9,11 @@ import FoodPage from './Page/FoodPage';
 import FoodList1 from './Page/FoodList1';
 import FoodList2 from './Page/FoodList2';
 import Home from "./Page/Home";
+import Favorite from './Page/Favorite';
 
 export default function App() {
   return (
-    <Home />
+    <Favorite />
   );
 }
 
