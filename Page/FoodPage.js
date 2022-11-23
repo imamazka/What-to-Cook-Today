@@ -13,20 +13,29 @@ function FoodPage(props) {
                     <ImageBackground style={styles.image} source={require("../assets/FoodPage.jpg")}>
                         
                         <TouchableOpacity style={styles.backButton}>
-                            <Ionicons name="chevron-back-outline" size={23} color={colors.darkGrey}/>
+                            <Ionicons name="chevron-back-outline" size={25} color={colors.darkGrey}/>
                         </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.shareButton}>
+                            <Ionicons name="share-social-outline" size={24} color={colors.darkGrey}/>
+                        </TouchableOpacity>
+
                     </ImageBackground>
 
                     <View style={styles.detailWrapper}>
-                        <View style={{ flexDirection: "row", marginBottom: 30, alignItems: "center" }}>
+
+                        <View style={{ flexDirection: "row", marginBottom: 20, alignItems: "center" }}>
                             <View style={{ width: "70%" }}>
                                 <Text style={styles.titleText}>Ayam Bakar</Text>
                             </View>
                             <View style={styles.rating}>
-                                <Ionicons name="star" color={colors.black} size={17}/>
+                                <Ionicons name="star" color="gold" size={17}/>
                                 <Text style={styles.ratingText}>4.7</Text>
                             </View>
                         </View>
+
+                        <Text style={styles.website}>cookpad.com</Text>
+
                         <View style= {{ flexDirection: "row", justifyContent: "space-between" }}>
 
                             <View style={styles.tags}>
@@ -39,20 +48,20 @@ function FoodPage(props) {
                         
                         <View style={{ marginVertical: 30 }}>
                             <Text style={styles.ingredient}>Ingredients</Text>
-
+                            
                             <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }}>
                                 <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
-                                    <Text style={{ fontSize: 17, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 1</Text>
+                                    <Text style={{ fontSize: 15, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 1</Text>
                             </View>
 
                             <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }}>
                                 <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
-                                    <Text style={{ fontSize: 17, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 2</Text>
+                                    <Text style={{ fontSize: 15, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 2</Text>
                             </View>
 
                             <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }}>
                                 <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
-                                    <Text style={{ fontSize: 17, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 3</Text>
+                                    <Text style={{ fontSize: 15, fontWeight: "600", color: colors.grey, marginLeft: 10, }}>Ingredient 3</Text>
                             </View>
 
                             <Text style={styles.description}>Description</Text>
@@ -78,16 +87,30 @@ const styles = StyleSheet.create({
     image: {
         top: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
         height: height / 2.5,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        padding: 20,
+        paddingTop: 10
     },
     backButton: {
-        height: 37,
-        width: 37,
+        height: 40,
+        width: 40,
         backgroundColor: colors.white,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 40,
         top: 20,
-        left: 20
+        left: 10
+    },
+    shareButton: {
+        height: 40,
+        width: 40,
+        backgroundColor: colors.white,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 40,
+        top: 20,
+        right: 10
     },
     detailWrapper: {
         padding: 20,
@@ -104,7 +127,7 @@ const styles = StyleSheet.create({
     },
     rating: {
         padding: 5,
-        paddingHorizontal: 30,
+        paddingHorizontal: 20,
         backgroundColor: colors.mainGreen,
         flexDirection: "row",
         borderRadius: 10,
@@ -114,12 +137,19 @@ const styles = StyleSheet.create({
     ratingText: {
         fontSize: 16,
         fontWeight: "600",
-        marginLeft: 5,
-        color: colors.black
+        marginLeft: 7,
+        color: colors.white
+    },
+    website: {
+        fontSize: 14,
+        color: colors.darkGrey,
+        fontWeight: "400",
+        paddingBottom: 10,
+        top: -10
     },
     tags: {
         padding: 5,
-        paddingHorizontal: 30,
+        paddingHorizontal: 25,
         backgroundColor: colors.lightGrey,
         flexDirection: "row",
         borderRadius: 10,
@@ -145,7 +175,7 @@ const styles = StyleSheet.create({
         top: 20
     },
     descriptionText: {
-        fontSize: 17,
+        fontSize: 15,
         fontWeight: "500",
         color: colors.grey,
         top: 10,

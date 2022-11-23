@@ -11,7 +11,7 @@ import FoodList2 from './Page/FoodList2';
 
 export default function App() {
   return (
-    <FoodList2 />
+    <FoodPage />
   );
 }
 

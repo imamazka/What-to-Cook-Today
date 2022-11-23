@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import colors from '../config/colors';
 const { width } = Dimensions.get("window");
 
-const ITEM_WIDTH = width/2 - 10 * 3;
+const ITEM_WIDTH = width/2 - 10 * 2.3;
 
 function FoodList1(props) {
     return (
@@ -17,65 +17,121 @@ function FoodList1(props) {
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food1.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={15}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
                         </TouchableOpacity>
-                        <Text style={styles.itemName}>Food 1</Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.itemName}>Food 1</Text>
+                            <View style={{alignItems: "center", left: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={12}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.itemSite}>cookpad.com</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food2.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={15}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
                         </TouchableOpacity>
-                        <Text style={styles.itemName}>Food 2</Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.itemName}>Food 2</Text>
+                            <View style={{alignItems: "center", left: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={12}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.itemSite}>cookpad.com</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food3.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={15}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
                         </TouchableOpacity>
-                        <Text style={styles.itemName}>Food 3</Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.itemName}>Food 3</Text>
+                            <View style={{alignItems: "center", left: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={12}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.itemSite}>cookpad.com</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food4.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={15}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
                         </TouchableOpacity>
-                        <Text style={styles.itemName}>Food 4</Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.itemName}>Food 4</Text>
+                            <View style={{alignItems: "center", left: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={12}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.itemSite}>cookpad.com</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food1.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={15}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
                         </TouchableOpacity>
-                        <Text style={styles.itemName}>Food 1</Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.itemName}>Food 1</Text>
+                            <View style={{alignItems: "center", left: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={12}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.itemSite}>cookpad.com</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food2.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={15}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
                         </TouchableOpacity>
-                        <Text style={styles.itemName}>Food 2</Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.itemName}>Food 2</Text>
+                            <View style={{alignItems: "center", left: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={12}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.itemSite}>cookpad.com</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food3.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={15}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
                         </TouchableOpacity>
-                        <Text style={styles.itemName}>Food 3</Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.itemName}>Food 3</Text>
+                            <View style={{alignItems: "center", left: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={12}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.itemSite}>cookpad.com</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food4.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={15}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
                         </TouchableOpacity>
-                        <Text style={styles.itemName}>Food 4</Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.itemName}>Food 4</Text>
+                            <View style={{alignItems: "center", left: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={12}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.itemSite}>cookpad.com</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -105,14 +161,14 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "space-between",
-        padding: 20,
+        padding: 15
     },
     itemWrapper: {
         width: ITEM_WIDTH,
         marginBottom: 20,
         backgroundColor: colors.white,
         borderRadius: 20,
-        paddingBottom: 40,
+        paddingBottom: 30,
         shadowColor: colors.black,
         shadowOffset: {
             width: 0,
@@ -129,12 +185,31 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
     },
+    titleWrapper: {
+        marginRight: 6,
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        paddingLeft: 15,
+        paddingHorizontal: 20,
+    },
+    ratingText: {
+        fontSize: 10,
+        color: colors.darkGrey,
+        top: 3
+    },
     itemName: {
         fontSize: 14,
-        fontWeight: "400",
-        marginTop: 10,
+        fontWeight: "bold",
+        marginTop: 5,
         top: 5,
-        left: 10,
+    },
+    itemSite: {
+        alignSelf: "center",
+        bottom: 7,
+        fontSize: 10,
+        position: 'absolute',
+        color: colors.darkGrey
     },
     bookmark: {
         position: 'absolute',
@@ -144,7 +219,8 @@ const styles = StyleSheet.create({
         opacity: 0.75,
         borderRadius: 5,
         padding: 1,
-        paddingVertical: 3
+        paddingVertical: 3,
+        paddingHorizontal: 3
     },
     searchWrapper: {
         width:270,

@@ -1,39 +1,38 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, Touchable, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 
 import colors from '../config/colors';
 
 const Ingredient = (props) => {
 
-    return (
+    const [selected, setSelected] = useState(false);
 
-        <TouchableOpacity style={styles.item} onPress={()=>{console.log('pressed');}}>
+    return (
+        <TouchableOpacity
+            onPress={() => setSelected(!selected)}
+            style={{
+                backgroundColor: selected ? colors.mainGreen : colors.grey,
+                padding: 12,
+                borderRadius: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 20}}>
+            
             <View style={styles.itemLeft}>
                 <View style={styles.square}></View>
                 <Text style={styles.itemText}>{props.text}</Text>
             </View>
-            <TouchableOpacity style={styles.circular}>
-                
-            </TouchableOpacity>
-        
+            
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    item :{
-        backgroundColor: colors.lightGrey,
-        padding: 12,
-        borderRadius: 10,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: 20
-    },
     itemLeft :{
         flexDirection: 'row',
         alignItems: "center",
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
     square :{
         width: 52,
@@ -45,15 +44,6 @@ const styles = StyleSheet.create({
     itemText :{
         maxWidth: '80%'
     },
-    circular :{
-        width: 18,
-        height: 18,
-        borderColor: colors.darkGrey,
-        backgroundColor: colors.white,
-        borderWidth: 1,
-        borderRadius: 8,
-    },
-    
 })
 
 export default Ingredient;

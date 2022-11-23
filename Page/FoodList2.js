@@ -13,42 +13,68 @@ function FoodList2(props) {
             <ScrollView>
                 <View style={styles.topBar}></View>
                 <View style={styles.wrapper}>
+                    <Text style={styles.basedText}>Based On Your Ingredient :</Text>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food1.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={30}/>
                         </TouchableOpacity>
+                        <View style={styles.titleWrapper}>
                         <Text style={styles.itemName}>Food 1</Text>
+                            <View style={{alignItems: "center", left: 5, top: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={15}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
                         <Text style={styles.itemIngredient}>1 egg  |  1 oatmeal  |  1 tomato</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food2.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={30}/>
                         </TouchableOpacity>
+                        <View style={styles.titleWrapper}>
                         <Text style={styles.itemName}>Food 2</Text>
+                            <View style={{alignItems: "center", left: 5, top: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={15}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
                         <Text style={styles.itemIngredient}>1 egg  |  1 oatmeal  |  1 tomato</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food3.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={30}/>
                         </TouchableOpacity>
+                        <View style={styles.titleWrapper}>
                         <Text style={styles.itemName}>Food 3</Text>
+                            <View style={{alignItems: "center", left: 5, top: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={15}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
                         <Text style={styles.itemIngredient}>1 egg  |  1 oatmeal  |  1 tomato</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food4.jpg')}/>
                         <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={25}/>
+                            <Ionicons name="bookmark-outline" color={colors.black} size={30}/>
                         </TouchableOpacity>
+                        <View style={styles.titleWrapper}>
                         <Text style={styles.itemName}>Food 4</Text>
+                            <View style={{alignItems: "center", left: 5, top: 5}}>
+                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={15}></Ionicons>
+                                <Text style={styles.ratingText}>4.8</Text>
+                            </View>
+                        </View>
                         <Text style={styles.itemIngredient}>1 egg  |  1 oatmeal  |  1 tomato</Text>
                     </TouchableOpacity>
+
                 </View>
             </ScrollView>
         </View>
@@ -68,6 +94,14 @@ const styles = StyleSheet.create({
     },
     wrapper: {
         padding: 20,
+    },
+    basedText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        padding: 10,
+        paddingTop: 0,
+        paddingBottom: 15,
+        color: colors.black
     },
     itemWrapper: {
         width: '100%',
@@ -91,12 +125,24 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
     },
+    titleWrapper: {
+        marginRight: 10,
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        paddingLeft: 15,
+        paddingTop: 5,
+        paddingHorizontal: 20,
+    },
+    ratingText: {
+        fontSize: 15,
+        color: colors.darkGrey,
+        top: 4
+    },
     itemName: {
         fontSize: 20,
         fontWeight: "500",
-        marginTop: 10,
-        top: 5,
-        left: 10,
+        top: 10,
     },
     itemIngredient: {
         fontSize: 14,
@@ -104,7 +150,7 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         marginTop: 10,
         top: 5,
-        left: 10,
+        left: 15,
     },
     bookmark: {
         position: 'absolute',
@@ -113,8 +159,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         opacity: 0.75,
         borderRadius: 5,
-        padding: 1,
-        paddingVertical: 3
+        paddingVertical: 3,
+        paddingHorizontal: 4
     },
 })
 
