@@ -19,8 +19,8 @@ function Shopping(props) {
                 <Text style={styles.itemText}>{props.text}</Text>
             </View>
             <TouchableOpacity onPress={() => setSelected(!selected)} style={styles.circle}>
-                <TouchableOpacity
-                    onPress={() => setSelected(!selected)}
+                <View
+                    //onPress={() => setSelected(!selected)}
                     style={{
                         width: 18,
                         height: 18,
@@ -30,8 +30,7 @@ function Shopping(props) {
                         borderWidth: 1,
                         borderRadius: 10,
                     }}>
-
-                </TouchableOpacity>
+                </View>
             </TouchableOpacity>
         
         </View>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar, View, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, Text } from 'react-native';
 
 import { Ionicons } from "@expo/vector-icons";
@@ -7,7 +7,10 @@ const { width } = Dimensions.get("window");
 
 const ITEM_WIDTH = width/2 - 10 * 3;
 
-function FoodList2(props) {
+function FoodList(props) {
+
+    const [selected, setSelected] = useState(false);
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -17,56 +20,14 @@ function FoodList2(props) {
 
                     <TouchableOpacity style={styles.itemWrapper}>
                         <Image style={styles.itemImage} source={require('../assets/Food1.jpg')}/>
-                        <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={30}/>
+                        <TouchableOpacity activeOpacity={0.75} onPress={() => setSelected(!selected)} style={styles.bookmark}>
+                            <Ionicons 
+                                name={selected ? 'bookmark' : 'bookmark-outline'}
+                                color={selected ? colors.mainGreen : colors.black} 
+                                size={30}/>
                         </TouchableOpacity>
                         <View style={styles.titleWrapper}>
                         <Text style={styles.itemName}>Food 1</Text>
-                            <View style={{alignItems: "center", left: 5, top: 5}}>
-                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={15}></Ionicons>
-                                <Text style={styles.ratingText}>4.8</Text>
-                            </View>
-                        </View>
-                        <Text style={styles.itemIngredient}>1 egg  |  1 oatmeal  |  1 tomato</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.itemWrapper}>
-                        <Image style={styles.itemImage} source={require('../assets/Food2.jpg')}/>
-                        <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={30}/>
-                        </TouchableOpacity>
-                        <View style={styles.titleWrapper}>
-                        <Text style={styles.itemName}>Food 2</Text>
-                            <View style={{alignItems: "center", left: 5, top: 5}}>
-                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={15}></Ionicons>
-                                <Text style={styles.ratingText}>4.8</Text>
-                            </View>
-                        </View>
-                        <Text style={styles.itemIngredient}>1 egg  |  1 oatmeal  |  1 tomato</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.itemWrapper}>
-                        <Image style={styles.itemImage} source={require('../assets/Food3.jpg')}/>
-                        <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={30}/>
-                        </TouchableOpacity>
-                        <View style={styles.titleWrapper}>
-                        <Text style={styles.itemName}>Food 3</Text>
-                            <View style={{alignItems: "center", left: 5, top: 5}}>
-                                <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={15}></Ionicons>
-                                <Text style={styles.ratingText}>4.8</Text>
-                            </View>
-                        </View>
-                        <Text style={styles.itemIngredient}>1 egg  |  1 oatmeal  |  1 tomato</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.itemWrapper}>
-                        <Image style={styles.itemImage} source={require('../assets/Food4.jpg')}/>
-                        <TouchableOpacity style={styles.bookmark}>
-                            <Ionicons name="bookmark-outline" color={colors.black} size={30}/>
-                        </TouchableOpacity>
-                        <View style={styles.titleWrapper}>
-                        <Text style={styles.itemName}>Food 4</Text>
                             <View style={{alignItems: "center", left: 5, top: 5}}>
                                 <Ionicons name="star" color="gold" style={{marginTop: 5, top: 5}} size={15}></Ionicons>
                                 <Text style={styles.ratingText}>4.8</Text>
@@ -164,4 +125,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default FoodList2;
+export default FoodList;
