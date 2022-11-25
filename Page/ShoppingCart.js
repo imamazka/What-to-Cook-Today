@@ -62,7 +62,7 @@ function ShoppingCart(props) {
                     >
                         <TextInput 
                             style={styles.input} 
-                            placeholder={'Add an item'} 
+                            placeholder={'  Add an item'} 
                             value={ingredient}
                             onChangeText={text => setIngredient(text)}
                             >
@@ -96,10 +96,11 @@ const styles = StyleSheet.create({
     sectionTitle: {
         //fontFamily: "Poppins",
         fontSize: 24,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        color: colors.black
     },
     items: {
-        marginTop: 40
+        marginTop: 30
     },
     writeShoppingWrapper: {
         position: 'absolute',
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     input: {
+        left: 10,
         paddingVertical: 15,
         paddingHorizontal: 15,
         width: 250,
@@ -124,7 +126,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.29,
         shadowRadius: 4.65,
-        
         elevation: 7,
     },
     addWrapper: {
@@ -141,10 +142,11 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.29,
         shadowRadius: 4.65,
-        
         elevation: 7,
     },
-    addText: {},
+    addText: {
+        fontSize: 20,
+    },
 })
 
 export default ShoppingCart;

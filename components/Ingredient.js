@@ -11,7 +11,7 @@ const Ingredient = (props) => {
         <TouchableOpacity
             onPress={() => setSelected(!selected)}
             style={{
-                backgroundColor: selected ? colors.mainGreen : colors.grey,
+                backgroundColor: selected ? colors.mainGreen : colors.lightGrey,
                 padding: 12,
                 borderRadius: 10,
                 flexDirection: "row",

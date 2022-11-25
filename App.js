@@ -13,7 +13,7 @@ import Main from "./Page/Main";
 
 export default function App() {
   return (
-    <Favorite />
+    <Main />
   );
 }
 
