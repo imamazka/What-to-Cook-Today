@@ -11,7 +11,7 @@ function IngredientList(props) {
         <View style={styles.container}>
             <ScrollView>
             <View style={styles.listWrapper}>
-                <Text style={styles.sectionTitle}>List Your Ingredient!</Text>
+                <Text style={styles.sectionTitle}>List your ingredient!</Text>
                 
                 <View style={styles.items}>
                     <Ingredient text={'Ingredient 1'}></Ingredient>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     sectionTitle: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "bold",
         left: 10
     },

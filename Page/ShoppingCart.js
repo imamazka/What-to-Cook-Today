@@ -76,7 +76,7 @@ function ShoppingCart(props) {
                 <View style={styles.navBar}>
                     <View style={styles.navWrapper}>
                         <TouchableOpacity>
-                            <Ionicons name='home-outline' color={colors.white} size={24} style={{ right: 4 }}></Ionicons>
+                            <Ionicons name='home-outline' color={colors.white} size={24} style={{ padding: 5 }}></Ionicons>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{ padding: 5 }}>

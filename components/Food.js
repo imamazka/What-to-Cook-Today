@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
-
-import { Ionicons } from "@expo/vector-icons";
-import colors from '../config/colors';
 const { width } = Dimensions.get("window");
+import { Ionicons } from "@expo/vector-icons";
+
+import colors from '../config/colors';
+import recipes from '../assets/dummy data/recipe_data';
+
 const ITEM_WIDTH = width/2 - 10 * 2.3;
 
 const Food = (props) => {
@@ -26,6 +28,12 @@ const Food = (props) => {
                     <Text style={styles.ratingText}>{props.rating}</Text>
                 </View>
             </View>
+            {/*{props.ingredients.map((ingredient) => (
+                <View key={ingredient.id}>
+
+                    <Text>{ingredient.title}</Text>
+                </View>
+            ))}*/}
             <Text style={styles.itemIngredient}>{props.ingredient}</Text>
         </TouchableOpacity>
     );

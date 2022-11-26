@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StatusBar, View, StyleSheet, ScrollView, TouchableOpacity, Text, Image } from 'react-native';
-
-import colors from '../config/colors';
 import { SearchBar } from 'react-native-elements';
-import Food from '../components/Food';
 import { Ionicons } from '@expo/vector-icons';
 
+import colors from '../config/colors';
+import Food from '../components/Food';
+import recipes from '../assets/dummy data/recipe_data';
 
 function Main(props) {
     const [searchQuery, setSearchQuery] = useState('');
@@ -20,14 +20,13 @@ function Main(props) {
                     round='true'
                     onChangeText={onChangeSearch}
                     value={searchQuery}/>
+
                 <View style={styles.itemWrapper}>
-
-                    <Food image={require('../assets/Food1.jpg')} name={'Food 1'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
-                    <Food image={require('../assets/Food2.jpg')} name={'Food 2'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
-                    <Food image={require('../assets/Food3.jpg')} name={'Food 3'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
-                    <Food image={require('../assets/Food4.jpg')} name={'Food 4'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
-
+                    {recipes.map((item) => (
+                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
+                    ))}
                 </View>
+                
             </ScrollView>
 
             <View style={styles.navBar}>

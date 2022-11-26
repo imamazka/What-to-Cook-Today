@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
-import { StatusBar, View, StyleSheet, ScrollView, Text } from 'react-native';
+import { StatusBar, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { Ionicons } from "@expo/vector-icons"
 
 import colors from '../config/colors';
 import Food from '../components/Food';
+import recipes from '../assets/dummy data/recipe_data';
 
 function FoodList(props) {
 
     return (
         <View style={styles.container}>
             <ScrollView>
-                <View style={styles.topBar}></View>
-                <View style={styles.wrapper}>
-                    <Text style={styles.sectionText}>Based On Your Ingredient :</Text>
-
-                    <Food image={require('../assets/Food1.jpg')} name={'Food 1'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
-                    <Food image={require('../assets/Food2.jpg')} name={'Food 2'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
-                    <Food image={require('../assets/Food3.jpg')} name={'Food 3'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
-                    <Food image={require('../assets/Food4.jpg')} name={'Food 4'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
-
+                <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingTop: 20, }}>
+                    <TouchableOpacity style={styles.backButton}>
+                        <Ionicons name="arrow-back-outline" size={25} color={colors.darkGrey}/>
+                    </TouchableOpacity>
+                    <Text style={styles.sectionText}>Based on your ingredient :</Text>
                 </View>
+
+                <View style={styles.wrapper}>
+                    {recipes.map((item) => (
+                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
+                    ))}
+                </View>
+
             </ScrollView>
         </View>
     );
@@ -30,21 +35,31 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
     },
-    topBar: {
-        width: '100%',
-        height: 50,
-        backgroundColor: colors.mainGreen
-    },
     wrapper: {
         padding: 20,
+    },
+    backButton: {
+        height: 40,
+        width: 40,
+        backgroundColor: colors.white,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 40,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        elevation: 14,
+        elevation: 9,
     },
     sectionText: {
         fontSize: 18,
         fontWeight: "bold",
-        padding: 10,
-        paddingTop: 0,
-        paddingBottom: 15,
-        color: colors.black
+        color: colors.black,
+        paddingLeft: 20
     },
 })
 
