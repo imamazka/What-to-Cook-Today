@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard} from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, Image } from 'react-native';
 
 import Shopping from '../components/Shopping';
 import colors from '../config/colors';
+import { Ionicons } from '@expo/vector-icons';
 
 function ShoppingCart(props) {
     const [ingredient, setIngredient] = useState();
@@ -23,9 +24,26 @@ function ShoppingCart(props) {
     return (
         <View style={styles.container}>
             <ScrollView>
-                <View style={styles.topBar}></View>
+
                 <View style={styles.listWrapper}>
                     <Text style={styles.sectionTitle}>Shopping Cart</Text>
+
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                        style={styles.writeShoppingWrapper}>
+                        <TextInput 
+                            style={styles.input} 
+                            placeholder={'  Add an item'} 
+                            value={ingredient}
+                            onChangeText={text => setIngredient(text)}>
+                            </TextInput>
+                        <TouchableOpacity onPress={() => handleAddIngredient()}>
+                            <View style={styles.addWrapper}>
+                                <Text style={styles.addText}>+</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </KeyboardAvoidingView>
+
                     <View style={styles.items}>
                         {
                             ingredientItems.map((ingredient, index) => {
@@ -36,7 +54,6 @@ function ShoppingCart(props) {
                                 )
                             })
                         }
-                        
                      
                         <Shopping text={'Ingredient 1'}></Shopping>
                         <Shopping text={'Ingredient 2'}></Shopping>
@@ -53,27 +70,31 @@ function ShoppingCart(props) {
                         <Shopping text={'Ingredient 13'}></Shopping>
                     </View>
 
-
                 </View>
             </ScrollView>
-                    <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={styles.writeShoppingWrapper}
-                    >
-                        <TextInput 
-                            style={styles.input} 
-                            placeholder={'  Add an item'} 
-                            value={ingredient}
-                            onChangeText={text => setIngredient(text)}
-                            >
-                            </TextInput>
-                        <TouchableOpacity onPress={() => handleAddIngredient()}>
-                            <View style={styles.addWrapper}>
-                                <Text style={styles.addText}>+</Text>
+
+                <View style={styles.navBar}>
+                    <View style={styles.navWrapper}>
+                        <TouchableOpacity>
+                            <Ionicons name='home-outline' color={colors.white} size={24} style={{ right: 4 }}></Ionicons>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{ padding: 5 }}>
+                            <Image style={styles.pantry} source={require('../assets/fridge-white.png')}></Image>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{ padding: 5, right: 4 }}>
+                            <View style={styles.sectionWrapper}>
+                                <Ionicons name='cart-outline' color={colors.mainGreen} size={24} style={{ right: 4 }}></Ionicons>
+                                <Text style={styles.sectionText}>Cart</Text>
                             </View>
                         </TouchableOpacity>
-                    </KeyboardAvoidingView>
-
+                        
+                        <TouchableOpacity style={{ padding: 5 }}>
+                            <Ionicons name='person-outline' color={colors.white} size={24}></Ionicons>
+                        </TouchableOpacity>
+                    </View>
+                </View>
         </View>
     );
 }
@@ -84,27 +105,21 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
-    topBar: {
-        width: '100%',
-        height: 50,
-        backgroundColor: colors.mainGreen
-    },
     listWrapper: {
         paddingTop: 30,
         paddingHorizontal: 20
     },
     sectionTitle: {
-        //fontFamily: "Poppins",
         fontSize: 24,
         fontWeight: "bold",
-        color: colors.black
+        color: colors.black,
+        left: 10
     },
     items: {
-        marginTop: 30
+        marginTop: 40
     },
     writeShoppingWrapper: {
-        position: 'absolute',
-        bottom: 20,
+        top: 20,
         width: '100%',
         flexDirection: 'row',
         justifyContent: "space-around",
@@ -147,6 +162,37 @@ const styles = StyleSheet.create({
     addText: {
         fontSize: 20,
     },
+    navBar: {
+        width: '100%',
+        backgroundColor: colors.mainGreen,
+    },
+    navWrapper: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: "space-around",
+        alignItems: "center",
+        padding: 8,
+    },
+    sectionWrapper: {
+        backgroundColor: colors.white,
+        padding: 8,
+        paddingHorizontal: 18,
+        borderRadius: 18,
+        flexDirection: 'row',
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        left: 7
+    },
+    sectionText: {
+        fontSize: 13,
+        color: colors.mainGreen,
+        left: 3,
+        fontWeight: '500'
+    },
+    pantry: {
+        width: 23,
+        height: 23
+    }
 })
 
 export default ShoppingCart;

@@ -1,30 +1,56 @@
 import React, { useState } from 'react';
-import { StatusBar, View, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { StatusBar, View, StyleSheet, ScrollView, TouchableOpacity, Text, Image } from 'react-native';
 
 import colors from '../config/colors';
-import MainFood from '../components/MainFood';
+import { SearchBar } from 'react-native-elements';
+import Food from '../components/Food';
+import { Ionicons } from '@expo/vector-icons';
+
 
 function Main(props) {
+    const [searchQuery, setSearchQuery] = useState('');
+    const onChangeSearch = query => setSearchQuery(query);
 
     return (
         <View style={styles.container}>
             <ScrollView>
-                <View style={styles.topBar}></View>
-                <View style={styles.wrapper}>
+                <SearchBar 
+                    placeholder='Search food...'
+                    lightTheme='true'
+                    round='true'
+                    onChangeText={onChangeSearch}
+                    value={searchQuery}/>
+                <View style={styles.itemWrapper}>
 
-                    <MainFood image={require('../assets/Food1.jpg')} name={'Food 1'} rating={'4.8'}></MainFood>
-                    <MainFood image={require('../assets/Food2.jpg')} name={'Food 2'} rating={'4.8'}></MainFood>
-                    <MainFood image={require('../assets/Food3.jpg')} name={'Food 3'} rating={'4.8'}></MainFood>
-                    <MainFood image={require('../assets/Food4.jpg')} name={'Food 4'} rating={'4.8'}></MainFood>
+                    <Food image={require('../assets/Food1.jpg')} name={'Food 1'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
+                    <Food image={require('../assets/Food2.jpg')} name={'Food 2'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
+                    <Food image={require('../assets/Food3.jpg')} name={'Food 3'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
+                    <Food image={require('../assets/Food4.jpg')} name={'Food 4'} rating={'4.8'} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
 
                 </View>
             </ScrollView>
 
-            <TouchableOpacity>
-                <View style={styles.searchWrapper}>
-                    <Text style={styles.searchText}>Search Based On Your Ingredient</Text>
+            <View style={styles.navBar}>
+                <View style={styles.navWrapper}>
+                    <TouchableOpacity>
+                        <View style={styles.sectionWrapper}>
+                            <Ionicons name='home-outline' color={colors.mainGreen} size={22} style={{ right: 4 }}></Ionicons>
+                            <Text style={styles.sectionText}>Home</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{ padding: 5 }}>
+                        <Image style={styles.pantry} source={require('../assets/fridge-white.png')}></Image>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ padding: 5 }}>
+                        <Ionicons name='cart-outline' color={colors.white} size={24}></Ionicons>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ padding: 5 }}>
+                        <Ionicons name='person-outline' color={colors.white} size={24}></Ionicons>
+                    </TouchableOpacity>
                 </View>
-           </TouchableOpacity>
+            </View>
+            
         </View>
     );
 }
@@ -35,42 +61,38 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
     },
-    topBar: {
+    itemWrapper: {
+        padding: 20
+    },
+    navBar: {
         width: '100%',
-        height: 50,
-        backgroundColor: colors.mainGreen
-    },
-    wrapper: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-        padding: 15
-    },
-    searchWrapper: {
-        width:270,
-        height: 50,
         backgroundColor: colors.mainGreen,
-        borderRadius: 60,
-        position: 'absolute',
-        bottom: 15,
-        flexDirection: "row",
+    },
+    navWrapper: {
+        width: '100%',
+        flexDirection: 'row',
         justifyContent: "space-around",
         alignItems: "center",
-        alignSelf: "center",
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
-        elevation: 9,
+        padding: 8,
     },
-    searchText: {
-        fontSize: 15,
-        color: colors.white,
-        fontWeight: "700"
+    sectionWrapper: {
+        backgroundColor: colors.white,
+        padding: 8,
+        paddingHorizontal: 18,
+        borderRadius: 18,
+        flexDirection: 'row',
+        justifyContent: "space-evenly",
+        alignItems: "center",
+    },
+    sectionText: {
+        fontSize: 13,
+        color: colors.mainGreen,
+        left: 4,
+        fontWeight: '500'
+    },
+    pantry: {
+        width: 23,
+        height: 23
     }
 })
 
