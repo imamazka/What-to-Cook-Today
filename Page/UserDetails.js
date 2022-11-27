@@ -116,7 +116,7 @@ const UserDetails = () => {
             <View style={Styles.navWrapper}>
                 
                 <TouchableOpacity style={{ padding: 5 }}>
-                    <Ionicons name='person-outline' color={colors.white} size={24}></Ionicons>
+                    <Ionicons name='home-outline' color={colors.white} size={24}></Ionicons>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ padding: 5 }}>
                     <Image style={Styles.pantry} source={require('../assets/fridge-white.png')}></Image>
