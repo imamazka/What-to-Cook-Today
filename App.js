@@ -10,10 +10,12 @@ import FoodList from './Page/FoodList';
 import Home from "./Page/Home";
 import Favorite from './Page/Favorite';
 import Main from "./Page/Main";
+import UserDetails from "./Page/UserDetails";
+
 
 export default function App() {
   return (
-    <IngredientList />
+    <UserDetails/>
   );
 }
 
