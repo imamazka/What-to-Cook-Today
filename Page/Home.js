@@ -1,19 +1,18 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Text, Image } from "react-native";
 
-const Home = ({navigation}) => {
+const Home = () => {
   return (
-    <View style={StyleSheet.container}>
+    <View style={styles.container}>
       <View
         style={{
           width: 250,
           alignSelf: "center",
-          marginTop: 22,
         }}>
         <Text
           style={{
             color: "#22CB65",
-            fontSize: 40,
+            fontSize: 42,
             fontWeight: "bold",
             textAlign: "center",
           }}>
@@ -24,22 +23,22 @@ const Home = ({navigation}) => {
         <Image
           source={require("../assets/ingridient.jpg")}
           style={{
-            width: 350,
-            height: 350,
-            borderRadius: 350 / 2,
+            width: 360,
+            height: 360,
+            borderRadius: 360 / 2,
             resizeMode: "cover",
           }}
         />
       </View>
       <View style={{ alignSelf: "center" }}>
-        <TouchableOpacity style={styles.loginButton} activeOpacity={0.7} onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity style={styles.loginButton} activeOpacity={0.7}>
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
       </View>
       <View
         style={{ alignSelf: "center", marginTop: 15, flexDirection: "row" }}>
         <Text style={styles.signUpFoot}>Already have an account, </Text>
-        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>
+        <TouchableOpacity activeOpacity={0.5}>
           <Text
             style={[
               styles.signUpFoot,
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: 200,
-    height: 60,
+    height: 50,
     backgroundColor: "#22CB65",
     borderRadius: 30,
     marginTop: 30,
