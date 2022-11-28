@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, Image, ImageBackground, StyleSheet, View, StatusBar, ScrollView, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
-
 import { Ionicons } from "@expo/vector-icons"
 const { height } = Dimensions.get("window");
+
 import colors from '../config/colors';
 
 function FoodPage(props) {
@@ -100,7 +100,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 40,
         top: 20,
-        left: 10
+        left: 10,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        elevation: 14,
+        elevation: 9,
     },
     shareButton: {
         height: 40,
@@ -110,7 +119,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 40,
         top: 20,
-        right: 10
+        right: 10,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        elevation: 14,
+        elevation: 9,
     },
     detailWrapper: {
         padding: 20,
@@ -189,6 +207,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 20,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        elevation: 14,
+        elevation: 9,
     },
     visitText: {
         fontSize: 17,

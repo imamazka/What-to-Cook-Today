@@ -1,7 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
 import React, { useState }from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
+import { Ionicons } from '@expo/vector-icons';
 import colors from '../config/colors';
 
 function Shopping(props) {
@@ -9,49 +9,47 @@ function Shopping(props) {
     const [selected, setSelected] = useState(false);
 
     return (
-        <View style={styles.item}>
+        <TouchableOpacity activeOpacity={0.5} style={styles.item} onPress={() => setSelected(!selected)}>
             <View style={styles.itemLeft}>
-                <TouchableOpacity>
-                    <View style={styles.square}>
-                        <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
-                    </View>
-                </TouchableOpacity>
-                <Text style={styles.itemText}>{props.text}</Text>
+                <Ionicons 
+                    name={selected ?'checkmark-circle' : 'ellipse'}
+                    size={23} 
+                    color={selected ? colors.mainGreen : colors.white}>
+                </Ionicons>
+                <Text style={{
+                        maxWidth: '80%',
+                        left: 10,
+                        fontSize: 15,
+                        textDecorationLine: selected ? 'line-through' : 'none',
+                        color: selected ? colors.mainGreen : colors.black
+                }}>{props.text}</Text>
             </View>
-            <TouchableOpacity onPress={() => setSelected(!selected)} style={styles.circle}>
-                <TouchableOpacity
-                    onPress={() => setSelected(!selected)}
-                    style={{
-                        width: 18,
-                        height: 18,
-                        opacity: selected ? 1 : 0,
-                        borderColor: colors.mainGreen,
-                        backgroundColor: colors.mainGreen,
-                        borderWidth: 1,
-                        borderRadius: 10,
-                    }}>
-
-                </TouchableOpacity>
+            
+            <TouchableOpacity>
+                <View style={styles.square}>
+                    <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
+                </View>
             </TouchableOpacity>
         
-        </View>
+        </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     item :{
-        backgroundColor: '#d9d9d9',
-        padding: 25,
+        backgroundColor: colors.lightGrey,
+        padding: 20,
+        paddingRight: 15,
         borderRadius: 10,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 15
+        marginBottom: 11,
     },
     itemLeft :{
         flexDirection: 'row',
-        alignItems: "center",
-        flexWrap: 'wrap'
+        justifyContent: "center",
+        alignItems: "center"
     },
     square :{
         width: 32,
@@ -61,19 +59,6 @@ const styles = StyleSheet.create({
         marginRight: 15,
         alignItems: "center",
         justifyContent: "center",
-    },
-    itemText :{
-        maxWidth: '80%'
-    },
-    circle :{
-        width: 27,
-        height: 27,
-        borderColor: colors.mainGreen,
-        backgroundColor: colors.white,
-        borderWidth: 1,
-        borderRadius: 14,
-        alignItems: "center",
-        justifyContent: "center"
     },
 })
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from "@expo/vector-icons"
 
@@ -6,15 +6,16 @@ import colors from '../config/colors';
 import Food from '../components/Food';
 import recipes from '../assets/dummy data/recipe_data';
 
-function Favorite({navigation}) {
+function FoodList({navigation}) {
+
     return (
         <View style={styles.container}>
             <ScrollView>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingTop: 20, }}>
-                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('UserDetails')}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('IngredientList')}>
                         <Ionicons name="arrow-back-outline" size={25} color={colors.darkGrey}/>
                     </TouchableOpacity>
-                <Text style={styles.sectionText}>Your favorites</Text>
+                    <Text style={styles.sectionText}>Based on your ingredient :</Text>
                 </View>
 
                 <View style={styles.wrapper}>
@@ -22,6 +23,7 @@ function Favorite({navigation}) {
                         <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredients={item.ingredients}></Food>
                     ))}
                 </View>
+
             </ScrollView>
         </View>
     );
@@ -61,4 +63,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Favorite;
+export default FoodList;
