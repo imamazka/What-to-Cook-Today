@@ -84,12 +84,11 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <ScrollView vertical={true} showsVerticalScrollIndicator>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
       <View
         style={{
-          flex: 1,
           backgroundColor: "#FFF",
-          marginTop: "25%",
         }}>
         <View
           style={{
@@ -171,7 +170,7 @@ const Styles = StyleSheet.create({
     elevation: 6,
   },
   loginButton: {
-    width: 180,
+    width: 200,
     height: 50,
     backgroundColor: "#22CB65",
     borderRadius: 30,

@@ -53,9 +53,13 @@ const Login = () => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator="true">
-      <View style={{ flex: 1, backgroundColor: "#FFF" }}>
-        <View style={Styles.containerLogin}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
+      <View
+        style={{
+          backgroundColor: "#FFF",
+        }}>
+        <View style={{ alignItems: "center" }}>
           <Text style={Styles.loginText}>LOGIN</Text>
         </View>
         <InputText
@@ -83,7 +87,7 @@ const Login = () => {
         </View>
         <View
           style={{ alignSelf: "center", marginTop: 15, flexDirection: "row" }}>
-          <Text style={Styles.signUpFoot}>Don't have an account,</Text>
+          <Text style={Styles.signUpFoot}>Don't have an account, </Text>
           <TouchableOpacity activeOpacity={0.5}>
             <Text
               style={[
@@ -122,7 +126,7 @@ const Styles = StyleSheet.create({
     marginRight: 40,
   },
   loginButton: {
-    width: 180,
+    width: 200,
     height: 50,
     backgroundColor: "#22CB65",
     borderRadius: 30,
