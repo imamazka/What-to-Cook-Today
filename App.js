@@ -12,19 +12,21 @@ import FoodList from './Page/FoodList';
 import Home from "./Page/Home";
 import Favorite from './Page/Favorite';
 import Main from "./Page/Main";
+import UserDetails from "./Page/UserDetails";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Main' screenOptions={{headerShown: false}}>
+      <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown: false}}>
         <Stack.Screen name='Home' component={Home}/>
         <Stack.Screen name='Login' component={Login}/>
         <Stack.Screen name='Register' component={Register}/>
         <Stack.Screen name='Main' component={Main} />
         <Stack.Screen name='IngredientList' component={IngredientList}/>
         <Stack.Screen name='ShoppingCart' component={ShoppingCart}/>
+        <Stack.Screen name='UserDetails' component={UserDetails}/>
         <Stack.Screen name='FoodPage' component={FoodPage}/>
         <Stack.Screen name='FoodList' component={FoodList}/>
         <Stack.Screen name='Favorite' component={Favorite}/>

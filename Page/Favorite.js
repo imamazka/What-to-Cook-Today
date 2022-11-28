@@ -6,12 +6,12 @@ import colors from '../config/colors';
 import Food from '../components/Food';
 import recipes from '../assets/dummy data/recipe_data';
 
-function Favorite(props) {
+function Favorite({navigation}) {
     return (
         <View style={styles.container}>
             <ScrollView>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingTop: 20, }}>
-                    <TouchableOpacity style={styles.backButton}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('UserDetails')}>
                         <Ionicons name="arrow-back-outline" size={25} color={colors.darkGrey}/>
                     </TouchableOpacity>
                 <Text style={styles.sectionText}>Your favorites</Text>

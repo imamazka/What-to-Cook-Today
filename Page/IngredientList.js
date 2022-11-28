@@ -50,7 +50,7 @@ function IngredientList({navigation}) {
                     <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('ShoppingCart')}>
                         <Ionicons name='cart-outline' color={colors.white} size={24}></Ionicons>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ padding: 5 }}>
+                    <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('UserDetails')}>
                         <Ionicons name='person-outline' color={colors.white} size={24}></Ionicons>
                     </TouchableOpacity>
                     
