@@ -5,7 +5,7 @@ import Ingredient from '../components/Ingredient';
 import colors from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
 
-function IngredientList(props) {
+function IngredientList({navigation}) {
 
     return (
         <View style={styles.container}>
@@ -27,7 +27,7 @@ function IngredientList(props) {
                 </View>
             </View>
            </ScrollView>
-           <TouchableOpacity>
+           <TouchableOpacity onPress={() => navigation.navigate('FoodList')}>
                 <View style={styles.continueWrapper}>
                     <Text style={styles.continueText}>Continue</Text>
                 </View>
@@ -35,7 +35,7 @@ function IngredientList(props) {
            <View style={styles.navBar}>
                 <View style={styles.navWrapper}>
 
-                    <TouchableOpacity style={{ padding: 5 }}>
+                    <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('Main')}>
                         <Ionicons name='home-outline' color={colors.white} size={24} style={{ right: 4 }}></Ionicons>
                     </TouchableOpacity>
 
@@ -47,7 +47,7 @@ function IngredientList(props) {
                     </TouchableOpacity>
 
                     
-                    <TouchableOpacity style={{ padding: 5 }}>
+                    <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('ShoppingCart')}>
                         <Ionicons name='cart-outline' color={colors.white} size={24}></Ionicons>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ padding: 5 }}>

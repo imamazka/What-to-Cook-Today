@@ -19,7 +19,7 @@ function Favorite(props) {
 
                 <View style={styles.wrapper}>
                     {recipes.map((item) => (
-                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
+                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredients={item.ingredients}></Food>
                     ))}
                 </View>
             </ScrollView>

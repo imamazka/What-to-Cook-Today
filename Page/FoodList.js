@@ -6,13 +6,13 @@ import colors from '../config/colors';
 import Food from '../components/Food';
 import recipes from '../assets/dummy data/recipe_data';
 
-function FoodList(props) {
+function FoodList({navigation}) {
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingTop: 20, }}>
-                    <TouchableOpacity style={styles.backButton}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('IngredientList')}>
                         <Ionicons name="arrow-back-outline" size={25} color={colors.darkGrey}/>
                     </TouchableOpacity>
                     <Text style={styles.sectionText}>Based on your ingredient :</Text>
@@ -20,7 +20,7 @@ function FoodList(props) {
 
                 <View style={styles.wrapper}>
                     {recipes.map((item) => (
-                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
+                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredients={item.ingredients}></Food>
                     ))}
                 </View>
 

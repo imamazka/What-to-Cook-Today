@@ -7,7 +7,7 @@ import colors from '../config/colors';
 import Food from '../components/Food';
 import recipes from '../assets/dummy data/recipe_data';
 
-function Main(props) {
+function Main({navigation}) {
     const [searchQuery, setSearchQuery] = useState('');
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -23,7 +23,7 @@ function Main(props) {
 
                 <View style={styles.itemWrapper}>
                     {recipes.map((item) => (
-                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredient={'1 egg  |  1 oatmeal  |  1 tomato'}></Food>
+                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredients={item.ingredients}></Food>
                     ))}
                 </View>
                 
@@ -38,10 +38,10 @@ function Main(props) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{ padding: 5 }}>
+                    <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('IngredientList')}>
                         <Image style={styles.pantry} source={require('../assets/fridge-white.png')}></Image>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ padding: 5 }}>
+                    <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('ShoppingCart')}>
                         <Ionicons name='cart-outline' color={colors.white} size={24}></Ionicons>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ padding: 5 }}>

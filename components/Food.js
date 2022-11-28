@@ -4,8 +4,6 @@ const { width } = Dimensions.get("window");
 import { Ionicons } from "@expo/vector-icons";
 
 import colors from '../config/colors';
-import recipes from '../assets/dummy data/recipe_data';
-
 const ITEM_WIDTH = width/2 - 10 * 2.3;
 
 const Food = (props) => {
@@ -28,13 +26,11 @@ const Food = (props) => {
                     <Text style={styles.ratingText}>{props.rating}</Text>
                 </View>
             </View>
-            {/*{props.ingredients.map((ingredient) => (
-                <View key={ingredient.id}>
-
-                    <Text>{ingredient.title}</Text>
+            {props.ingredients.map((ingredient) => (
+                <View key={ingredient.id} style={{ flexDirection: 'row', left: 10, width: '30%', backgroundColor: colors.white, left: 30 }}>
+                    <Text key={ingredient.id} style={{ fontSize: 15, color: colors.darkGrey, }}>{ingredient.title}</Text>
                 </View>
-            ))}*/}
-            <Text style={styles.itemIngredient}>{props.ingredient}</Text>
+            ))}
         </TouchableOpacity>
     );
 }
@@ -53,7 +49,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.41,
         shadowRadius: 9.11,
-        elevation: 14,
         elevation: 9,
     },
     itemImage: {

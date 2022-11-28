@@ -5,14 +5,16 @@ import Shopping from '../components/Shopping';
 import colors from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
 
-function ShoppingCart(props) {
+function ShoppingCart({navigation}) {
     const [ingredient, setIngredient] = useState();
     const [ingredientItems, setIngredientItems] = useState([]);
+    const [addItem, setAddItem] = useState(false);
 
     const handleAddIngredient = () => {
         Keyboard.dismiss();
         setIngredientItems([...ingredientItems, ingredient])
         setIngredient(null);
+        setAddItem(!addItem);
     }
 
     const completeIngredient = (index) => {
@@ -27,22 +29,6 @@ function ShoppingCart(props) {
 
                 <View style={styles.listWrapper}>
                     <Text style={styles.sectionTitle}>Shopping Cart</Text>
-
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        style={styles.writeShoppingWrapper}>
-                        <TextInput 
-                            style={styles.input} 
-                            placeholder={'  Add an item'} 
-                            value={ingredient}
-                            onChangeText={text => setIngredient(text)}>
-                            </TextInput>
-                        <TouchableOpacity onPress={() => handleAddIngredient()}>
-                            <View style={styles.addWrapper}>
-                                <Text style={styles.addText}>+</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </KeyboardAvoidingView>
 
                     <View style={styles.items}>
                         {
@@ -72,29 +58,55 @@ function ShoppingCart(props) {
 
                 </View>
             </ScrollView>
-
-                <View style={styles.navBar}>
-                    <View style={styles.navWrapper}>
-                        <TouchableOpacity>
-                            <Ionicons name='home-outline' color={colors.white} size={24} style={{ padding: 5 }}></Ionicons>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{ padding: 5 }}>
-                            <Image style={styles.pantry} source={require('../assets/fridge-white.png')}></Image>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{ padding: 5, right: 4 }}>
-                            <View style={styles.sectionWrapper}>
-                                <Ionicons name='cart-outline' color={colors.mainGreen} size={24} style={{ right: 4 }}></Ionicons>
-                                <Text style={styles.sectionText}>Cart</Text>
+            {
+                addItem ? (
+                    <KeyboardAvoidingView>
+                        <View style={styles.inputWrapper}>
+                            <TextInput 
+                                style={styles.input}
+                                placeholder={'Input new item'}
+                                value={ingredient}
+                                onChangeText={text => setIngredient(text)}>
+                            </TextInput>
+                            <TouchableOpacity style={styles.addButton2} onPress={() => handleAddIngredient()}>
+                                <Ionicons name='add-outline' size={25} color={colors.black}></Ionicons>
+                            </TouchableOpacity>
+                        </View>
+                    </KeyboardAvoidingView>
+                ) : (
+                    <View>
+                        <TouchableOpacity onPress={() => setAddItem(true)}>
+                            <View style={styles.addButton}>
+                                <Ionicons name='add-outline' size={23} onPress={() => setAddItem(true)}></Ionicons>
                             </View>
                         </TouchableOpacity>
-                        
-                        <TouchableOpacity style={{ padding: 5 }}>
-                            <Ionicons name='person-outline' color={colors.white} size={24}></Ionicons>
-                        </TouchableOpacity>
+
+                        <View style={styles.navBar}>
+                            <View style={styles.navWrapper}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+                                    <Ionicons name='home-outline' color={colors.white} size={24} style={{ padding: 5 }}></Ionicons>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('IngredientList')}>
+                                    <Image style={styles.pantry} source={require('../assets/fridge-white.png')}></Image>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{ padding: 5, right: 4 }}>
+                                    <View style={styles.sectionWrapper}>
+                                        <Ionicons name='cart-outline' color={colors.mainGreen} size={24} style={{ right: 4 }}></Ionicons>
+                                        <Text style={styles.sectionText}>Cart</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                
+                                <TouchableOpacity style={{ padding: 5 }}>
+                                    <Ionicons name='person-outline' color={colors.white} size={24}></Ionicons>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
-                </View>
+                    
+                )
+            }
         </View>
     );
 }
@@ -110,57 +122,78 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     sectionTitle: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "bold",
         color: colors.black,
         left: 10
     },
     items: {
-        marginTop: 40
+        marginTop: 20
     },
-    writeShoppingWrapper: {
-        top: 20,
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: "space-around",
-        alignItems: "center"
-    },
-    input: {
-        left: 10,
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        width: 250,
-        backgroundColor: colors.white,
-        borderRadius: 60,
-        borderColor: '#c0c0',
-        borderWidth: 1,
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
-        elevation: 7,
-    },
-    addWrapper: {
+    addButton: {
         width: 60,
         height: 60,
         backgroundColor: colors.white,
-        borderRadius: 60,
-        justifyContent: "center",
+        borderRadius: 70,
+        position: 'absolute',
+        flexDirection: "row",
+        justifyContent: "space-around",
         alignItems: "center",
+        alignSelf: 'flex-end',
+        right: 25,
+        bottom: 15,
         shadowColor: colors.black,
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 8,
         },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
-        elevation: 7,
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        elevation: 14,
+        elevation: 9,
     },
-    addText: {
-        fontSize: 20,
+    addButton2: {
+        height: 50,
+        width: 50,
+        borderRadius: 50,
+        alignItems: 'center',
+        alignSelf: 'center', 
+        justifyContent: 'center', 
+        backgroundColor: colors.white,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        elevation: 5,
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'space-around',
+        padding: 10,
+        backgroundColor: colors.white,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        elevation: 14,
+        elevation: 9,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+    },
+    input: {
+        width: 300,
+        height: 75,
+        backgroundColor: '#f2f2f2',
+        paddingLeft: 20,
+        borderRadius: 10,
+        fontSize: 17
     },
     navBar: {
         width: '100%',

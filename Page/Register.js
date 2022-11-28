@@ -84,7 +84,7 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <ScrollView vertical={true} showsVerticalScrollIndicator>
+    <ScrollView vertical={true}>
       <View
         style={{
           flex: 1,
