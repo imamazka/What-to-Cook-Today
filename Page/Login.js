@@ -54,7 +54,7 @@ const Login = ({navigation}) => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={true}>
-      <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <View style={{ flex: 1, backgroundColor: "#FFF", flexGrow: 1, justifyContent: 'center' }}>
         <View style={Styles.containerLogin}>
           <Text style={Styles.loginText}>LOGIN</Text>
         </View>

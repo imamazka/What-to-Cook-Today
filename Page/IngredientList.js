@@ -28,8 +28,8 @@ function IngredientList({navigation}) {
             </View>
            </ScrollView>
            <TouchableOpacity onPress={() => navigation.navigate('FoodList')}>
-                <View style={styles.continueWrapper}>
-                    <Text style={styles.continueText}>Continue</Text>
+                <View style={styles.continueWrapper} onPress={() => navigation.navigate('FoodList')}>
+                    <Text style={styles.continueText} onPress={() => navigation.navigate('FoodList')}>Continue</Text>
                 </View>
            </TouchableOpacity>
            <View style={styles.navBar}>

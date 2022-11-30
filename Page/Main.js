@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, View, StyleSheet, ScrollView, TouchableOpacity, Text, Image } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 import Food from '../components/Food';
-import recipes from '../assets/dummy data/recipe_data';
+import recipe from '../assets/dummy data/test_recipe';
 
 function Main({navigation}) {
     const [searchQuery, setSearchQuery] = useState('');
     const onChangeSearch = query => setSearchQuery(query);
+    const [listData, setListData] = useState([]);
+    
+    const url = 'https://api.spoonacular.com/recipes/random?apiKey=00e55b858ff043b680f446606d159cde&number=10';
+
+    /*
+    const getRandomList = async() => {
+        try {
+            const response = await fetch(url);
+            const json = await response.json();
+            setListData(json.recipes);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    */
 
     return (
         <View style={styles.container}>
@@ -22,16 +37,23 @@ function Main({navigation}) {
                     value={searchQuery}/>
 
                 <View style={styles.itemWrapper}>
-                    {recipes.map((item) => (
-                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredients={item.ingredients}></Food>
-                    ))}
+                    {recipe.recipes.map(item => (
+                        <Food key={item.id}
+                        foodId={item.id} 
+                        imageUri={item.image} 
+                        name={item.title}
+                        type={item.dishTypes[0]} 
+                        rating={item.aggregateLikes}
+                        time={item.readyInMinutes}></Food>
+                    ))} 
                 </View>
                 
             </ScrollView>
 
-            <View style={styles.navBar}>
+            <View style={styles.navBar} onPress>
                 <View style={styles.navWrapper}>
-                    <TouchableOpacity>
+
+                    <TouchableOpacity /*onPress={getRandomList}*/>
                         <View style={styles.sectionWrapper}>
                             <Ionicons name='home-outline' color={colors.mainGreen} size={22} style={{ right: 4 }}></Ionicons>
                             <Text style={styles.sectionText}>Home</Text>
