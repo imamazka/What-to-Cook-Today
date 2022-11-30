@@ -68,8 +68,7 @@ const Register = ({ navigation }) => {
         "Your password must contain at least 8 character",
         "confirmPassword"
       );
-    }
-    if (data.confirmPassword !== data.password) {
+    } else if (data.confirmPassword !== data.password) {
       handleOnError("Your password is not same", "confirmPassword");
       handleOnError("Your password is not same", "password");
     }
@@ -84,12 +83,11 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <ScrollView vertical={true}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
       <View
         style={{
-          flex: 1,
           backgroundColor: "#FFF",
-          marginTop: "25%",
         }}>
         <View
           style={{
@@ -129,7 +127,7 @@ const Register = ({ navigation }) => {
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.7}
-            onPress={() => navigation.navigate('Login')}>
+            onPress={() => navigation.navigate("Login")}>
             <Text style={Styles.buttonText}>Register</Text>
           </TouchableOpacity>
         </View>
@@ -140,7 +138,9 @@ const Register = ({ navigation }) => {
             flexDirection: "row",
           }}>
           <Text style={Styles.signUpFoot}>Already have an account,</Text>
-          <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate("Login")}>
             <Text
               style={[
                 Styles.signUpFoot,
@@ -171,7 +171,7 @@ const Styles = StyleSheet.create({
     elevation: 6,
   },
   loginButton: {
-    width: 180,
+    width: 200,
     height: 50,
     backgroundColor: "#22CB65",
     borderRadius: 30,

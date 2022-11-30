@@ -42,7 +42,7 @@ const InputText = ({ password, error, ...props }) => {
   );
 };
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -53,8 +53,8 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={true}>
-      <View style={{ flex: 1, backgroundColor: "#FFF", flexGrow: 1, justifyContent: 'center' }}>
+    <ScrollView const showsVerticalScrollIndicator={true}>
+      <View style={{ flex: 1, backgroundColor: "#FFF" }}>
         <View style={Styles.containerLogin}>
           <Text style={Styles.loginText}>LOGIN</Text>
         </View>
@@ -77,14 +77,19 @@ const Login = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={{ alignSelf: "center" }}>
-          <TouchableOpacity style={Styles.loginButton} activeOpacity={0.5} onPress={() => navigation.navigate('Main')}>
+          <TouchableOpacity
+            style={Styles.loginButton}
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate("Main")}>
             <Text style={Styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
         <View
           style={{ alignSelf: "center", marginTop: 15, flexDirection: "row" }}>
           <Text style={Styles.signUpFoot}>Don't have an account,</Text>
-          <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate("Register")}>
             <Text
               style={[
                 Styles.signUpFoot,
@@ -122,7 +127,7 @@ const Styles = StyleSheet.create({
     marginRight: 40,
   },
   loginButton: {
-    width: 180,
+    width: 200,
     height: 50,
     backgroundColor: "#22CB65",
     borderRadius: 30,

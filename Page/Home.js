@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Text, Image } from "react-native";
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
   return (
     <View style={StyleSheet.container}>
       <View
@@ -32,14 +32,19 @@ const Home = ({navigation}) => {
         />
       </View>
       <View style={{ alignSelf: "center" }}>
-        <TouchableOpacity style={styles.loginButton} activeOpacity={0.7} onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate("Login")}>
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
       </View>
       <View
         style={{ alignSelf: "center", marginTop: 15, flexDirection: "row" }}>
         <Text style={styles.signUpFoot}>Already have an account, </Text>
-        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate("Register")}>
           <Text
             style={[
               styles.signUpFoot,

@@ -1,16 +1,16 @@
 //import { StatusBar } from 'expo-status-bar';
 //import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import IngredientList from './Page/IngredientList';
-import ShoppingCart from './Page/ShoppingCart';
+import IngredientList from "./Page/IngredientList";
+import ShoppingCart from "./Page/ShoppingCart";
 import Login from "./Page/Login";
 import Register from "./Page/Register";
-import FoodPage from './Page/FoodPage';
-import FoodList from './Page/FoodList';
+import FoodPage from "./Page/FoodPage";
+import FoodList from "./Page/FoodList";
 import Home from "./Page/Home";
-import Favorite from './Page/Favorite';
+import Favorite from "./Page/Favorite";
 import Main from "./Page/Main";
 import UserDetails from "./Page/UserDetails";
 
