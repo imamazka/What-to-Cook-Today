@@ -21,7 +21,7 @@ const Ingredient = (props) => {
             
             <View style={styles.itemLeft}>
                 <View style={styles.square}></View>
-                <Text style={styles.itemText}>{props.text}</Text>
+                <Text style={styles.itemName}>{props.name}</Text>
             </View>
             
         </TouchableOpacity>
@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginRight: 15
     },
-    itemText :{
-        maxWidth: '80%'
+    itemName :{
+        maxWidth: '80%',
+        textTransform: 'capitalize'
     },
 })
 

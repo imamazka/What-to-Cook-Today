@@ -14,7 +14,7 @@ function Main({navigation}) {
     
     const url = 'https://api.spoonacular.com/recipes/random?apiKey=00e55b858ff043b680f446606d159cde&number=10';
 
-    /*
+    
     const getRandomList = async() => {
         try {
             const response = await fetch(url);
@@ -24,7 +24,7 @@ function Main({navigation}) {
             console.error(error);
         }
     }
-    */
+    
 
     return (
         <View style={styles.container}>
@@ -37,14 +37,16 @@ function Main({navigation}) {
                     value={searchQuery}/>
 
                 <View style={styles.itemWrapper}>
-                    {recipe.recipes.map(item => (
-                        <Food key={item.id}
-                        foodId={item.id} 
-                        imageUri={item.image} 
-                        name={item.title}
-                        type={item.dishTypes[0]} 
-                        rating={item.aggregateLikes}
-                        time={item.readyInMinutes}></Food>
+                    {listData.map(item => (
+                        <Food 
+                            key={item.id}
+                            foodId={item.id} 
+                            imageUri={item.image} 
+                            name={item.title}
+                            type={item.dishTypes[0]} 
+                            rating={item.aggregateLikes}
+                            time={item.readyInMinutes}>
+                        </Food>
                     ))} 
                 </View>
                 
@@ -53,7 +55,7 @@ function Main({navigation}) {
             <View style={styles.navBar} onPress>
                 <View style={styles.navWrapper}>
 
-                    <TouchableOpacity /*onPress={getRandomList}*/>
+                    <TouchableOpacity onPress={getRandomList}>
                         <View style={styles.sectionWrapper}>
                             <Ionicons name='home-outline' color={colors.mainGreen} size={22} style={{ right: 4 }}></Ionicons>
                             <Text style={styles.sectionText}>Home</Text>

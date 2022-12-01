@@ -6,6 +6,7 @@ import colors from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
 
 function ShoppingCart({navigation}) {
+
     const [ingredient, setIngredient] = useState();
     const [ingredientItems, setIngredientItems] = useState([]);
     const [addItem, setAddItem] = useState(false);
@@ -40,20 +41,6 @@ function ShoppingCart({navigation}) {
                                 )
                             })
                         }
-                     
-                        <Shopping text={'Ingredient 1'}></Shopping>
-                        <Shopping text={'Ingredient 2'}></Shopping>
-                        <Shopping text={'Ingredient 3'}></Shopping>
-                        <Shopping text={'Ingredient 4'}></Shopping>
-                        <Shopping text={'Ingredient 5'}></Shopping>
-                        <Shopping text={'Ingredient 6'}></Shopping>
-                        <Shopping text={'Ingredient 7'}></Shopping>
-                        <Shopping text={'Ingredient 8'}></Shopping>
-                        <Shopping text={'Ingredient 9'}></Shopping>
-                        <Shopping text={'Ingredient 10'}></Shopping>
-                        <Shopping text={'Ingredient 11'}></Shopping>
-                        <Shopping text={'Ingredient 12'}></Shopping>
-                        <Shopping text={'Ingredient 13'}></Shopping>
                     </View>
 
                 </View>

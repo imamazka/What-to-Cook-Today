@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, TouchableOpacity, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
 
 import Ingredient from '../components/Ingredient';
 import colors from '../config/colors';
-import { Ionicons } from '@expo/vector-icons';
+import ingredients from '../assets/dummy data/ingredients';
 
 function IngredientList({navigation}) {
+
+    const [ingredient, setIngredient] = useState();
+    const [ingredientItems, setIngredientItems] = useState([]);
+
+    const [selected, setSelected] = useState([]);
+    
+
+    function handleAddIngredient(add) {
+        setIngredient(add);
+        setIngredientItems([...ingredientItems, ingredient]);
+        console.log(ingredient);
+        console.log(ingredientItems);
+    }
 
     return (
         <View style={styles.container}>
@@ -13,23 +28,42 @@ function IngredientList({navigation}) {
             <View style={styles.listWrapper}>
                 <Text style={styles.sectionTitle}>List your ingredient!</Text>
                 
+                <MultipleSelectList
+                    data={ingredients}
+                    setSelected={(val) => setSelected(val)}
+                    save="value">
+                </MultipleSelectList>
+
+                {/*                
                 <View style={styles.items}>
-                    <Ingredient text={'Ingredient 1'}></Ingredient>
-                    <Ingredient text={'Ingredient 2'}></Ingredient>
-                    <Ingredient text={'Ingredient 3'}></Ingredient>
-                    <Ingredient text={'Ingredient 4'}></Ingredient>
-                    <Ingredient text={'Ingredient 5'}></Ingredient>
-                    <Ingredient text={'Ingredient 6'}></Ingredient>
-                    <Ingredient text={'Ingredient 7'}></Ingredient>
-                    <Ingredient text={'Ingredient 8'}></Ingredient>
-                    <Ingredient text={'Ingredient 9'}></Ingredient>
-                    <Ingredient text={'Ingredient 10'}></Ingredient>
+                    {ingredients.map(item => (
+                        <TouchableOpacity
+                            key={item.id}
+                            onPress={() => handleAddIngredient(item)}
+                            style={{
+                                backgroundColor: colors.lightGrey,
+                                padding: 12,
+                                borderRadius: 10,
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                marginBottom: 20}}>
+                            <View style={styles.itemLeft}>
+                                <View style={styles.square}></View>
+                                <Text style={styles.itemName}>{item.name}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
                 </View>
+                            */}
+                
             </View>
            </ScrollView>
-           <TouchableOpacity onPress={() => navigation.navigate('FoodList')}>
-                <View style={styles.continueWrapper} onPress={() => navigation.navigate('FoodList')}>
-                    <Text style={styles.continueText} onPress={() => navigation.navigate('FoodList')}>Continue</Text>
+           <TouchableOpacity onPress={() => navigation.navigate('FoodList', {
+                selected: selected,
+                })}>
+                <View style={styles.continueWrapper}>
+                    <Text style={styles.continueText}>Continue</Text>
                 </View>
            </TouchableOpacity>
            <View style={styles.navBar}>
@@ -73,10 +107,27 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 20,
         fontWeight: "bold",
-        left: 10
+        left: 10,
+        paddingBottom: 20
     },
     items: {
         marginTop: 30
+    },
+    itemLeft :{
+        flexDirection: 'row',
+        alignItems: "center",
+        flexWrap: 'wrap',
+    },
+    square :{
+        width: 52,
+        height: 52,
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        marginRight: 15
+    },
+    itemName :{
+        maxWidth: '80%',
+        textTransform: 'capitalize'
     },
     continueWrapper: {
         width: 150,

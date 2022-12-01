@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Text, Image, ImageBackground, StyleSheet, View, StatusBar, ScrollView, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from "@expo/vector-icons"
 const { height } = Dimensions.get("window");
@@ -9,24 +9,21 @@ import details from '../assets/dummy data/test_details';
 function FoodPage({ route, navigation }) {
     const { foodId } = route.params;
     console.log('Food ID: ' + foodId);
-    //const [foodData, setFoodData] = useState([]);
-    const foodData = details;
+    const [foodData, setFoodData] = useState([]);
 
     const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=00e55b858ff043b680f446606d159cde&includeNutrition=false`;
 
-    /*
     useEffect(() => {
         fetch(url)
           .then(response => response.json())
           .then(data => {
             setFoodData(data)
-            console.log("fetched")
+            console.log(foodData)
           })
           .catch(() => {
             console.log("error")
           })
       }, [foodId])
-      */
 
     return (
         <>
@@ -38,7 +35,7 @@ function FoodPage({ route, navigation }) {
                             <Ionicons name="chevron-back-outline" size={25} color={colors.darkGrey}/>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.shareButton}>
+                        <TouchableOpacity style={styles.shareButton} onPress={() => console.log(foodData.extendedIngredients)}>
                             <Ionicons name="share-social-outline" size={24} color={colors.darkGrey}/>
                         </TouchableOpacity>
 
@@ -46,13 +43,13 @@ function FoodPage({ route, navigation }) {
 
                     <View style={styles.detailWrapper}>
 
-                        <View style={{ flexDirection: "row", marginBottom: 20, alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", marginBottom: 20, alignItems: "flex-start", justifyContent: 'space-between'}}>
                             <View style={{ width: "70%" }}>
                                 <Text style={styles.titleText}>{foodData.title}</Text>
                             </View>
-                            <View style={styles.rating}>
+                            <View style={styles.likes}>
                                 <Ionicons name="heart" color="red" size={17}/>
-                                <Text style={styles.ratingText}>{foodData.aggregateLikes}</Text>
+                                <Text style={styles.likesText}>{foodData.aggregateLikes}</Text>
                             </View>
                         </View>
 
@@ -70,14 +67,15 @@ function FoodPage({ route, navigation }) {
                         
                         <View style={{ marginVertical: 30 }}>
                             <Text style={styles.ingredient}>Ingredients</Text>
-                            
-                            {foodData.extendedIngredients.map(item => (
-                                <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }}>
-                                    <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
-                                        <Text style={{ fontSize: 15, fontWeight: "400", color: colors.grey, marginLeft: 10, textTransform: 'capitalize' }}>{item.original}</Text>
-                                </View>
-                            ))}
 
+                            {/*{foodData.extendedIngredients.map(item => (
+                                    <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }} key={item.id}>
+                                        <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
+                                            <Text style={{ fontSize: 15, fontWeight: "400", color: colors.grey, marginLeft: 10, textTransform: 'capitalize' }}>{item.original}</Text>
+                                    </View>
+                                ))
+                            }*/}
+                            
                             <Text style={styles.description}>Description</Text>
                             <Text style={styles.descriptionText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
 
@@ -158,16 +156,17 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         textTransform: 'capitalize',
     },
-    rating: {
+    likes: {
+        top: 10,
         padding: 5,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         backgroundColor: colors.mainGreen,
         flexDirection: "row",
         borderRadius: 10,
         justifyContent: "center",
         alignItems: "center"
     },
-    ratingText: {
+    likesText: {
         fontSize: 16,
         fontWeight: "600",
         marginLeft: 7,

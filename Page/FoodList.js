@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from "@expo/vector-icons"
 
 import colors from '../config/colors';
-import Food from '../components/Food';
-import recipes from '../assets/dummy data/recipe_data';
+import recipe from '../assets/dummy data/test_recipe';
+import FoodFiltered from '../components/FoodFiltered';
+import foodFiltered from '../assets/dummy data/test_foodFiltered';
 
-function FoodList({navigation}) {
+function FoodList({ route, navigation }) {
+
+    const { selected } = route.params;
+    const [listData, setListData] = useState([]);
+    const parameter = selected.join();
+
+    const url = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=c30b27828db64ecbb5d9f02d9a2ee56e&ingredients=${parameter}&number=10&rangking=2&ignorePantry=true`;
+
+
+    useEffect(() => {
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            setListData(data)
+            console.log("fetched");
+          })
+          .catch(() => {
+            console.log("error")
+    })}, [parameter])
+
 
     return (
         <View style={styles.container}>
@@ -19,8 +39,16 @@ function FoodList({navigation}) {
                 </View>
 
                 <View style={styles.wrapper}>
-                    {recipes.map((item) => (
-                        <Food key={item.id} image={item.image} name={item.name} rating={item.rating} ingredients={item.ingredients}></Food>
+                    {listData.map(item => (
+                            <FoodFiltered 
+                                key={item.id}
+                                foodId={item.id} 
+                                imageUri={item.image} 
+                                name={item.title}
+                                rating={item.likes}
+                                owned={item.usedIngredientCount}
+                                missing={item.missedIngredientCount}>
+                            </FoodFiltered>
                     ))}
                 </View>
 
