@@ -9,11 +9,13 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
   return (
-    <View style={{ marginTop: 22, marginHorizontal: 25 }}>
+    <View style={{ marginTop: 22, marginHorizontal: 30 }}>
       <View
         style={[
           Styles.inputText,
@@ -50,15 +52,17 @@ const InputText = ({ password, error, ...props }) => {
 
 const Register = ({ navigation }) => {
   const [data, setData] = useState({
-    name: "",
+    userName: "",
+    email: "",
     password: "",
     confirmPassword: "",
-    userNamse: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
+    let valid = true;
     if (data.password.length < 8 || data.confirmPassword.length < 8) {
       handleOnError(
         "Your password must contain at least 8 character",
@@ -68,10 +72,28 @@ const Register = ({ navigation }) => {
         "Your password must contain at least 8 character",
         "confirmPassword"
       );
+      valid = false;
     } else if (data.confirmPassword !== data.password) {
       handleOnError("Your password is not same", "confirmPassword");
       handleOnError("Your password is not same", "password");
+      valid = false;
     }
+
+    if (valid) inputValid();
+  };
+  console.log(data);
+
+  const inputValid = () => {
+    setLoading(true);
+    setTimeout(() => {
+      try {
+        setLoading(false);
+        AsyncStorage.setItem("userData", JSON.stringify(data));
+        navigation.navigate("Login");
+      } catch (error) {
+        Alert.alert("Error", "Something went wrong");
+      }
+    }, 3000);
   };
 
   const handleOnChange = (text, input) => {
@@ -85,6 +107,7 @@ const Register = ({ navigation }) => {
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
+      <Spinner visible={loading} />
       <View
         style={{
           backgroundColor: "#FFF",
@@ -123,11 +146,11 @@ const Register = ({ navigation }) => {
           password
           error={errors.confirmPassword}
         />
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center", flexDirection: "row" }}>
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.7}
-            onPress={() => navigation.navigate("Login")}>
+            onPress={validate}>
             <Text style={Styles.buttonText}>Register</Text>
           </TouchableOpacity>
         </View>
@@ -171,18 +194,19 @@ const Styles = StyleSheet.create({
     elevation: 6,
   },
   loginButton: {
-    width: 200,
     height: 50,
     backgroundColor: "#22CB65",
     borderRadius: 30,
     marginTop: 34,
     justifyContent: "center",
+    flex: 1,
+    marginHorizontal: 30,
   },
   buttonText: {
     //fontFamily: 'NotoSans-Medium',
     color: "#FFF",
     textAlign: "center",
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "500",
   },
   signUpFoot: {
