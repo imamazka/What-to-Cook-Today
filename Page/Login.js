@@ -9,11 +9,13 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
+import Spinner from "react-native-loading-spinner-overlay";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
   return (
-    <View style={{ marginTop: 22, marginHorizontal: 25 }}>
+    <View style={{ marginTop: 22, marginHorizontal: 30 }}>
       <View
         style={[
           Styles.inputText,
@@ -47,15 +49,43 @@ const Login = ({ navigation }) => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleOnChange = (text, input) => {
     setData((prevState) => ({ ...prevState, [input]: text }));
   };
+  console.log(data);
+
+  const valid = () => {
+    setLoading(true);
+    setTimeout(async () => {
+      setLoading(false);
+      let userData = await AsyncStorage.getItem("userData");
+      if (userData) {
+        userData = JSON.parse(userData);
+        console.log(userData);
+        if (
+          data.email == userData.email &&
+          data.password == userData.password
+        ) {
+          navigation.navigate("Main");
+          AsyncStorage.setItem("userData", JSON.stringify({ ...userData }));
+        } else {
+          Alert.alert("Error", "Invalid Details");
+        }
+      } else {
+        Alert.alert("Error", "User does not exist");
+      }
+    }, 3000);
+  };
 
   return (
-    <ScrollView const showsVerticalScrollIndicator={true}>
-      <View style={{ flex: 1, backgroundColor: "#FFF" }}>
-        <View style={Styles.containerLogin}>
+    <ScrollView
+      showsVerticalScrollIndicator={true}
+      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
+      <Spinner visible={loading} />
+      <View style={{ backgroundColor: "#FFF" }}>
+        <View style={{ alignItems: "center" }}>
           <Text style={Styles.loginText}>LOGIN</Text>
         </View>
         <InputText
@@ -76,11 +106,11 @@ const Login = ({ navigation }) => {
             <Text style={Styles.forgotPass}>forgot password?</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ alignSelf: "center" }}>
+        <View style={{ alignSelf: "center", flexDirection: "row" }}>
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.5}
-            onPress={() => navigation.navigate("Main")}>
+            onPress={valid}>
             <Text style={Styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
@@ -127,18 +157,19 @@ const Styles = StyleSheet.create({
     marginRight: 40,
   },
   loginButton: {
-    width: 200,
     height: 50,
     backgroundColor: "#22CB65",
     borderRadius: 30,
     marginTop: 34,
     justifyContent: "center",
+    flex: 1,
+    marginHorizontal: 30,
   },
   buttonText: {
     //fontFamily: 'NotoSans-Medium',
     color: "#FFF",
     textAlign: "center",
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "500",
   },
 
