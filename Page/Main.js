@@ -6,25 +6,37 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../config/colors';
 import Food from '../components/Food';
 import recipe from '../assets/dummy data/test_recipe';
+import apiKey from '../key';
 
 function Main({navigation}) {
     const [searchQuery, setSearchQuery] = useState('');
     const onChangeSearch = query => setSearchQuery(query);
     const [listData, setListData] = useState([]);
     
-    const url = 'https://api.spoonacular.com/recipes/random?apiKey=00e55b858ff043b680f446606d159cde&number=10';
-
+    const url = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10`;
     
     const getRandomList = async() => {
         try {
             const response = await fetch(url);
             const json = await response.json();
             setListData(json.recipes);
+            console.log('fetched');
         } catch (error) {
             console.error(error);
         }
     }
-    
+
+    /* Useffect place holder
+    useEffect(() => {
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            setListData(data)
+            console.log("fetched");
+          })
+          .catch(() => {
+            console.log("error")
+    })}, [])*/
 
     return (
         <View style={styles.container}>
@@ -37,22 +49,22 @@ function Main({navigation}) {
                     value={searchQuery}/>
 
                 <View style={styles.itemWrapper}>
-                    {listData.map(item => (
+                    {listData ? listData.map(item => (
                         <Food 
                             key={item.id}
                             foodId={item.id} 
                             imageUri={item.image} 
                             name={item.title}
                             type={item.dishTypes[0]} 
-                            rating={item.aggregateLikes}
+                            likes={item.aggregateLikes}
                             time={item.readyInMinutes}>
                         </Food>
-                    ))} 
+                    )) : <Text>Loading...</Text>}
                 </View>
                 
             </ScrollView>
 
-            <View style={styles.navBar} onPress>
+            <View style={styles.navBar}>
                 <View style={styles.navWrapper}>
 
                     <TouchableOpacity onPress={getRandomList}>

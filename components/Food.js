@@ -31,9 +31,9 @@ function Food(props) {
 
             <View style={styles.titleWrapper}>
                 <Text style={styles.itemName}>{props.name}</Text>
-                    <View style={{alignItems: "center", top: 5, right: 1}}>
+                    <View style={{alignItems: "center", top: -7, right: 1}}>
                         <Ionicons name="heart" color="red" style={{marginTop: 5, top: 5 }} size={18}></Ionicons>
-                        <Text style={styles.ratingText}>{props.rating}</Text>
+                        <Text style={styles.likesText}>{props.likes}</Text>
                     </View>
             </View>
 
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingRight: 20,
         paddingLeft: 20,
-        paddingTop: 10
+        paddingTop: 10,
     },
     itemName: {
         fontSize: 18,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         width: '80%',
         textTransform: 'capitalize'
     },
-    ratingText: {
+    likesText: {
         fontSize: 15,
         color: colors.darkGrey,
         top: 4
@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
         //justifyContent: 'space-evenly',
         borderRadius: 8,
         flexDirection: 'row',
-        
     },
     itemIngredient: {
         fontSize: 14,

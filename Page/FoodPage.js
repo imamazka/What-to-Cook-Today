@@ -5,20 +5,21 @@ const { height } = Dimensions.get("window");
 
 import colors from '../config/colors';
 import details from '../assets/dummy data/test_details';
+import apiKey from '../key';
 
 function FoodPage({ route, navigation }) {
     const { foodId } = route.params;
     console.log('Food ID: ' + foodId);
     const [foodData, setFoodData] = useState([]);
 
-    const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=00e55b858ff043b680f446606d159cde&includeNutrition=false`;
+    const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=${apiKey}&includeNutrition=false`;
 
     useEffect(() => {
         fetch(url)
           .then(response => response.json())
           .then(data => {
             setFoodData(data)
-            console.log(foodData)
+            console.log('fetched')
           })
           .catch(() => {
             console.log("error")
@@ -31,7 +32,7 @@ function FoodPage({ route, navigation }) {
                 <View>
                     <ImageBackground style={styles.image} source={{ uri: foodData.image }}>
                         
-                        <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Main')}>
+                        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                             <Ionicons name="chevron-back-outline" size={25} color={colors.darkGrey}/>
                         </TouchableOpacity>
 
@@ -64,17 +65,16 @@ function FoodPage({ route, navigation }) {
 
                         </View>
                         
-                        
                         <View style={{ marginVertical: 30 }}>
                             <Text style={styles.ingredient}>Ingredients</Text>
 
-                            {/*{foodData.extendedIngredients.map(item => (
-                                    <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }} key={item.id}>
-                                        <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
-                                            <Text style={{ fontSize: 15, fontWeight: "400", color: colors.grey, marginLeft: 10, textTransform: 'capitalize' }}>{item.original}</Text>
-                                    </View>
-                                ))
-                            }*/}
+                            {foodData.extendedIngredients ? foodData.extendedIngredients.map(item => (
+                                <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }} key={item.original}>
+                                    <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
+                                        <Text style={{ fontSize: 15, fontWeight: "400", color: colors.grey, marginLeft: 10, textTransform: 'capitalize' }}>{item.original}</Text>
+                                </View>
+                                )) :  <Text style={{ alignSelf: 'center', top: 5, color: colors.grey }}>Loading...</Text>
+                            }
                             
                             <Text style={styles.description}>Description</Text>
                             <Text style={styles.descriptionText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
@@ -82,14 +82,12 @@ function FoodPage({ route, navigation }) {
                         </View>
                     </View>
                 </View>
-            <View style={{ padding: 20 }}>
+            <View style={{ padding: 20, backgroundColor: colors.white }}>
                 <TouchableOpacity style={styles.viewButton}>
                     <Text style={styles.visitText}>Visit Website</Text>
                 </TouchableOpacity>
             </View>
-            </ScrollView>
-
-        
+        </ScrollView>
        </>
 
     );
@@ -97,12 +95,12 @@ function FoodPage({ route, navigation }) {
 
 const styles = StyleSheet.create({
     image: {
-        top: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        //top: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
         height: height / 2.5,
         flexDirection: "row",
         justifyContent: "space-between",
         padding: 20,
-        paddingTop: 10
+        //paddingTop: 10
     },
     backButton: {
         height: 40,

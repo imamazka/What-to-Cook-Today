@@ -9,7 +9,7 @@ function Shopping(props) {
     const [selected, setSelected] = useState(false);
 
     return (
-        <TouchableOpacity activeOpacity={0.5} style={styles.item} onPress={() => setSelected(!selected)}>
+        <TouchableOpacity style={styles.item} onPress={() => setSelected(!selected)}>
             <View style={styles.itemLeft}>
                 <Ionicons 
                     name={selected ?'checkmark-circle' : 'ellipse'}

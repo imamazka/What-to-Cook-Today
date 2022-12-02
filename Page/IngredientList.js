@@ -34,7 +34,7 @@ function IngredientList({navigation}) {
                     save="value">
                 </MultipleSelectList>
 
-                {/*                
+                {/* Custom add ingredient placeholder                
                 <View style={styles.items}>
                     {ingredients.map(item => (
                         <TouchableOpacity
@@ -55,15 +55,17 @@ function IngredientList({navigation}) {
                         </TouchableOpacity>
                     ))}
                 </View>
-                            */}
+                */}
                 
             </View>
            </ScrollView>
            <TouchableOpacity onPress={() => navigation.navigate('FoodList', {
                 selected: selected,
-                })}>
+                })} style={styles.continueWrapper}>
                 <View style={styles.continueWrapper}>
-                    <Text style={styles.continueText}>Continue</Text>
+                    <Text style={styles.continueText} onPress={() => navigation.navigate('FoodList', {
+                    selected: selected,
+                    })}>Continue</Text>
                 </View>
            </TouchableOpacity>
            <View style={styles.navBar}>

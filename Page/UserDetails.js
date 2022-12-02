@@ -8,7 +8,7 @@ import colors from '../config/colors';
 
 const UserDetails = ({navigation}) => {
     return (
-        <View style={{flex: 1, }}>  
+        <View style={{flex: 1, backgroundColor: colors.white,}}>  
             <StatusBar barStyle={'light-content'} backgroundColor={colors.black} > </StatusBar>
             <View style={{flex:0.1, backgroundColor: colors.white, marginTop: 30}}>
                 <Text style={{fontWeight:'bold', fontSize: 30, textAlign: 'center'}}>

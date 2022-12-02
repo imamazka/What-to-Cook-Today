@@ -18,10 +18,14 @@ function ShoppingCart({navigation}) {
         setAddItem(!addItem);
     }
 
-    const completeIngredient = (index) => {
+    const deleteIngredient = (index) => {
         let ingredientCopy = [...ingredientItems];
         ingredientCopy.splice(index, 1);
         setIngredientItems(ingredientCopy)
+    }
+
+    const completeIngredient = (index) => {
+        console.log('pressed');
     }
 
     return (
@@ -34,9 +38,30 @@ function ShoppingCart({navigation}) {
                     <View style={styles.items}>
                         {
                             ingredientItems.map((ingredient, index) => {
+                                var selected = false;
                                 return (
-                                    <TouchableOpacity key={index} onPress={() => completeIngredient(index)}>
-                                        <Shopping text={ingredient}></Shopping>
+                                    <TouchableOpacity key={index} style={styles.item} onPress={() => selected=true}>
+                                        <View style={styles.itemLeft}>
+                                            <Ionicons 
+                                                name={selected ?'checkmark-circle' : 'ellipse'}
+                                                size={23} 
+                                                color={selected ? colors.mainGreen : colors.white}>
+                                            </Ionicons>
+                                            <Text style={{
+                                                    maxWidth: '80%',
+                                                    left: 10,
+                                                    fontSize: 15,
+                                                    textDecorationLine: selected ? 'line-through' : 'none',
+                                                    color: selected ? colors.mainGreen : colors.black
+                                            }}>{ingredient}</Text>
+                                        </View>
+
+                                        <TouchableOpacity onPress={() => deleteIngredient(index)}>
+                                            <View style={styles.square}>
+                                                <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
+                                            </View>
+                                        </TouchableOpacity>
+
                                     </TouchableOpacity>
                                 )
                             })
@@ -191,7 +216,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-around",
         alignItems: "center",
-        padding: 8,
+        padding: 2,
     },
     sectionWrapper: {
         backgroundColor: colors.white,
@@ -212,7 +237,31 @@ const styles = StyleSheet.create({
     pantry: {
         width: 23,
         height: 23
-    }
+    },
+    item :{
+        backgroundColor: colors.lightGrey,
+        padding: 20,
+        paddingRight: 15,
+        borderRadius: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 11,
+    },
+    itemLeft :{
+        flexDirection: 'row',
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    square :{
+        width: 32,
+        height: 32,
+        backgroundColor: colors.white,
+        borderRadius: 5,
+        marginRight: 15,
+        alignItems: "center",
+        justifyContent: "center",
+    },
 })
 
 export default ShoppingCart;

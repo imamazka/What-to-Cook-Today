@@ -6,6 +6,7 @@ import colors from '../config/colors';
 import recipe from '../assets/dummy data/test_recipe';
 import FoodFiltered from '../components/FoodFiltered';
 import foodFiltered from '../assets/dummy data/test_foodFiltered';
+import apiKey from '../key';
 
 function FoodList({ route, navigation }) {
 
@@ -13,8 +14,7 @@ function FoodList({ route, navigation }) {
     const [listData, setListData] = useState([]);
     const parameter = selected.join();
 
-    const url = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=c30b27828db64ecbb5d9f02d9a2ee56e&ingredients=${parameter}&number=10&rangking=2&ignorePantry=true`;
-
+    const url = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${parameter}&number=10&rangking=2&ignorePantry=true`;
 
     useEffect(() => {
         fetch(url)
