@@ -50,7 +50,7 @@ const UserDetails = ({ navigation }) => {
         <View>
           <Text
             style={{ fontWeight: "bold", fontSize: 18, textAlign: "center" }}>
-            User
+            {user?.userName}
           </Text>
           <Text
             style={{
@@ -59,7 +59,7 @@ const UserDetails = ({ navigation }) => {
               textAlign: "center",
               color: colors.grey,
             }}>
-            user@gmail.com
+            {user?.email}
           </Text>
           <View style={{ marginTop: 30 }}>
             <TouchableOpacity style={{ padding: 10 }}>
