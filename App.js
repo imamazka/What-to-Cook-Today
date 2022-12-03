@@ -19,17 +19,17 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Main' screenOptions={{headerShown: false}}>
-        <Stack.Screen name='Home' component={Home}/>
-        <Stack.Screen name='Login' component={Login}/>
-        <Stack.Screen name='Register' component={Register}/>
-        <Stack.Screen name='Main' component={Main} />
-        <Stack.Screen name='IngredientList' component={IngredientList}/>
-        <Stack.Screen name='ShoppingCart' component={ShoppingCart}/>
-        <Stack.Screen name='UserDetails' component={UserDetails}/>
-        <Stack.Screen name='FoodPage' component={FoodPage}/>
-        <Stack.Screen name='FoodList' component={FoodList}/>
-        <Stack.Screen name='Favorite' component={Favorite}/>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="IngredientList" component={IngredientList} />
+        <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
+        <Stack.Screen name="UserDetails" component={UserDetails} />
+        <Stack.Screen name="FoodPage" component={FoodPage} />
+        <Stack.Screen name="FoodList" component={FoodList} />
+        <Stack.Screen name="Favorite" component={Favorite} />
       </Stack.Navigator>
     </NavigationContainer>
   );
