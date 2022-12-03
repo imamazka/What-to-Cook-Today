@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { firebase } from '../firebase';
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
@@ -48,7 +49,16 @@ const Login = ({ navigation }) => {
   const [data, setData] = useState({
     email: "",
     password: "",
-  });
+    });
+
+  loginUser = async (data) => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(data.email, data.password)
+    }catch(error){
+      alert(error.message)
+    }
+  }
+
   const [loading, setLoading] = useState(false);
 
   const handleOnChange = (text, input) => {
@@ -110,7 +120,8 @@ const Login = ({ navigation }) => {
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.5}
-            onPress={valid}>
+            onPress={()=>loginUser(data.email, data.password)}
+            >
             <Text style={Styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
