@@ -2,15 +2,18 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Text, Image, ImageBackground, StyleSheet, View, StatusBar, ScrollView, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from "@expo/vector-icons"
 const { height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 import colors from '../config/colors';
-import details from '../assets/dummy data/test_details';
+//import foodData from '../assets/dummy data/test_details';
 import apiKey from '../key';
+import RenderHTML from 'react-native-render-html';
 
 function FoodPage({ route, navigation }) {
     const { foodId } = route.params;
     console.log('Food ID: ' + foodId);
-    const [foodData, setFoodData] = useState([]);
+
+   const [foodData, setFoodData] = useState([]);
 
     const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=${apiKey}&includeNutrition=false`;
 
@@ -25,6 +28,8 @@ function FoodPage({ route, navigation }) {
             console.log("error")
           })
       }, [foodId])
+    
+    const html = foodData.instructions;
 
     return (
         <>
@@ -76,9 +81,13 @@ function FoodPage({ route, navigation }) {
                                 )) :  <Text style={{ alignSelf: 'center', top: 5, color: colors.grey }}>Loading...</Text>
                             }
                             
-                            <Text style={styles.description}>Description</Text>
-                            <Text style={styles.descriptionText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
-
+                            <Text style={styles.instructions}>Instructions</Text>
+                            {/*<Text style={styles.descriptionText}>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </Text>*/}
+                            {html ? <RenderHTML contentWidth={width} source={{ html }} /> 
+                                : <Text style={{ alignSelf: 'center', top: 5, color: colors.grey }}>Loading...</Text>}
+                            
                         </View>
                     </View>
                 </View>
@@ -198,12 +207,13 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         color: colors.black
     },
-    description: {
+    instructions: {
         fontSize: 20,
         fontWeight: "700",
         color: colors.black,
         marginBottom: 10,
-        top: 20
+        top: 30,
+        paddingBottom: 20
     },
     descriptionText: {
         fontSize: 15,

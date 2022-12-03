@@ -14,7 +14,6 @@ function IngredientList({navigation}) {
 
     const [selected, setSelected] = useState([]);
     
-
     function handleAddIngredient(add) {
         setIngredient(add);
         setIngredientItems([...ingredientItems, ingredient]);
@@ -59,15 +58,15 @@ function IngredientList({navigation}) {
                 
             </View>
            </ScrollView>
-           <TouchableOpacity onPress={() => navigation.navigate('FoodList', {
-                selected: selected,
-                })} style={styles.continueWrapper}>
+
+           <TouchableOpacity onPress={() => navigation.navigate('FoodList', {selected: selected})}>
                 <View style={styles.continueWrapper}>
-                    <Text style={styles.continueText} onPress={() => navigation.navigate('FoodList', {
-                    selected: selected,
-                    })}>Continue</Text>
+                    <Text style={styles.continueText} onPress={() => navigation.navigate('FoodList', {selected: selected})}>
+                        Continue
+                    </Text>
                 </View>
            </TouchableOpacity>
+           
            <View style={styles.navBar}>
                 <View style={styles.navWrapper}>
 

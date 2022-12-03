@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 
-
 const UserDetails = ({navigation}) => {
     return (
         <View style={{flex: 1, backgroundColor: colors.white,}}>  

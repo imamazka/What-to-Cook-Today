@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, View, StyleSheet, ScrollView, TouchableOpacity, Text, Image } from 'react-native';
+import { StatusBar, View, StyleSheet, ScrollView, TouchableOpacity, Text, Image, Keyboard } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 import Food from '../components/Food';
-import recipe from '../assets/dummy data/test_recipe';
 import apiKey from '../key';
+import mealTypes from '../assets/dummy data/meal_types';
 
 function Main({navigation}) {
     const [searchQuery, setSearchQuery] = useState('');
+    const [type, setType] = useState('');
     const onChangeSearch = query => setSearchQuery(query);
     const [listData, setListData] = useState([]);
     
-    const url = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10`;
-    
+    const urlRandom = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10`;
+    const urlSearch = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&query=${searchQuery}&addRecipeInformation=true&number=10`;
+    const urlFilter = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&type=${type}&addRecipeInformation=true&number=10`;
+
     const getRandomList = async() => {
         try {
-            const response = await fetch(url);
+            const response = await fetch(urlRandom);
             const json = await response.json();
             setListData(json.recipes);
             console.log('fetched');
@@ -26,40 +29,62 @@ function Main({navigation}) {
         }
     }
 
-    /* Useffect place holder
-    useEffect(() => {
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            setListData(data)
-            console.log("fetched");
-          })
-          .catch(() => {
-            console.log("error")
-    })}, [])*/
+    const submitSearch = async() => {
+        try {
+            const response = await fetch(urlSearch);
+            const json = await response.json();
+            setListData(json.results);
+            console.log('fetched');
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const submitType = async(type) => {
+        setType(type);
+        console.log(type);
+        try {
+            const response = await fetch(urlFilter);
+            const json = await response.json();
+            setListData(json.results);
+            console.log('fetched');
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 <SearchBar 
-                    placeholder='Search food...'
+                    placeholder='Search any food...'
                     lightTheme='true'
                     round='true'
                     onChangeText={onChangeSearch}
-                    value={searchQuery}/>
+                    onSubmitEditing={submitSearch}
+                    value={searchQuery}></SearchBar>
+                
+                <ScrollView horizontal={true} style={{ marginTop: 10, marginLeft: 5 }} showsHorizontalScrollIndicator={false}>
+                    {mealTypes.map(types => (
+                        <TouchableOpacity style={styles.typesWrapper} key={types.id} onPress={() => submitType(types.value)}>
+                            <Text style={styles.typesText}>{types.value}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
 
                 <View style={styles.itemWrapper}>
-                    {listData ? listData.map(item => (
-                        <Food 
-                            key={item.id}
-                            foodId={item.id} 
-                            imageUri={item.image} 
-                            name={item.title}
-                            type={item.dishTypes[0]} 
-                            likes={item.aggregateLikes}
-                            time={item.readyInMinutes}>
-                        </Food>
-                    )) : <Text>Loading...</Text>}
+                    {listData==undefined ? <Text style={{ alignSelf: 'center' }}>Loading...</Text> 
+                        : listData.map(item => (
+                            <Food 
+                                key={item.id}
+                                foodId={item.id} 
+                                imageUri={item.image} 
+                                name={item.title}
+                                type={item.dishTypes[0]} 
+                                likes={item.aggregateLikes}
+                                time={item.readyInMinutes}>
+                            </Food>))
+                    }
                 </View>
                 
             </ScrollView>
@@ -95,6 +120,19 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.white,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
+    },
+    typesWrapper: { 
+        marginLeft: 8,
+        backgroundColor: '#F2F2F2',
+        alignSelf: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        borderRadius: 54 
+    },
+    typesText: { 
+        color: '#828282',
+        fontSize: 14,
+        textTransform: 'capitalize' 
     },
     itemWrapper: {
         padding: 20

@@ -3,7 +3,7 @@ import { StatusBar, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 
 import { Ionicons } from "@expo/vector-icons"
 
 import colors from '../config/colors';
-import recipe from '../assets/dummy data/test_recipe';
+import recipe from '../assets/dummy data/test_foodList';
 import FoodFiltered from '../components/FoodFiltered';
 import foodFiltered from '../assets/dummy data/test_foodFiltered';
 import apiKey from '../key';

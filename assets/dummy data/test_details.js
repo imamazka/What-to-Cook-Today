@@ -1,4 +1,4 @@
-const details = {
+const foodData = {
     "vegetarian": true,
     "vegan": false,
     "glutenFree": false,
@@ -279,4 +279,4 @@ const details = {
     "spoonacularSourceUrl": "https://spoonacular.com/classic-scones-639637"
 }
 
-export default details;
+export default foodData;
