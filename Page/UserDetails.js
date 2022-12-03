@@ -6,25 +6,35 @@ import {
   TouchableOpacity,
   Image,
   StatusBar,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Ionicons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { firebase } from "../firebase";
 
 const UserDetails = ({ navigation }) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState("");
   useEffect(() => {
     getUser();
   }, []);
 
-  const getUser = async () => {
-    const userData = await AsyncStorage.getItem("userData");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
+  const getUser = () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then((data) => {
+        if (data.exists) {
+          setUser(data.data());
+          console.log(data);
+        } else console.log("user doesnt exist");
+      });
   };
+
+  console.log(user);
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
@@ -50,7 +60,7 @@ const UserDetails = ({ navigation }) => {
         <View>
           <Text
             style={{ fontWeight: "bold", fontSize: 18, textAlign: "center" }}>
-            {user?.userName}
+            {user.userName}
           </Text>
           <Text
             style={{
@@ -59,7 +69,7 @@ const UserDetails = ({ navigation }) => {
               textAlign: "center",
               color: colors.grey,
             }}>
-            {user?.email}
+            {user.email}
           </Text>
           <View style={{ marginTop: 30 }}>
             <TouchableOpacity style={{ padding: 10 }}>
@@ -136,7 +146,7 @@ const UserDetails = ({ navigation }) => {
 
             <TouchableOpacity
               style={{ padding: 10 }}
-              onPress={() => navigation.navigate("Home")}>
+              onPress={() => firebase.auth().signOut()}>
               <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
                 <View style={{ flex: 1.5 }}>
                   <Icon name="sign-out" size={30} />

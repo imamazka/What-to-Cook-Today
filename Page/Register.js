@@ -6,11 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from "react-native-loading-spinner-overlay";
+import { firebase } from "../firebase";
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
@@ -60,9 +61,19 @@ const Register = ({ navigation }) => {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-
+  /*   const userNameRegitered = firebase
+    .firestore()
+    .collection("users")
+    .where("userName", "==", data.userName)
+    .get();
+  console.log(userNameRegitered); */
   const validate = () => {
     let valid = true;
+
+    /* if (data.userName == userNameRegitered) {
+      handleOnError("Your user name already exist", "userName");
+      valid = false;
+    } */
     if (data.password.length < 8 || data.confirmPassword.length < 8) {
       handleOnError(
         "Your password must contain at least 8 character",
@@ -87,9 +98,22 @@ const Register = ({ navigation }) => {
     setLoading(true);
     setTimeout(() => {
       try {
-        setLoading(false);
-        AsyncStorage.setItem("userData", JSON.stringify(data));
-        navigation.navigate("Login");
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(data.email, data.password)
+          .then(() => {
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(firebase.auth().currentUser.uid)
+              .set({
+                userName: data.userName,
+                email: data.email,
+              });
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
       } catch (error) {
         Alert.alert("Error", "Something went wrong");
       }
@@ -106,7 +130,11 @@ const Register = ({ navigation }) => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+        backgroundColor: "#fff",
+      }}>
       <Spinner visible={loading} />
       <View
         style={{
@@ -123,6 +151,7 @@ const Register = ({ navigation }) => {
           autoCorrect={false}
           placeholder="Username"
           onChangeText={(text) => handleOnChange(text, "userName")}
+          error={errors.userName}
         />
         <InputText
           autoCapitalize="none"
@@ -160,14 +189,18 @@ const Register = ({ navigation }) => {
             marginTop: 15,
             flexDirection: "row",
           }}>
-          <Text style={Styles.signUpFoot}>Already have an account,</Text>
+          <Text style={Styles.signUpFoot}>Already have an account, </Text>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => navigation.navigate("Login")}>
             <Text
               style={[
                 Styles.signUpFoot,
-                { color: "#0C40F9", textDecorationLine: "underline" },
+                {
+                  color: "#0C40F9",
+                  textDecorationLine: "underline",
+                  fontWeight: "800",
+                },
               ]}>
               Sign In
             </Text>
@@ -211,6 +244,7 @@ const Styles = StyleSheet.create({
   },
   signUpFoot: {
     fontSize: 13,
+    fontWeight: "500",
   },
 });
 

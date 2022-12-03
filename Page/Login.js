@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { firebase } from '../firebase';
+import { firebase } from "../firebase";
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
@@ -49,15 +49,7 @@ const Login = ({ navigation }) => {
   const [data, setData] = useState({
     email: "",
     password: "",
-    });
-
-  loginUser = async (data) => {
-    try {
-      await firebase.auth().signInWithEmailAndPassword(data.email, data.password)
-    }catch(error){
-      alert(error.message)
-    }
-  }
+  });
 
   const [loading, setLoading] = useState(false);
 
@@ -68,23 +60,12 @@ const Login = ({ navigation }) => {
 
   const valid = () => {
     setLoading(true);
-    setTimeout(async () => {
+    setTimeout(() => {
       setLoading(false);
-      let userData = await AsyncStorage.getItem("userData");
-      if (userData) {
-        userData = JSON.parse(userData);
-        console.log(userData);
-        if (
-          data.email == userData.email &&
-          data.password == userData.password
-        ) {
-          navigation.navigate("Main");
-          AsyncStorage.setItem("userData", JSON.stringify({ ...userData }));
-        } else {
-          Alert.alert("Error", "Invalid Details");
-        }
-      } else {
-        Alert.alert("Error", "User does not exist");
+      try {
+        firebase.auth().signInWithEmailAndPassword(data.email, data.password);
+      } catch (error) {
+        alert(error.message);
       }
     }, 3000);
   };
@@ -92,7 +73,11 @@ const Login = ({ navigation }) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={true}
-      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+        backgroundColor: "#fff",
+      }}>
       <Spinner visible={loading} />
       <View style={{ backgroundColor: "#FFF" }}>
         <View style={{ alignItems: "center" }}>
@@ -120,21 +105,24 @@ const Login = ({ navigation }) => {
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.5}
-            onPress={()=>loginUser(data.email, data.password)}
-            >
+            onPress={valid}>
             <Text style={Styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
         <View
           style={{ alignSelf: "center", marginTop: 15, flexDirection: "row" }}>
-          <Text style={Styles.signUpFoot}>Don't have an account,</Text>
+          <Text style={Styles.signUpFoot}>Don't have an account, </Text>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => navigation.navigate("Register")}>
             <Text
               style={[
                 Styles.signUpFoot,
-                { color: "#0C40F9", textDecorationLine: "underline" },
+                {
+                  color: "#0C40F9",
+                  textDecorationLine: "underline",
+                  fontWeight: "800",
+                },
               ]}>
               Sign Up
             </Text>
@@ -164,7 +152,8 @@ const Styles = StyleSheet.create({
   forgotPass: {
     //fontFamily: 'NotoSans-Medium',
     fontSize: 12,
-    marginTop: 20,
+    fontWeight: "500",
+    marginTop: 10,
     marginRight: 40,
   },
   loginButton: {
@@ -186,6 +175,7 @@ const Styles = StyleSheet.create({
 
   signUpFoot: {
     fontSize: 13,
+    fontWeight: "500",
   },
 });
 

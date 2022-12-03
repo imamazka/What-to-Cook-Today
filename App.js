@@ -2,7 +2,7 @@
 //import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { firebase } from './firebase';
+import { firebase } from "./firebase";
 import React, { useState, useEffect } from "react";
 
 import IngredientList from "./Page/IngredientList";
@@ -22,29 +22,28 @@ function App() {
   const [initalizing, setInitializing] = useState(true);
   const [user, setUser] = useState();
 
-  function onAuthStateChanged(user){
+  function onAuthStateChanged(user) {
     setUser(user);
     if (initalizing) setInitializing(false);
   }
-  useEffect(() =>{
+  useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber
+    return subscriber;
   }, []);
-  
+
   if (initalizing) return null;
 
-  if(!user){
-    return(
-      <Stack.Navigator>
-         <Stack.Screen name="Login" component={Login} />
-         <Stack.Screen name="Register" component={Register} />
-      </Stack.Navigator>
-    )
-  }
-  return (
-    <NavigationContainer>
+  if (!user) {
+    return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+      </Stack.Navigator>
+    );
+  } else {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="IngredientList" component={IngredientList} />
         <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
@@ -53,15 +52,14 @@ function App() {
         <Stack.Screen name="FoodList" component={FoodList} />
         <Stack.Screen name="Favorite" component={Favorite} />
       </Stack.Navigator>
-    </NavigationContainer>
-  );
+    );
+  }
 }
 
 export default () => {
-  return(
+  return (
     <NavigationContainer>
-      <App/>
+      <App />
     </NavigationContainer>
-
-  )
-}
+  );
+};
