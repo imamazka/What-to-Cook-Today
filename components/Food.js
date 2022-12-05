@@ -39,7 +39,7 @@ function Food(props) {
             <Ionicons
               name={selected ? "bookmark" : "bookmark-outline"}
               color={selected ? colors.mainGreen : colors.black}
-              size={30}
+              size={20}
             />
           </TouchableOpacity>
         </View>
@@ -52,13 +52,14 @@ function Food(props) {
             paddingLeft: 10,
             //backgroundColor: "red",
           }}>
-          <View style={{ width: "100%", marginBottom: 5 }}>
+          <View style={{ width: "100%" }}>
             <Text
               style={{
                 color: colors.mainGreen,
                 fontSize: 14,
-                fontWeight: "600",
+                fontWeight: "700",
                 textTransform: "capitalize",
+                //backgroundColor: "blue",
               }}>
               {props.type}
             </Text>
@@ -143,8 +144,8 @@ const styles = StyleSheet.create({
   },
   bookmark: {
     position: "absolute",
-    top: 15,
-    right: 13,
+    top: 8,
+    right: 10,
     backgroundColor: colors.white,
     opacity: 0.75,
     borderRadius: 5,

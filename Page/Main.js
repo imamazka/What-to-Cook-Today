@@ -123,7 +123,7 @@ function Main({ navigation }) {
         <View
           style={{
             marginTop: 10,
-            marginHorizontal: 20,
+            marginLeft: 20,
           }}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {mealTypes.map((types) => (
@@ -201,7 +201,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: 10,
+    //paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   typesWrapper: {
     marginRight: 8,

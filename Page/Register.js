@@ -58,22 +58,38 @@ const Register = ({ navigation }) => {
     password: "",
     confirmPassword: "",
   });
+  const [user, setUser] = useState("");
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .get()
+      .then((data) => {
+        data.docs.forEach((datas) => {
+          setUser(datas.data());
+        });
+      });
+  };
+  console.log(user);
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  /*   const userNameRegitered = firebase
-    .firestore()
-    .collection("users")
-    .where("userName", "==", data.userName)
-    .get();
-  console.log(userNameRegitered); */
+
   const validate = () => {
     let valid = true;
 
-    /* if (data.userName == userNameRegitered) {
+    if (data.email == user.email) {
+      handleOnError("Your email already exist", "email");
+      valid = false;
+    }
+    if (data.userName == user.userName) {
       handleOnError("Your user name already exist", "userName");
       valid = false;
-    } */
+    }
     if (data.password.length < 8 || data.confirmPassword.length < 8) {
       handleOnError(
         "Your password must contain at least 8 character",
@@ -97,6 +113,7 @@ const Register = ({ navigation }) => {
   const inputValid = () => {
     setLoading(true);
     setTimeout(() => {
+      setLoading(false);
       try {
         firebase
           .auth()
@@ -109,6 +126,7 @@ const Register = ({ navigation }) => {
               .set({
                 userName: data.userName,
                 email: data.email,
+                password: data.password,
               });
           })
           .catch((error) => {
@@ -158,6 +176,8 @@ const Register = ({ navigation }) => {
           autoCorrect={false}
           placeholder="Email"
           onChangeText={(text) => handleOnChange(text, "email")}
+          error={errors.email}
+          keyboardType="email-address"
         />
         <InputText
           autoCapitalize="none"

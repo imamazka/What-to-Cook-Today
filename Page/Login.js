@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firebase } from "../firebase";
+import UserDetails from "./UserDetails";
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
@@ -41,6 +42,12 @@ const InputText = ({ password, error, ...props }) => {
           />
         )}
       </View>
+      {error && (
+        <Text
+          style={{ color: "red", fontSize: 12, marginLeft: 5, marginTop: 3 }}>
+          {error}
+        </Text>
+      )}
     </View>
   );
 };
@@ -51,14 +58,52 @@ const Login = ({ navigation }) => {
     password: "",
   });
 
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .get()
+      .then((data) => {
+        data.docs.forEach((datas) => {
+          setUser(datas.data());
+        });
+      });
+  };
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const handleOnChange = (text, input) => {
     setData((prevState) => ({ ...prevState, [input]: text }));
   };
+
+  const handleOnError = (errorMessage, input) => {
+    setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
+  };
+
   console.log(data);
 
-  const valid = () => {
+  const validate = () => {
+    let valid = true;
+
+    if (data.email != user.email) {
+      handleOnError("Your email incorrect", "email");
+      valid = false;
+    }
+    if (data.password != user.password) {
+      handleOnError("Your password incorrect", "password");
+      valid = false;
+    }
+
+    if (valid) loginSuccessful();
+  };
+
+  const loginSuccessful = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -88,16 +133,21 @@ const Login = ({ navigation }) => {
           autoCorrect={false}
           placeholder="Email"
           onChangeText={(text) => handleOnChange(text, "email")}
+          error={errors.email}
+          keyboardType="email-address"
         />
         <InputText
           autoCapitalize="none"
           autoCorrect={false}
           placeholder="Password"
           onChangeText={(text) => handleOnChange(text, "password")}
+          error={errors.password}
           password
         />
         <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate("ForgotPassword")}>
             <Text style={Styles.forgotPass}>forgot password?</Text>
           </TouchableOpacity>
         </View>
@@ -105,7 +155,7 @@ const Login = ({ navigation }) => {
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.5}
-            onPress={valid}>
+            onPress={validate}>
             <Text style={Styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
