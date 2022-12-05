@@ -118,7 +118,9 @@ const Register = ({ navigation }) => {
         firebase
           .auth()
           .createUserWithEmailAndPassword(data.email, data.password)
-          .then(() => {
+          .then(userCredentials => {
+            const user = userCredentials.user
+            console.log(user.email)
             firebase
               .firestore()
               .collection("users")
@@ -199,7 +201,8 @@ const Register = ({ navigation }) => {
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.7}
-            onPress={validate}>
+            onPress={validate}
+            >
             <Text style={Styles.buttonText}>Register</Text>
           </TouchableOpacity>
         </View>
