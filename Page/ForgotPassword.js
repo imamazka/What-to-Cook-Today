@@ -36,6 +36,7 @@ const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [user, setUser] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getUser();
@@ -56,6 +57,8 @@ const ForgotPassword = ({ navigation }) => {
   const handleOnError = (errorMessage, error) => {
     setErrors((...prevState) => ({ ...prevState, [error]: errorMessage }));
   };
+
+  console.log(user);
 
   const validate = () => {
     let valid = true;

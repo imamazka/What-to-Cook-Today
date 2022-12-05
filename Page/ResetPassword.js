@@ -1,25 +1,28 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { useState, useEffect } from "react";
-import { TouchableOpacity, View, Text, TextInput } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+} from "react-native";
 import colors from "../config/colors";
 import { firebase } from "../firebase";
-
-const InputText = ({ error, ...props }) => {
+const InputText = ({ password, error, ...props }) => {
+  const [hidePassword, setHidePassword] = useState(password);
   return (
-    <View style={{ marginTop: 15 }}>
+    <View style={{ marginTop: 22 }}>
       <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          paddingRight: 20,
-          backgroundColor: "#F6F6F6",
-          borderRadius: 30,
-          height: 50,
-          paddingLeft: 20,
-          paddingRight: password ? 47 : 20,
-          elevation: 6,
-        }}>
+        style={[
+          Styles.inputText,
+          {
+            flexDirection: "row",
+            alignItems: "center",
+            paddingRight: password ? 47 : 20,
+          },
+        ]}>
         <TextInput
           secureTextEntry={hidePassword}
           style={{ flex: 1 }}
@@ -66,8 +69,8 @@ const ResetPassword = ({ navigation }) => {
       });
   };
 
-  const handleOnError = (errorMessage, error) => {
-    setErrors((...prevState) => ({ ...prevState, [error]: errorMessage }));
+  const handleOnError = (errorMessage, input) => {
+    setErrors((...prevState) => ({ ...prevState, [input]: errorMessage }));
   };
 
   const handleOnChange = (text, input) => {
@@ -77,18 +80,19 @@ const ResetPassword = ({ navigation }) => {
   const validate = () => {
     let valid = true;
 
-    if (data.confirmPassword != data.password) {
+    if (data.confirmPassword !== data.password) {
       handleOnError("Your password is not same", "password");
       handleOnError("Your password is not same", "confirmPassword");
+
       valid = false;
     }
 
-    if (valid) resetPassword();
+    //if (valid) resetPassword();
   };
 
-  const resetPassword = () => {
+  /*   const resetPassword = () => {
     navigation.navigate("ResetPassword");
-  };
+  }; */
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingHorizontal: 20 }}>
       <View style={{ marginTop: 25 }}>
@@ -101,7 +105,7 @@ const ResetPassword = ({ navigation }) => {
         Create New Password
       </Text>
       <Text style={{ fontSize: 15 }}>
-        Please enter your email to reset your password
+        Create your new password that you don’t use on any site
       </Text>
       <InputText
         placeholder="New password"
@@ -145,5 +149,16 @@ const ResetPassword = ({ navigation }) => {
     </View>
   );
 };
+
+const Styles = StyleSheet.create({
+  inputText: {
+    backgroundColor: "#F6F6F6",
+    borderRadius: 30,
+    height: 50,
+    paddingLeft: 20,
+    //paddingRight: 20,
+    elevation: 6,
+  },
+});
 
 export default ResetPassword;
