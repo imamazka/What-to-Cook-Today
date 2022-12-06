@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Text, Image, ImageBackground, StyleSheet, View, StatusBar, ScrollView, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text, Image, ImageBackground, StyleSheet, View, StatusBar, ScrollView, Dimensions, TouchableOpacity, SafeAreaView, Share, Linking } from 'react-native';
 import { Ionicons } from "@expo/vector-icons"
 const { height } = Dimensions.get("window");
 const { width } = Dimensions.get("window");
@@ -8,242 +8,269 @@ import colors from '../config/colors';
 //import foodData from '../assets/dummy data/test_details';
 import apiKey from '../key';
 import RenderHTML from 'react-native-render-html';
+import { BackgroundImage } from '@rneui/base';
+import {LinearGradient} from 'expo-linear-gradient';
 
 function FoodPage({ route, navigation }) {
+
+    const [selected, setSelected] = useState(false);
+ 
     const { foodId } = route.params;
     console.log('Food ID: ' + foodId);
 
-   const [foodData, setFoodData] = useState([]);
+    const [foodData, setFoodData] = useState([]);
 
-    const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=${apiKey}&includeNutrition=false`;
+    const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=${apiKey}&includeNutrition=true`;
 
     useEffect(() => {
         fetch(url)
           .then(response => response.json())
           .then(data => {
             setFoodData(data)
-            console.log('fetched')
+            console.log('fetched');
           })
           .catch(() => {
             console.log("error")
           })
       }, [foodId])
     
-    const html = foodData.instructions;
+    var html = foodData.instructions;
+
+    if (foodData.extendedIngredients){
+        html = html.replace(/(?:\r\n|\r|\n)/g, '<p>');
+    }
+
+    const onShare = async () => {
+        try {
+            const result = await Share.share({
+                message: `Check out this cool food recipe! ${foodData.sourceUrl}`,});
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+            // dismissed
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+        };
+
+    function loadInBrowser(){
+            Linking.openURL(foodData.sourceUrl).catch(err => console.error("Couldn't load page", err));
+    };
 
     return (
-        <>
-            <ScrollView>
-                <View>
-                    <ImageBackground style={styles.image} source={{ uri: foodData.image }}>
-                        
-                        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                            <Ionicons name="chevron-back-outline" size={25} color={colors.darkGrey}/>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.shareButton} onPress={() => console.log(foodData.extendedIngredients)}>
-                            <Ionicons name="share-social-outline" size={24} color={colors.darkGrey}/>
-                        </TouchableOpacity>
-
-                    </ImageBackground>
-
-                    <View style={styles.detailWrapper}>
-
-                        <View style={{ flexDirection: "row", marginBottom: 20, alignItems: "flex-start", justifyContent: 'space-between'}}>
-                            <View style={{ width: "70%" }}>
-                                <Text style={styles.titleText}>{foodData.title}</Text>
-                            </View>
-                            <View style={styles.likes}>
-                                <Ionicons name="heart" color="red" size={17}/>
-                                <Text style={styles.likesText}>{foodData.aggregateLikes}</Text>
-                            </View>
-                        </View>
-
-                        <Text style={styles.website}>{foodData.sourceName}.com</Text>
-
-                        <View style= {{ flexDirection: "row", justifyContent: "space-between" }}>
-
-                            <View style={styles.tags}>
-                                <Ionicons name="time" color={colors.darkGrey} size={17}/>
-                                <Text style={styles.tagsText}>{foodData.readyInMinutes} min</Text>
-                            </View>
-
-                        </View>
-                        
-                        <View style={{ marginVertical: 30 }}>
-                            <Text style={styles.ingredient}>Ingredients</Text>
-
-                            {foodData.extendedIngredients ? foodData.extendedIngredients.map(item => (
-                                <View style={{ marginVertical: 7, flexDirection: "row", alignItems: "center", }} key={item.original}>
-                                    <View style={{ width: 10, height: 10, backgroundColor: colors.lightGrey, borderRadius: 10, }}></View>
-                                        <Text style={{ fontSize: 15, fontWeight: "400", color: colors.grey, marginLeft: 10, textTransform: 'capitalize' }}>{item.original}</Text>
-                                </View>
-                                )) :  <Text style={{ alignSelf: 'center', top: 5, color: colors.grey }}>Loading...</Text>
-                            }
-                            
-                            <Text style={styles.instructions}>Instructions</Text>
-                            {/*<Text style={styles.descriptionText}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </Text>*/}
-                            {html ? <RenderHTML contentWidth={width} source={{ html }} /> 
-                                : <Text style={{ alignSelf: 'center', top: 5, color: colors.grey }}>Loading...</Text>}
-                            
-                        </View>
-                    </View>
-                </View>
-            <View style={{ padding: 20, backgroundColor: colors.white }}>
-                <TouchableOpacity style={styles.viewButton}>
-                    <Text style={styles.visitText}>Visit Website</Text>
+        <View style={{ backgroundColor: colors.white, flex: 1, }}>
+            <View style={styles.topBar} >
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Ionicons name='arrow-back-outline' size={26} color={colors.topBarItem}></Ionicons>
+                </TouchableOpacity>
+                <Text style={styles.recipeText}>Recipe Details</Text>
+                <TouchableOpacity onPress={onShare}>
+                    <Ionicons name='share-outline' size={26} color={colors.topBarItem}></Ionicons>
                 </TouchableOpacity>
             </View>
-        </ScrollView>
-       </>
+
+            <View style={{ flex: 1, }}>
+                {foodData.extendedIngredients ?
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <ImageBackground source={{ uri: foodData.image }} style={styles.image}>
+                            <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.7)']} style={styles.bottomImage}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                    <Ionicons name='time-outline' size={14} color={colors.white}></Ionicons>
+                                    <Text style={{ color: colors.white, left: 2, fontSize: 12 }}>{foodData.readyInMinutes} min</Text>
+                                    <Ionicons name='fast-food-outline' size={14} color={colors.white} style={{ marginLeft: 20 }}></Ionicons>
+                                    <Text style={{ color: colors.white, left: 2, fontSize: 12, textTransform: 'capitalize' }}>{foodData.dishTypes[0]}</Text>
+                                </View>
+                                <Text style={styles.foodName}>{foodData.title}</Text>
+                            </LinearGradient>
+                        </ImageBackground>
+        
+                        <View style={styles.info}>
+                            <View style={{alignItems: 'center'}}>
+                                <Ionicons name='heart-outline' color={'#FD3250'} size={22}></Ionicons>
+                                <Text style={{ fontSize: 12, fontWeight: '700' }}>{foodData.aggregateLikes}</Text>
+                                <Text style={{ fontSize: 8, fontWeight: '400' }}>Likes</Text>
+                            </View>
+        
+                            <View style={{alignItems: 'center'}}>
+                                <Ionicons name='people-outline' color={'#4674EB'} size={22}></Ionicons>
+                                <Text style={{ fontSize: 12, fontWeight: '700' }}>{foodData.servings}</Text>
+                                <Text style={{ fontSize: 8, fontWeight: '400' }}>Servings</Text>
+                            </View>
+        
+                            <View style={{alignItems: 'center'}}>
+                                <Ionicons name='nutrition-outline' color={'#F2894F'} size={22}></Ionicons>
+                                <Text style={{ fontSize: 12, fontWeight: '700' }}>{foodData.nutrition.nutrients[0].amount}</Text>
+                                <Text style={{ fontSize: 8, fontWeight: '400' }}>Kcal</Text>
+                            </View>
+                        </View>
+        
+                        <View style={styles.section}>
+                            <TouchableOpacity style={{
+                                height: '100%',
+                                width: '50%',
+                                backgroundColor: selected ? '#f1f1f1' : colors.mainGreen ,
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }} 
+                            onPress={() => setSelected(false)}>
+                                <Text style={{ fontSize: 16, fontWeight: '600', color: selected ? colors.black : colors.white }}>Ingredients</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                height: '100%',
+                                width: '50%',
+                                backgroundColor: selected ? colors.mainGreen : '#f1f1f1',
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }} onPress={() => setSelected(true)}>
+                                <Text style={{ fontSize: 16, fontWeight: '600', color: selected ? colors.white : colors.black}}>Instructions</Text>
+                            </TouchableOpacity>
+                        </View>
+        
+                        {selected ? 
+                            <View style={styles.instructionsWrapper}>
+                                <RenderHTML contentWidth={width} source={{ html }} /> 
+                            </View>
+                            :
+                            foodData.extendedIngredients.map(item => (
+                                <View style={styles.ingredient} key={item.originalName}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <View style={styles.box}>
+                                            <Image source={{ uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}} style={styles.ingredientImage}></Image>
+                                        </View>
+                                        <Text style={{fontSize: 18, fontWeight: '600', marginLeft: 15, color: '#303030', textTransform: 'capitalize', width: '55%', }}>{item.nameClean}</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', marginRight: 15}}>
+                                        <Text style={{ fontSize: 15, fontWeight: '400', color: '#A9A9A9'}}>{item.amount} </Text>
+                                        <Text style={{fontSize: 15, fontWeight: '400', color: '#A9A9A9', alignSelf: 'flex-end'}}>{item.unit}</Text>
+                                    </View>
+                                </View>
+                            ))
+                        }
+        
+                        <TouchableOpacity style={styles.visitButton} onPress={loadInBrowser}>
+                            <Text style={{ fontSize: 18, fontWeight: '600', color: colors.white }}>Visit Website</Text>
+                            <Text style={{ fontSize: 12, color: colors.white, textTransform: 'lowercase' }}>{foodData.sourceName}.com</Text>
+                        </TouchableOpacity>
+                            
+                    </ScrollView>
+                    :
+                    <Text style={{ alignSelf: 'center', marginTop: 20, fontSize: 17, fontWeight: '500', color: colors.darkGrey }}>Loading....</Text>
+                }
+            </View>
+            
+        </View>
 
     );
 }
 
 const styles = StyleSheet.create({
+    topBar: {
+        marginHorizontal: 24,
+        marginTop: 30,
+        flexDirection: 'row',
+        backgroundColor: colors.white,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: 45,
+    },
+    recipeText: {
+        fontSize: 19,
+        fontWeight: 'bold',
+        color: colors.topBarItem
+    },
     image: {
-        //top: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-        height: height / 2.5,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        padding: 20,
-        //paddingTop: 10
-    },
-    backButton: {
-        height: 40,
-        width: 40,
-        backgroundColor: colors.white,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 40,
-        top: 20,
-        left: 10,
+        marginHorizontal: 24,
+        marginTop: 5,
+        height: 230,
+        width: width-48,
+        borderRadius: 20,
+        overflow: 'hidden',
+        justifyContent: 'flex-end',
         shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
-        elevation: 9,
+        elevation: 10,
     },
-    shareButton: {
-        height: 40,
-        width: 40,
-        backgroundColor: colors.white,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 40,
-        top: 20,
-        right: 10,
+    bottomImage: {
+        height : '100%', 
+        width : '100%',
+        justifyContent: 'flex-end',
+        paddingLeft: 18,
+        paddingBottom: 7,
+    },
+    foodName: {
+        fontSize: 23, 
+        fontWeight: '600',
+        color: colors.white,
+        textTransform: 'capitalize'
+    },
+    info: {
+        marginHorizontal: 24,
+        marginTop: 15,
+        paddingVertical: 5,
+        backgroundColor:'#f1f1f1',
+        borderRadius: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
         shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
-        elevation: 9,
+        elevation: 10,
     },
-    detailWrapper: {
-        padding: 20,
-        paddingTop: 30,
-        marginTop: -30,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        backgroundColor: colors.white
-    },
-    titleText: {
-        fontSize: 30,
-        color: colors.black,
-        fontWeight: "700",
-        textTransform: 'capitalize',
-    },
-    likes: {
-        top: 10,
-        padding: 5,
-        paddingHorizontal: 10,
-        backgroundColor: colors.mainGreen,
-        flexDirection: "row",
-        borderRadius: 10,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    likesText: {
-        fontSize: 16,
-        fontWeight: "600",
-        marginLeft: 7,
-        color: colors.white
-    },
-    website: {
-        fontSize: 14,
-        color: colors.darkGrey,
-        fontWeight: "400",
-        paddingBottom: 10,
-        top: -10,
-        textTransform: 'lowercase'
-    },
-    tags: {
-        padding: 5,
-        paddingHorizontal: 25,
-        backgroundColor: colors.lightGrey,
-        flexDirection: "row",
-        borderRadius: 10,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    tagsText: {
-        fontSize: 16,
-        fontWeight: "600",
-        marginLeft: 5,
-        color: colors.darkGrey
+    section: {
+        marginHorizontal: 24,
+        height: 38,
+        marginTop: 15,
+        flexDirection: 'row',
+        backgroundColor: '#f1f1f1',
+        borderRadius: 10
     },
     ingredient: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: colors.black
+        marginHorizontal: 24,
+        height: 76,
+        marginTop: 13,
+        backgroundColor: '#f1f1f1',
+        borderRadius:  12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
-    instructions: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: colors.black,
-        marginBottom: 10,
-        top: 30,
-        paddingBottom: 20
+    box: { 
+        height: 52, 
+        width: 50, 
+        backgroundColor: colors.white, 
+        marginLeft: 15, 
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    descriptionText: {
-        fontSize: 15,
-        fontWeight: "400",
-        color: colors.grey,
-        top: 10,
-        lineHeight: 20
+    ingredientImage: {
+        height: '80%',
+        width: '80%',
+        resizeMode: 'contain'
     },
-    viewButton: {
-        width: "100%",
-        padding: 15,
+    instructionsWrapper: {
+        marginHorizontal: 24, 
+        backgroundColor: '#f1f1f1', 
+        marginTop: 13, 
+        paddingHorizontal: 20, 
+        paddingVertical: 15, 
+        borderRadius: 20
+    },
+    visitButton: {
+        marginTop: 25,
+        marginBottom: 25,
+        height: 55,
+        width: '75%',
         backgroundColor: colors.mainGreen,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 20,
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
-        elevation: 9,
-    },
-    visitText: {
-        fontSize: 17,
-        color: colors.white,
-        fontWeight: "700",
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 20
     }
 })
 

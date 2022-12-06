@@ -6,4 +6,5 @@ export default{
     grey: '#808080',
     darkGrey: '#696969',
     lightGrey: '#d3d3d3',
+    topBarItem: '#303030'
 }

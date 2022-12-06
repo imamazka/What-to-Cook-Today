@@ -108,7 +108,6 @@ const Register = ({ navigation }) => {
 
     if (valid) inputValid();
   };
-  console.log(data);
 
   const inputValid = () => {
     setLoading(true);
@@ -209,7 +208,7 @@ const Register = ({ navigation }) => {
             marginTop: 15,
             flexDirection: "row",
           }}>
-          <Text style={Styles.signUpFoot}>Already have an account, </Text>
+          <Text style={Styles.signUpFoot}>Already have an account? </Text>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => navigation.navigate("Login")}>

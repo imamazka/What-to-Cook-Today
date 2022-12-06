@@ -86,8 +86,6 @@ const Login = ({ navigation }) => {
     setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
   };
 
-  console.log(data);
-
   const validate = () => {
     let valid = true;
 
@@ -161,7 +159,7 @@ const Login = ({ navigation }) => {
         </View>
         <View
           style={{ alignSelf: "center", marginTop: 15, flexDirection: "row" }}>
-          <Text style={Styles.signUpFoot}>Don't have an account, </Text>
+          <Text style={Styles.signUpFoot}>Doesn't have any account? </Text>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => navigation.navigate("Register")}>
@@ -177,7 +175,7 @@ const Login = ({ navigation }) => {
               Sign Up
             </Text>
           </TouchableOpacity>
-          <Text style={Styles.signUpFoot}> Now</Text>
+          <Text style={Styles.signUpFoot}> now</Text>
         </View>
       </View>
     </ScrollView>

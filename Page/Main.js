@@ -96,30 +96,7 @@ function Main({ navigation }) {
           placeholder="Search"
           onChangeText={onChangeSearch}
           onSubmitEditing={submitSearch}
-          value={searchQuery}
-        />
-        {/* <SearchBar
-            containerStyle={{
-            backgroundColor: "#d9dbda",
-            marginHorizontal: 20,
-            marginTop: 5,
-            borderRadius: 40,
-            paddingHorizontal: 5,
-          }}
-          inputContainerStyle={{
-            height: 20,
-            alignItems: "center",
-          }}
-          inputStyle={{
-            marginLeft: 5,
-            fontSize: 15,
-          }} 
-          platform={Platform.OS}
-          placeholder="Search any food..."
-          onChangeText={onChangeSearch}
-          onSubmitEditing={submitSearch}
-          value={searchQuery}
-        /> */}
+          value={searchQuery}/>
         <View
           style={{
             marginTop: 10,
@@ -202,7 +179,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     paddingTop: 10,
-    //paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   typesWrapper: {
     marginRight: 8,
