@@ -62,7 +62,7 @@ const Register = ({ navigation }) => {
   useEffect(() => {
     getUser();
   }, []);
-
+  
   const getUser = () => {
     firebase
       .firestore()

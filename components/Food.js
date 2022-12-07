@@ -10,29 +10,47 @@ import {
 const { width } = Dimensions.get("window");
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { firebase } from "../firebase";
 
 import colors from "../config/colors";
+import { useEffect } from "react";
 const ITEM_WIDTH = width / 2 - 10 * 2.3;
 
 function Food(props) {
   const [selected, setSelected] = useState(false);
   const navigation = useNavigation();
-
+  
+// console.log(selected);
   function handleFavorite(){
-
     if(selected==false){
       setSelected(!selected);
-      props.favorite.push(props.foodId);
+      // props.favorite.push(props.foodId)
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+            favorites: firebase.firestore.FieldValue.arrayUnion(props.foodId)
+        })  
+        console.log("add food ID: "+ props.foodId +" to database");
     }
     else{
       setSelected(!selected);
-      const index = props.favorite.indexOf(props.foodId);
-      if (index > -1) {
-        props.favorite.splice(index, 1)
-      }
+      // const index = props.favorite.indexOf(props.foodId);
+      // if (index > -1) {
+      //   props.favorite.splice(index, 1)
+      // }
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+            favorites: firebase.firestore.FieldValue.arrayRemove(props.foodId)
+        })
+        console.log("remove food ID: "+ props.foodId +" from database");
     } 
-    console.log(props.favorite);
   }
+
 
   return (
     <TouchableOpacity

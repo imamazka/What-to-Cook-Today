@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from "@expo/vector-icons"
+import { Ionicons } from "@expo/vector-icons";
+import { firebase } from "../firebase";
 
 import colors from '../config/colors';
 import recipe from '../assets/dummy data/test_foodList';
@@ -17,7 +18,9 @@ function FoodList({ route, navigation }) {
 
     const url = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${parameter}&number=10&rangking=2&ignorePantry=true`;
 
-    useEffect(() => {
+    useEffect(() => {   
+        getFavorite();
+   
         fetch(url)
           .then(response => response.json())
           .then(data => {
@@ -27,7 +30,18 @@ function FoodList({ route, navigation }) {
           .catch(() => {
             console.log("error")
     })}, [parameter])
-
+    
+    const getFavorite = () => {
+        firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .get()
+        .then((data)=>{
+            setFavorite(data.data().favorites);
+            console.log("db favorite: " + data.data().favorites)
+        });
+    };
 
     return (
         <View style={styles.container}>

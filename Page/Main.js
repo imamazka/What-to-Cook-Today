@@ -16,6 +16,7 @@ import colors from "../config/colors";
 import Food from "../components/Food";
 import apiKey from "../key";
 import mealTypes from "../assets/dummy data/meal_types";
+import { firebase } from "../firebase";
 
 const Search = (props) => {
   return (
@@ -43,12 +44,28 @@ const Search = (props) => {
   );
 };
 
-function Main({ navigation }) {
+const Main  = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [type, setType] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   const [listData, setListData] = useState([]);
-  const [favorite, setFavorite] = useState([]);
+  const [favorite, setFavorite] = useState([]); 
+
+  useEffect(() => {
+    getFavorite();
+  }, []);
+
+  const getFavorite = () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then((data)=>{
+          setFavorite(data.data().favorites);
+          console.log("db favorite: " + data.data().favorites)
+      });
+  };
 
   const urlRandom = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10`;
   const urlSearch = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&query=${searchQuery}&addRecipeInformation=true&number=10`;
@@ -113,6 +130,8 @@ function Main({ navigation }) {
             ))}
           </ScrollView>
         </View>
+        
+
 
         <View style={styles.itemWrapper}>
           {listData == null ?
