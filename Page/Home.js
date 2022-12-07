@@ -17,7 +17,7 @@ const Home = ({ navigation }) => {
     <ImageBackground
       source={require("../assets/Background.jpg")}
       style={{ width: width, height: '100%', justifyContent: "flex-end" }}>
-        <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={{ height: '100%', width: '100%', justifyContent: 'flex-end' }}>
+        <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={{ height: '90%', width: '100%', justifyContent: 'flex-end' }}>
           <View style={{ marginBottom: 20 }}>
             <View
               style={{

@@ -18,6 +18,22 @@ function Food(props) {
   const [selected, setSelected] = useState(false);
   const navigation = useNavigation();
 
+  function handleFavorite(){
+
+    if(selected==false){
+      setSelected(!selected);
+      props.favorite.push(props.foodId);
+    }
+    else{
+      setSelected(!selected);
+      const index = props.favorite.indexOf(props.foodId);
+      if (index > -1) {
+        props.favorite.splice(index, 1)
+      }
+    } 
+    console.log(props.favorite);
+  }
+
   return (
     <TouchableOpacity
       style={styles.itemWrapper}
@@ -34,7 +50,7 @@ function Food(props) {
             source={{ uri: props.imageUri }}></Image>
           <TouchableOpacity
             activeOpacity={0.75}
-            onPress={() => setSelected(!selected)}
+            onPress={handleFavorite}
             style={styles.bookmark}>
             <Ionicons
               name={selected ? "bookmark" : "bookmark-outline"}
@@ -45,13 +61,7 @@ function Food(props) {
         </View>
         {/* food */}
         <View
-          style={{
-            width: "50%",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            paddingLeft: 10,
-            //backgroundColor: "red",
-          }}>
+          style={{ width: "50%", justifyContent: "center", alignItems: "flex-start", paddingLeft: 10,}}>
           <View style={{ width: "100%" }}>
             <Text
               style={{
@@ -108,14 +118,6 @@ function Food(props) {
           </View>
         </View>
       </View>
-
-      {/*
-            {props.ingredients.map((ingredient) => (
-                <View key={ingredient.id} style={{ flexDirection: 'row', left: 10, width: '30%', backgroundColor: colors.white, left: 30 }}>
-                    <Text key={ingredient.id} style={{ fontSize: 15, color: colors.darkGrey, }}>{ingredient.name}</Text>
-                </View>
-            ))}
-            */}
     </TouchableOpacity>
   );
 }

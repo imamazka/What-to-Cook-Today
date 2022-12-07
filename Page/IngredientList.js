@@ -11,7 +11,6 @@ function IngredientList({navigation}) {
 
     const [ingredient, setIngredient] = useState();
     const [ingredientItems, setIngredientItems] = useState([]);
-
     const [selected, setSelected] = useState([]);
     
     function handleAddIngredient(add) {
@@ -32,29 +31,6 @@ function IngredientList({navigation}) {
                     setSelected={(val) => setSelected(val)}
                     save="value">
                 </MultipleSelectList>
-
-                {/* Custom add ingredient placeholder                
-                <View style={styles.items}>
-                    {ingredients.map(item => (
-                        <TouchableOpacity
-                            key={item.id}
-                            onPress={() => handleAddIngredient(item)}
-                            style={{
-                                backgroundColor: colors.lightGrey,
-                                padding: 12,
-                                borderRadius: 10,
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                marginBottom: 20}}>
-                            <View style={styles.itemLeft}>
-                                <View style={styles.square}></View>
-                                <Text style={styles.itemName}>{item.name}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-                */}
                 
             </View>
            </ScrollView>

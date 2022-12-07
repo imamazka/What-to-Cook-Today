@@ -13,6 +13,7 @@ function FoodList({ route, navigation }) {
     const { selected } = route.params;
     const [listData, setListData] = useState([]);
     const parameter = selected.join();
+    const [favorite, setFavorite] = useState([]);
 
     const url = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${parameter}&number=10&rangking=2&ignorePantry=true`;
 
@@ -47,7 +48,8 @@ function FoodList({ route, navigation }) {
                                 name={item.title}
                                 rating={item.likes}
                                 owned={item.usedIngredientCount}
-                                missing={item.missedIngredientCount}>
+                                missing={item.missedIngredientCount}
+                                favorite={favorite}>
                             </FoodFiltered>
                     ))}
                 </View>

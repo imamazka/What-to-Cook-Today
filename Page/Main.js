@@ -11,7 +11,6 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-//import { SearchBar } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import Food from "../components/Food";
@@ -49,6 +48,7 @@ function Main({ navigation }) {
   const [type, setType] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   const [listData, setListData] = useState([]);
+  const [favorite, setFavorite] = useState([]);
 
   const urlRandom = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10`;
   const urlSearch = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&query=${searchQuery}&addRecipeInformation=true&number=10`;
@@ -115,20 +115,21 @@ function Main({ navigation }) {
         </View>
 
         <View style={styles.itemWrapper}>
-          {listData == null ? (
-            <Text style={{ alignSelf: "center" }}>Loading...</Text>
-          ) : (
-            listData.map((item) => (
-              <Food
-                key={item.id}
-                foodId={item.id}
-                imageUri={item.image}
-                name={item.title}
-                type={item.dishTypes[0]}
-                likes={item.aggregateLikes}
-                time={item.readyInMinutes}></Food>
-            ))
-          )}
+          {listData == null ?
+            (<Text style={{ alignSelf: "center" }}>Loading...</Text>) 
+            : 
+            (listData.map((item) => (
+                <Food
+                  key={item.id}
+                  foodId={item.id}
+                  imageUri={item.image}
+                  name={item.title}
+                  type={item.dishTypes[0]}
+                  likes={item.aggregateLikes}
+                  time={item.readyInMinutes}
+                  favorite={favorite}
+                  ></Food>)))
+          }
         </View>
       </ScrollView>
 

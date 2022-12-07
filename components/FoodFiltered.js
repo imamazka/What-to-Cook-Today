@@ -12,13 +12,29 @@ function FoodFiltered(props) {
     const [selected, setSelected] = useState(false);
     const navigation = useNavigation(); 
 
+    function handleFavorite(){
+
+        if(selected==false){
+          setSelected(!selected);
+          props.favorite.push(props.foodId);
+        }
+        else{
+          setSelected(!selected);
+          const index = props.favorite.indexOf(props.foodId);
+          if (index > -1) {
+            props.favorite.splice(index, 1)
+          }
+        } 
+        console.log(props.favorite);
+      }
+
     return (
         <TouchableOpacity style={styles.itemWrapper} onPress={() => navigation.navigate('FoodPage', {
             foodId: props.foodId,
             })
         }>
             <Image style={styles.itemImage} source={{ uri: props.imageUri }}></Image>
-            <TouchableOpacity activeOpacity={0.75} onPress={() => setSelected(!selected)} style={styles.bookmark}>
+            <TouchableOpacity activeOpacity={0.75} onPress={handleFavorite} style={styles.bookmark}>
                 <Ionicons 
                     name={selected ? 'bookmark' : 'bookmark-outline'}
                     color={selected ? colors.mainGreen : colors.black} 
