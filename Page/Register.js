@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Keyboard,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
@@ -81,6 +82,7 @@ const Register = ({ navigation }) => {
 
   const validate = () => {
     let valid = true;
+    Keyboard.dismiss();
 
     if (data.email == user.email) {
       handleOnError("Your email already exist", "email");

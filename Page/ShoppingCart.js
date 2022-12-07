@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, Image } from 'react-native';
 
-import Shopping from '../components/Shopping';
 import colors from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -9,6 +8,7 @@ function ShoppingCart({navigation}) {
 
     const [ingredient, setIngredient] = useState();
     const [ingredientItems, setIngredientItems] = useState([]);
+    const [finishedItems, setFinishedItems] = useState([]);
     const [addItem, setAddItem] = useState(false);
 
     const handleAddIngredient = () => {
@@ -17,16 +17,34 @@ function ShoppingCart({navigation}) {
         setIngredient(null);
         setAddItem(!addItem);
     }
-
-    const deleteIngredient = (index) => {
+    function deleteIngredient(index) {
         let ingredientCopy = [...ingredientItems];
         ingredientCopy.splice(index, 1);
-        setIngredientItems(ingredientCopy)
+        setIngredientItems(ingredientCopy);
+        console.log('deleted');
+    }
+    function completeIngredient(index) {
+        finishedItems.push(ingredientItems[index]);
+        let ingredientCopy = [...ingredientItems];
+        ingredientCopy.splice(index, 1);
+        setIngredientItems(ingredientCopy);
+        console.log('finished');
     }
 
-    const completeIngredient = (index) => {
-        console.log('pressed');
+    function cancelFinished(index) {
+        ingredientItems.push(finishedItems[index]);
+        let ingredientCopy = [...finishedItems];
+        ingredientCopy.splice(index, 1);
+        setFinishedItems(ingredientCopy);
+        console.log('cancelled');
     }
+    function deleteFinished(index) {
+        let ingredientCopy = [...finishedItems];
+        ingredientCopy.splice(index, 1);
+        setFinishedItems(ingredientCopy);
+        console.log('deleted');
+    }
+
 
     return (
         <View style={styles.container}>
@@ -34,37 +52,49 @@ function ShoppingCart({navigation}) {
 
                 <View style={styles.listWrapper}>
                     <Text style={styles.sectionTitle}>Shopping Cart</Text>
+                    <Text style={styles.section}>To Shop</Text>
 
-                    <View style={styles.items}>
+                    <View>
                         {
-                            ingredientItems.map((ingredient, index) => {
-                                var selected = false;
-                                return (
-                                    <TouchableOpacity key={index} style={styles.item} onPress={() => selected=true}>
-                                        <View style={styles.itemLeft}>
-                                            <Ionicons 
-                                                name={selected ?'checkmark-circle' : 'ellipse'}
-                                                size={23} 
-                                                color={selected ? colors.mainGreen : colors.white}>
-                                            </Ionicons>
-                                            <Text style={{
-                                                    maxWidth: '80%',
-                                                    left: 10,
-                                                    fontSize: 15,
-                                                    textDecorationLine: selected ? 'line-through' : 'none',
-                                                    color: selected ? colors.mainGreen : colors.black
-                                            }}>{ingredient}</Text>
+                            ingredientItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
+                            :
+                            ingredientItems.map((item, index) => (
+                                <TouchableOpacity key={index} style={styles.item}>
+                                    <View style={styles.itemLeft}>
+                                        <Ionicons name={'ellipse-outline'} size={23} color={colors.grey} onPress={() => completeIngredient(index)}></Ionicons>
+                                        <Text style={styles.itemText}>{item}</Text>
+                                    </View>
+
+                                    <TouchableOpacity onPress={() => deleteIngredient(index)}>
+                                        <View style={styles.square}>
+                                            <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
                                         </View>
-
-                                        <TouchableOpacity onPress={() => deleteIngredient(index)}>
-                                            <View style={styles.square}>
-                                                <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
-                                            </View>
-                                        </TouchableOpacity>
-
                                     </TouchableOpacity>
-                                )
-                            })
+                                </TouchableOpacity>
+                            ))
+                            
+                        }
+                    </View>
+
+                    <Text style={styles.section}>Finished</Text>
+                    <View>
+                        {
+                            finishedItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
+                            :
+                            finishedItems.map((item, index) => (
+                                <TouchableOpacity key={index} style={styles.item}>
+                                    <View style={styles.itemLeft}>
+                                        <Ionicons name={'checkmark-circle'} size={23} color={colors.grey} onPress={() => cancelFinished(index)}></Ionicons>
+                                        <Text style={styles.itemFinished}>{item}</Text>
+                                    </View>
+
+                                    <TouchableOpacity onPress={() => deleteFinished(index)}>
+                                        <View style={styles.square}>
+                                            <Ionicons name='trash-outline' size={22} style={{ left: 0.8, color: colors.darkGrey }}></Ionicons>
+                                        </View>
+                                    </TouchableOpacity>
+                                </TouchableOpacity>
+                            ))
                         }
                     </View>
 
@@ -78,10 +108,11 @@ function ShoppingCart({navigation}) {
                                 style={styles.input}
                                 placeholder={'Input new item'}
                                 value={ingredient}
-                                onChangeText={text => setIngredient(text)}>
+                                onChangeText={text => setIngredient(text)}
+                                onSubmitEditing={handleAddIngredient}>
                             </TextInput>
-                            <TouchableOpacity style={styles.addButton2} onPress={() => handleAddIngredient()}>
-                                <Ionicons name='add-outline' size={25} color={colors.black}></Ionicons>
+                            <TouchableOpacity style={styles.confirmButton} onPress={() => handleAddIngredient()}>
+                                <Ionicons name='add-outline' size={20} color={colors.black}></Ionicons>
                             </TouchableOpacity>
                         </View>
                     </KeyboardAvoidingView>
@@ -137,10 +168,21 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         color: colors.black,
-        left: 10
+        marginBottom: 10,
+        alignSelf: 'center'
     },
-    items: {
-        marginTop: 20
+    section: {
+        fontSize: 16,
+        fontWeight: '500',
+        marginLeft: 10,
+        marginTop: 30,
+        color: '#3a3a3b'
+    },
+    empty: {
+        alignSelf: 'center',
+        color: colors.grey,
+        fontSize: 14,
+        marginVertical: 20
     },
     addButton: {
         width: 60,
@@ -164,7 +206,26 @@ const styles = StyleSheet.create({
         elevation: 14,
         elevation: 9,
     },
-    addButton2: {
+    inputWrapper: {
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'space-around',
+        padding: 10,
+        backgroundColor: colors.white,
+        shadowColor: colors.black,
+        elevation: 20,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+    },
+    input: {
+        width: '70%',
+        height: 50,
+        backgroundColor: '#f2f2f2',
+        paddingLeft: 20,
+        borderRadius: 10,
+        fontSize: 17
+    },
+    confirmButton:  {
         height: 50,
         width: 50,
         borderRadius: 50,
@@ -173,39 +234,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         backgroundColor: colors.white,
         shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 8,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 5,
-    },
-    inputWrapper: {
-        flexDirection: 'row',
-        alignContent: 'center',
-        justifyContent: 'space-around',
-        padding: 10,
-        backgroundColor: colors.white,
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
-        elevation: 9,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-    },
-    input: {
-        width: 300,
-        height: 75,
-        backgroundColor: '#f2f2f2',
-        paddingLeft: 20,
-        borderRadius: 10,
-        fontSize: 17
+        elevation: 4,
     },
     navBar: {
         width: '100%',
@@ -239,19 +268,27 @@ const styles = StyleSheet.create({
         height: 23
     },
     item :{
-        backgroundColor: colors.lightGrey,
-        padding: 20,
-        paddingRight: 15,
-        borderRadius: 10,
+        backgroundColor: '#f1f1f1',
+        paddingVertical: 20,
+        paddingHorizontal: 15,
+        borderRadius: 12,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 11,
+        marginTop: 12,
     },
     itemLeft :{
         flexDirection: 'row',
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: "flex-start",
+        alignItems: "center",
+        width: '80%',
+    },
+    itemText: { 
+        maxWidth: '80%', 
+        marginLeft: 15, 
+        fontSize: 15, 
+        textDecorationLine: 'none',
+        color: colors.black
     },
     square :{
         width: 32,
@@ -261,6 +298,14 @@ const styles = StyleSheet.create({
         marginRight: 15,
         alignItems: "center",
         justifyContent: "center",
+    },
+    itemFinished: { 
+        maxWidth: '80%', 
+        marginLeft: 15, 
+        fontSize: 15, 
+        textDecorationLine: 'none',
+        color: colors.darkGrey,
+        textDecorationLine: 'line-through',
     },
 })
 

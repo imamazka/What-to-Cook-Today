@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         paddingLeft: 18,
         paddingBottom: 7,
+        paddingRight: 10
     },
     foodName: {
         fontSize: 23, 
