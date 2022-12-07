@@ -83,6 +83,7 @@ const Main  = ({ navigation }) => {
   };
 
   const submitSearch = async () => {
+    Keyboard.dismiss();
     try {
       const response = await fetch(urlSearch);
       const json = await response.json();
@@ -146,8 +147,7 @@ const Main  = ({ navigation }) => {
                   type={item.dishTypes[0]}
                   likes={item.aggregateLikes}
                   time={item.readyInMinutes}
-                  favorite={favorite}
-                  ></Food>)))
+                  favorite={favorite}></Food>)))
           }
         </View>
       </ScrollView>

@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Keyboard,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
@@ -87,6 +88,7 @@ const Login = ({ navigation }) => {
   };
 
   const validate = () => {
+    Keyboard.dismiss();
     let valid = true;
 
     if (data.email != user.email) {

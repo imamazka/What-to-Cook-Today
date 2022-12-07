@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from "@expo/vector-icons"
 
@@ -6,13 +6,33 @@ import colors from '../config/colors';
 import Food from '../components/Food';
 //import listData from '../assets/dummy data/test_foodList';
 import apiKey from '../key';
+import { firebase } from "../firebase";
 
 function Favorite({navigation}) {
 
     const [listData, setListData] = useState([]);
-    const ids = '639637,641202,662075,663313,635675'; //change to id on user data
+    const [ids, setIds] = useState([]);
+    //const ids = '639637,641202,662075,663313,635675'; //change to id on user data
+
+     useEffect(() => {
+        getFavorite();
+      }, []);
     
+    const getFavorite = () => {
+       firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .get()
+        .then((data)=>{
+            setIds(data.data().favorites);
+            console.log("db favorite: " + data.data().favorites)
+        });
+    };
+
     const url = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${ids}`;
+
+
 
     const getFavoriteList = async() => {
         try {

@@ -3,22 +3,12 @@ import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, TouchableOpaci
 import { Ionicons } from '@expo/vector-icons';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
 
-import Ingredient from '../components/Ingredient';
 import colors from '../config/colors';
 import ingredients from '../assets/dummy data/ingredients';
 
 function IngredientList({navigation}) {
 
-    const [ingredient, setIngredient] = useState();
-    const [ingredientItems, setIngredientItems] = useState([]);
     const [selected, setSelected] = useState([]);
-    
-    function handleAddIngredient(add) {
-        setIngredient(add);
-        setIngredientItems([...ingredientItems, ingredient]);
-        console.log(ingredient);
-        console.log(ingredientItems);
-    }
 
     return (
         <View style={styles.container}>
