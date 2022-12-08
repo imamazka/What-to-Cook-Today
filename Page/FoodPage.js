@@ -144,11 +144,11 @@ function FoodPage({ route, navigation }) {
                                         <View style={styles.box}>
                                             <Image source={{ uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}} style={styles.ingredientImage}></Image>
                                         </View>
-                                        <Text style={{fontSize: 18, fontWeight: '600', marginLeft: 15, color: '#303030', textTransform: 'capitalize', width: '55%', }}>{item.nameClean}</Text>
+                                        <Text style={{fontSize: 18, fontWeight: '600', left: 15, color: '#303030', textTransform: 'capitalize', width: '55%', flexWrap: 'wrap',}}>{item.nameClean}</Text>
                                     </View>
-                                    <View style={{flexDirection: 'row', marginRight: 15}}>
-                                        <Text style={{ fontSize: 15, fontWeight: '400', color: '#A9A9A9'}}>{item.amount} </Text>
-                                        <Text style={{fontSize: 15, fontWeight: '400', color: '#A9A9A9', alignSelf: 'flex-end'}}>{item.unit}</Text>
+                                    <View style={{flexDirection: 'row', right: 15, width: '25%', flexWrap: 'wrap', justifyContent: 'flex-end',}}>
+                                        <Text style={{ fontSize: 14, fontWeight: '400', color: '#A9A9A9', textTransform: 'lowercase'}}>{item.amount} </Text>
+                                        <Text style={{fontSize: 14, fontWeight: '400', color: '#A9A9A9', textTransform: 'lowercase'}}>{item.unit}</Text>
                                     </View>
                                 </View>
                             ))
@@ -186,10 +186,10 @@ const styles = StyleSheet.create({
         color: colors.topBarItem
     },
     image: {
-        marginHorizontal: 24,
+        marginHorizontal: 16,
         marginTop: 5,
         height: 230,
-        width: width-48,
+        width: width-32,
         borderRadius: 20,
         overflow: 'hidden',
         justifyContent: 'flex-end',
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
         textTransform: 'capitalize'
     },
     info: {
-        marginHorizontal: 24,
+        marginHorizontal: 16,
         marginTop: 15,
         paddingVertical: 5,
         backgroundColor:'#f1f1f1',
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     section: {
-        marginHorizontal: 24,
+        marginHorizontal: 16,
         height: 38,
         marginTop: 15,
         flexDirection: 'row',
@@ -231,14 +231,14 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     ingredient: {
-        marginHorizontal: 24,
+        marginHorizontal: 16,
         height: 76,
         marginTop: 13,
         backgroundColor: '#f1f1f1',
         borderRadius:  12,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     box: { 
         height: 52, 
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     instructionsWrapper: {
-        marginHorizontal: 24, 
+        marginHorizontal: 16, 
         backgroundColor: '#f1f1f1', 
         marginTop: 13, 
         paddingHorizontal: 20, 

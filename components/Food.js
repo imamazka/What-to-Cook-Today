@@ -81,16 +81,16 @@ function Food(props) {
         <View
           style={{ width: "50%", justifyContent: "center", alignItems: "flex-start", paddingLeft: 10,}}>
           <View style={{ width: "100%" }}>
-            <Text
+            {props.type==null ? <View/> : <Text
               style={{
                 color: colors.mainGreen,
                 fontSize: 14,
                 fontWeight: "700",
                 textTransform: "capitalize",
-                //backgroundColor: "blue",
               }}>
               {props.type}
-            </Text>
+            </Text>}
+            
           </View>
 
           <View
@@ -98,25 +98,23 @@ function Food(props) {
               width: "100%",
               marginBottom: 5,
               paddingRight: 10,
-              //backgroundColor: "red",
             }}>
             <Text style={styles.itemName}>{props.name}</Text>
           </View>
           <View
             style={{
               flexDirection: "row",
-              //backgroundColor: "green",
             }}>
             <View
               style={{
                 flexDirection: "row",
-                alignItems: "center",
+                alignItems: "flex-start",
                 marginRight: 15,
               }}>
-              <Ionicons name="time" color={colors.darkGrey} size={15} />
+              <Ionicons name="time-outline" color={colors.black} size={15} />
               <Text
                 style={{
-                  color: colors.darkGrey,
+                  color: '#555555',
                   paddingLeft: 4,
                   fontSize: 12,
                 }}>
@@ -128,8 +126,8 @@ function Food(props) {
                 flexDirection: "row",
                 alignItems: "center",
               }}>
-              <Ionicons name="heart" color="red" size={15} />
-              <Text style={{ paddingLeft: 4, fontSize: 12, fontWeight: "600" }}>
+              <Ionicons name="heart-outline" color="red" size={15} />
+              <Text style={{ paddingLeft: 4, fontSize: 12, color: '#555555' }}>
                 {props.likes}
               </Text>
             </View>

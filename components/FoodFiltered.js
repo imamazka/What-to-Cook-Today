@@ -73,14 +73,6 @@ function FoodFiltered(props) {
                     <Text style={{ color: colors.darkGrey, }}>Owned {props.owned} Ingredients</Text>
                 </View>
             </View>
-
-            {/*
-            {props.ingredients.map((ingredient) => (
-                <View key={ingredient.id} style={{ flexDirection: 'row', left: 10, width: '30%', backgroundColor: colors.white, left: 30 }}>
-                    <Text key={ingredient.id} style={{ fontSize: 15, color: colors.darkGrey, }}>{ingredient.name}</Text>
-                </View>
-            ))}
-            */}
         </TouchableOpacity>
     );
 }
