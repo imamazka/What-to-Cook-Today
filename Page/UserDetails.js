@@ -102,7 +102,9 @@ const UserDetails = ({ navigation }) => {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{ padding: 10 }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ResetPassword")}
+              style={{ padding: 10 }}>
               <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
                 <View style={{ flex: 1.5 }}>
                   <Icon name="lock" size={30} color="#darkGrey" />

@@ -7,8 +7,9 @@ import {
   Text,
   TextInput,
   StyleSheet,
+  Alert,
 } from "react-native";
-import colors from "../config/colors";
+import { Icon } from "react-native-elements";
 import { firebase } from "../firebase";
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
@@ -50,24 +51,8 @@ const InputText = ({ password, error, ...props }) => {
 
 const ResetPassword = ({ navigation }) => {
   const [data, setData] = useState({ password: "", confirmPassword: "" });
-  const [user, setUser] = useState("");
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  const getUser = () => {
-    firebase
-      .firestore()
-      .collection("users")
-      .get()
-      .then((data) => {
-        data.docs.forEach((datas) => {
-          setUser(datas.data());
-        });
-      });
-  };
+  const currentUser = firebase.auth().currentUser;
 
   const handleOnError = (errorMessage, input) => {
     setErrors((...prevState) => ({ ...prevState, [input]: errorMessage }));
@@ -77,36 +62,38 @@ const ResetPassword = ({ navigation }) => {
     setData((prevState) => ({ ...prevState, [input]: text }));
   };
 
-  const validate = () => {
-    let valid = true;
+  console.log(currentUser);
 
-    if (data.confirmPassword !== data.password) {
+  const validate = () => {
+    if (data.confirmPassword != data.password) {
       handleOnError("Your password is not same", "password");
       handleOnError("Your password is not same", "confirmPassword");
-
-      valid = false;
+    } else if (currentUser) {
+      currentUser
+        .updatePassword(data.password)
+        .then(() =>
+          Alert.alert(
+            "Password Updated",
+            "Your password has been changed successfully. Use your new password to log in"
+          )
+        )
+        .catch((error) => Alert.alert("Error", "Something went wrong!!!"));
+    } else {
+      Alert.alert("Error", "Please enter a new password");
     }
-
-    //if (valid) resetPassword();
   };
 
-  /*   const resetPassword = () => {
-    navigation.navigate("ResetPassword");
-  }; */
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingHorizontal: 20 }}>
       <View style={{ marginTop: 25 }}>
-        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+        <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
           <Feather name="arrow-left" size={30} />
         </TouchableOpacity>
       </View>
-      <Text
-        style={{ color: colors.mainGreen, fontSize: 50, fontWeight: "bold" }}>
-        Create New Password
-      </Text>
-      <Text style={{ fontSize: 15 }}>
-        Create your new password that you don’t use on any site
-      </Text>
+      <View style={{ alignItems: "center" }}>
+        <Icon name="lock" size={200} />
+        <Text style={{ fontSize: 15 }}>Please enter your new password</Text>
+      </View>
       <InputText
         placeholder="New password"
         autoCapitalize="none"
