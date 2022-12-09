@@ -31,7 +31,7 @@ function ShoppingCart({navigation}) {
         console.log('finished');
     }
 
-    function cancelFinished(index) {
+    function cancelFinished(index) {r
         ingredientItems.push(finishedItems[index]);
         let ingredientCopy = [...finishedItems];
         ingredientCopy.splice(index, 1);

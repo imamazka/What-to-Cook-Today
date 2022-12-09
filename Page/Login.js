@@ -59,7 +59,8 @@ const Login = ({ navigation }) => {
     password: "",
   });
 
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState();
+
 
   useEffect(() => {
     getUser();
@@ -76,6 +77,7 @@ const Login = ({ navigation }) => {
         });
       });
   };
+  console.log(user);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -99,7 +101,8 @@ const Login = ({ navigation }) => {
       handleOnError("Your password incorrect", "password");
       valid = false;
     }
-
+    console.log(valid);
+    loginSuccessful();
     if (valid) loginSuccessful();
   };
 
@@ -155,7 +158,7 @@ const Login = ({ navigation }) => {
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.5}
-            onPress={validate}>
+            onPress={loginSuccessful}>
             <Text style={Styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
