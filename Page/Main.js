@@ -44,12 +44,12 @@ const Search = (props) => {
   );
 };
 
-const Main  = ({ navigation }) => {
+const Main = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [type, setType] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   const [listData, setListData] = useState([]);
-  const [favorite, setFavorite] = useState([]); 
+  const [favorite, setFavorite] = useState([]);
 
   useEffect(() => {
     getFavorite();
@@ -61,9 +61,9 @@ const Main  = ({ navigation }) => {
       .collection("users")
       .doc(firebase.auth().currentUser.uid)
       .get()
-      .then((data)=>{
-          setFavorite(data.data().favorites);
-          console.log("db favorite: " + data.data().favorites)
+      .then((data) => {
+        setFavorite(data.data().favorites);
+        console.log("db favorite: " + data.data().favorites);
       });
   };
 
@@ -114,7 +114,8 @@ const Main  = ({ navigation }) => {
           placeholder="Search"
           onChangeText={onChangeSearch}
           onSubmitEditing={submitSearch}
-          value={searchQuery}/>
+          value={searchQuery}
+        />
         <View
           style={{
             marginTop: 10,
@@ -131,24 +132,23 @@ const Main  = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-        
-
 
         <View style={styles.itemWrapper}>
-          {listData == null ?
-            (<Text style={{ alignSelf: "center" }}>Loading...</Text>) 
-            : 
-            (listData.map((item) => (
-                <Food
-                  key={item.id}
-                  foodId={item.id}
-                  imageUri={item.image}
-                  name={item.title}
-                  type={item.dishTypes[0]}
-                  likes={item.aggregateLikes}
-                  time={item.readyInMinutes}
-                  favorite={favorite}></Food>)))
-          }
+          {listData == null ? (
+            <Text style={{ alignSelf: "center" }}>Loading...</Text>
+          ) : (
+            listData.map((item) => (
+              <Food
+                key={item.id}
+                foodId={item.id}
+                imageUri={item.image}
+                name={item.title}
+                type={item.dishTypes[0]}
+                likes={item.aggregateLikes}
+                time={item.readyInMinutes}
+                favorite={favorite}></Food>
+            ))
+          )}
         </View>
       </ScrollView>
 
@@ -192,7 +192,7 @@ const Main  = ({ navigation }) => {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

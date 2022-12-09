@@ -35,12 +35,11 @@ function App() {
 
   if (!user) {
     return (
-      <Stack.Navigator screenOptions={{ headerShown: false }} >
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-        <Stack.Screen name="ResetPassword" component={ResetPassword} />
       </Stack.Navigator>
     );
   } else {
@@ -53,6 +52,7 @@ function App() {
         <Stack.Screen name="FoodPage" component={FoodPage} />
         <Stack.Screen name="FoodList" component={FoodList} />
         <Stack.Screen name="Favorite" component={Favorite} />
+        <Stack.Screen name="ResetPassword" component={ResetPassword} />
       </Stack.Navigator>
     );
   }

@@ -19,10 +19,10 @@ const ITEM_WIDTH = width / 2 - 10 * 2.3;
 function Food(props) {
   const [selected, setSelected] = useState(false);
   const navigation = useNavigation();
-  
-// console.log(selected);
-  function handleFavorite(){
-    if(selected==false){
+
+  // console.log(selected);
+  function handleFavorite() {
+    if (selected == false) {
       setSelected(!selected);
       // props.favorite.push(props.foodId)
       firebase
@@ -30,11 +30,10 @@ function Food(props) {
         .collection("users")
         .doc(firebase.auth().currentUser.uid)
         .update({
-            favorites: firebase.firestore.FieldValue.arrayUnion(props.foodId)
-        })  
-        console.log("add food ID: "+ props.foodId +" to database");
-    }
-    else{
+          favorites: firebase.firestore.FieldValue.arrayUnion(props.foodId),
+        });
+      console.log("add food ID: " + props.foodId + " to database");
+    } else {
       setSelected(!selected);
       // const index = props.favorite.indexOf(props.foodId);
       // if (index > -1) {
@@ -45,12 +44,11 @@ function Food(props) {
         .collection("users")
         .doc(firebase.auth().currentUser.uid)
         .update({
-            favorites: firebase.firestore.FieldValue.arrayRemove(props.foodId)
-        })
-        console.log("remove food ID: "+ props.foodId +" from database");
-    } 
+          favorites: firebase.firestore.FieldValue.arrayRemove(props.foodId),
+        });
+      console.log("remove food ID: " + props.foodId + " from database");
+    }
   }
-
 
   return (
     <TouchableOpacity
@@ -79,18 +77,26 @@ function Food(props) {
         </View>
         {/* food */}
         <View
-          style={{ width: "50%", justifyContent: "center", alignItems: "flex-start", paddingLeft: 10,}}>
+          style={{
+            width: "50%",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            paddingLeft: 10,
+          }}>
           <View style={{ width: "100%" }}>
-            {props.type==null ? <View/> : <Text
-              style={{
-                color: colors.mainGreen,
-                fontSize: 14,
-                fontWeight: "700",
-                textTransform: "capitalize",
-              }}>
-              {props.type}
-            </Text>}
-            
+            {props.type == null ? (
+              <View />
+            ) : (
+              <Text
+                style={{
+                  color: colors.mainGreen,
+                  fontSize: 14,
+                  fontWeight: "700",
+                  textTransform: "capitalize",
+                }}>
+                {props.type}
+              </Text>
+            )}
           </View>
 
           <View
@@ -111,10 +117,10 @@ function Food(props) {
                 alignItems: "flex-start",
                 marginRight: 15,
               }}>
-              <Ionicons name="time-outline" color={colors.black} size={15} />
+              <Ionicons name="time-outline" color={colors.black} size={16} />
               <Text
                 style={{
-                  color: '#555555',
+                  color: "#555555",
                   paddingLeft: 4,
                   fontSize: 12,
                 }}>
@@ -126,8 +132,8 @@ function Food(props) {
                 flexDirection: "row",
                 alignItems: "center",
               }}>
-              <Ionicons name="heart-outline" color="red" size={15} />
-              <Text style={{ paddingLeft: 4, fontSize: 12, color: '#555555' }}>
+              <Ionicons name="heart" color="red" size={16} />
+              <Text style={{ paddingLeft: 4, fontSize: 12, color: "#555555" }}>
                 {props.likes}
               </Text>
             </View>
