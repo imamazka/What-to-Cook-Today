@@ -1,7 +1,15 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { useState, useEffect } from "react";
-import { TouchableOpacity, View, Text, TextInput } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 import colors from "../config/colors";
 import { firebase } from "../firebase";
 
@@ -33,49 +41,47 @@ const InputText = ({ error, ...props }) => {
 };
 
 const ForgotPassword = ({ navigation }) => {
-  const [email, setEmail] = useState();
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  const getUser = () => {
-    firebase
-      .firestore()
-      .collection("users")
-      .get()
-      .then((data) => {
-        data.docs.forEach((datas) => {
-          setUser(datas.data());
-        });
-      });
+  const loadEmails = async () => {
+    try {
+      setLoading(true);
+      const usersRef = firebase.firestore().collection("users");
+      const querySnapshot = await usersRef.get();
+      const users = querySnapshot.docs.map((doc) => doc.data());
+      const emails = users.map((user) => user.email);
+      setUser(emails);
+    } catch (error) {
+      Alert.alert("Error", "something went wrong!!!");
+    }
+    setLoading(false);
   };
 
-  const handleOnError = (errorMessage, error) => {
-    setErrors((...prevState) => ({ ...prevState, [error]: errorMessage }));
+  const filteredEmails = user.filter((user) => user.includes(email));
+
+  const handleOnError = (errorMessage, input) => {
+    setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
+  };
+
+  const handleSubmit = async () => {
+    await loadEmails();
+
+    if (filteredEmails.length === 0) {
+      handleOnError("Your email incorrect", "email");
+    } else {
+      firebase.auth().sendPasswordResetEmail(email);
+      Alert.alert("Success", "Check your email to reset your password");
+    }
   };
 
   console.log(user);
 
-  const validate = () => {
-    let valid = true;
-
-    if (email != user.email) {
-      handleOnError("Your email incorrect", "email");
-      valid = false;
-    }
-
-    if (valid) resetPassword();
-  };
-
-  const resetPassword = () => {
-    navigation.navigate("ResetPassword");
-  };
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingHorizontal: 20 }}>
+      {loading && <ActivityIndicator />}
       <View style={{ marginTop: 25 }}>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Feather name="arrow-left" size={30} />
@@ -107,7 +113,7 @@ const ForgotPassword = ({ navigation }) => {
             flex: 1,
           }}
           activeOpacity={0.5}
-          onPress={validate}>
+          onPress={handleSubmit}>
           <Text
             style={{
               color: "#FFF",

@@ -9,16 +9,19 @@ import {
   useWindowDimensions,
   SafeAreaView,
 } from "react-native";
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
 const Home = ({ navigation }) => {
   const { width, height } = useWindowDimensions();
   return (
-    <ImageBackground
-      source={require("../assets/Background.jpg")}
-      style={{ width: width, height: '100%', justifyContent: "flex-end" }}>
-        <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={{ height: '90%', width: '100%', justifyContent: 'flex-end' }}>
-          <View style={{ marginBottom: 20 }}>
+    <SafeAreaView>
+      <ImageBackground
+        source={require("../assets/Background.jpg")}
+        style={{ width: width, height: "100%", justifyContent: "flex-end" }}>
+        <LinearGradient
+          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.75)"]}
+          style={{ height: "90%", width: "100%", justifyContent: "flex-end" }}>
+          <View style={{}}>
             <View
               style={{
                 alignSelf: "center",
@@ -50,7 +53,6 @@ const Home = ({ navigation }) => {
                 alignSelf: "center",
                 //backgroundColor: "red",
                 flexDirection: "row",
-                marginBottom: 50
               }}>
               <TouchableOpacity
                 style={styles.loginButton}
@@ -60,8 +62,9 @@ const Home = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-      </LinearGradient>
-    </ImageBackground>
+        </LinearGradient>
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
 
