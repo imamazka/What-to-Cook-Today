@@ -5,23 +5,11 @@ import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-lis
 
 import colors from '../config/colors';
 import ingredients from '../assets/dummy data/ingredients';
+import IngredientItem from '../components/IngredientItem';
 
 function IngredientList({navigation}) {
 
     const [selected, setSelected] = useState([]);
-
-    function handleSelected(item) {
-        selected.push(item);
-        console.log(selected);
-    }
-    
-    function handleDeselect(item) {
-        const index = selected.indexOf(item);
-        if (index > -1) { // only splice array when item is found
-            selected.splice(index, 1); // 2nd parameter means remove one item only
-        }
-        console.log(selected);
-    }
 
     return (
         <View style={styles.container}>
@@ -29,7 +17,11 @@ function IngredientList({navigation}) {
                 <View style={{paddingTop: 30,}}>
                     <Text style={styles.sectionTitle}>Select your ingredients!</Text>
 
-                    <View style={{padding: 5, marginBottom: 50}}>
+                    <View style={styles.info}>
+                        <Text style={{ color: '#555555'}}>We assume you already have typical pantry items. Such as water, salt, flour, etc.</Text>
+                    </View>
+
+                    <View style={{padding: 5, marginBottom: 40}}>
                         {ingredients.map(category => 
                             (
                             <View style={styles.categoriesWrapper} key={category.id}>
@@ -39,34 +31,14 @@ function IngredientList({navigation}) {
                                 </View>
                                 <View style={{height: 0.75, width: '100%', backgroundColor: colors.black}}></View>
                                 <View style={styles.itemWrapper}>
-                                    {category.children.map(item => {
-                                        var select = false;
-                                        return (
-                                            <TouchableOpacity 
-                                            onPress={() => {
-                                                select = !select;
-                                                if(select){
-                                                    handleSelected(item.name);
-                                                }
-                                                else{
-                                                    handleDeselect(item.name);
-                                                }
-                                            }}
-                                            style={{
-                                                backgroundColor: select ? colors.mainGreen : '#f1f1f1',
-                                                paddingHorizontal: 8,
-                                                paddingVertical: 5,
-                                                borderRadius: 5,
-                                                marginRight: 9,
-                                                marginTop: 8
-                                            }}
-                                            key={item.id}>
-                                                <Text style={{
-                                                    color: select ? colors.white : colors.black
-                                                }}>{item.name}</Text>
-                                            </TouchableOpacity>
-                                        )
-                                    })}
+                                    {category.children.map(item => (
+                                        <IngredientItem
+                                        key={item.id}
+                                        name={item.name}
+                                        selected={selected}
+                                        setSelected={setSelected}> 
+                                        </IngredientItem>
+                                    ))}
                                 </View>
                             </View>
                         ))}
@@ -124,6 +96,16 @@ const styles = StyleSheet.create({
         left: 10,
         paddingBottom: 20,
         paddingHorizontal: 20
+    },
+    info: {
+        marginHorizontal: 24, 
+        marginBottom: 15, 
+        paddingHorizontal: 10, 
+        paddingTop: 6, 
+        paddingBottom: 8, 
+        borderColor: colors.darkGrey, 
+        borderWidth: 1, 
+        borderRadius: 7, 
     },
     categoriesWrapper: {
         paddingHorizontal: 10,
