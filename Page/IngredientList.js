@@ -5,6 +5,7 @@ import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-lis
 
 import colors from '../config/colors';
 import ingredients from '../assets/dummy data/ingredients';
+import IngredientItem from '../components/IngredientItem';
 
 function IngredientList({navigation}) {
 
@@ -13,16 +14,38 @@ function IngredientList({navigation}) {
     return (
         <View style={styles.container}>
             <ScrollView>
-            <View style={styles.listWrapper}>
-                <Text style={styles.sectionTitle}>List your ingredient!</Text>
-                
-                <MultipleSelectList
-                    data={ingredients}
-                    setSelected={(val) => setSelected(val)}
-                    save="value">
-                </MultipleSelectList>
-                
-            </View>
+                <View style={{paddingTop: 30,}}>
+                    <Text style={styles.sectionTitle}>Select your ingredients!</Text>
+
+                    <View style={styles.info}>
+                        <Text style={{ color: '#555555'}}>We assume you already have typical pantry items. Such as water, salt, flour, etc.</Text>
+                    </View>
+
+                    <View style={{padding: 5, marginBottom: 40}}>
+                        {ingredients.map(category => 
+                            (
+                            <View style={styles.categoriesWrapper} key={category.id}>
+                                <View style={styles.categoryTitleWrapper}>
+                                    <Image source={category.image} style={styles.categoryImage}></Image>
+                                    <Text style={styles.categoryTitle}>{category.name}</Text>
+                                </View>
+                                <View style={{height: 0.75, width: '100%', backgroundColor: colors.black}}></View>
+                                <View style={styles.itemWrapper}>
+                                    {category.children.map(item => (
+                                        <IngredientItem
+                                        key={item.id}
+                                        name={item.name}
+                                        selected={selected}
+                                        setSelected={setSelected}> 
+                                        </IngredientItem>
+                                    ))}
+                                </View>
+                            </View>
+                        ))}
+                    </View>
+                    
+                    
+                </View>
            </ScrollView>
 
            <TouchableOpacity onPress={() => navigation.navigate('FoodList', {selected: selected})}>
@@ -67,34 +90,56 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
     },
-    listWrapper: {
-        paddingTop: 30,
-        paddingHorizontal: 20
-    },
     sectionTitle: {
         fontSize: 20,
         fontWeight: "bold",
         left: 10,
-        paddingBottom: 20
+        paddingBottom: 20,
+        paddingHorizontal: 20
     },
-    items: {
-        marginTop: 30
+    info: {
+        marginHorizontal: 24, 
+        marginBottom: 15, 
+        paddingHorizontal: 10, 
+        paddingTop: 6, 
+        paddingBottom: 8, 
+        borderColor: colors.darkGrey, 
+        borderWidth: 1, 
+        borderRadius: 7, 
     },
-    itemLeft :{
-        flexDirection: 'row',
-        alignItems: "center",
-        flexWrap: 'wrap',
-    },
-    square :{
-        width: 52,
-        height: 52,
+    categoriesWrapper: {
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        shadowColor: colors.black,
+        elevation: 10,
+        borderRadius: 7,
+        marginHorizontal: 20,
+        marginBottom: 20,
         backgroundColor: colors.white,
-        borderRadius: 10,
-        marginRight: 15
     },
-    itemName :{
-        maxWidth: '80%',
+    categoryTitleWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15
+        //justifyContent: 'space-between'
+    },
+    categoryImage: {
+        width: 40,
+        height: 40,
+        resizeMode: 'contain',
+        marginLeft: 10
+    },
+    categoryTitle: {
+        fontSize: 16,
+        marginLeft: 20,
+        fontWeight: '400',
         textTransform: 'capitalize'
+    },
+    itemWrapper: {
+        marginHorizontal: 5,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: 5
     },
     continueWrapper: {
         width: 150,

@@ -32,8 +32,6 @@ function Favorite({navigation}) {
 
     const url = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${ids}`;
 
-
-
     const getFavoriteList = async() => {
         try {
             const response = await fetch(url);
