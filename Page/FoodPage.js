@@ -1,13 +1,26 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Text, Image, ImageBackground, StyleSheet, View, StatusBar, ScrollView, Dimensions, TouchableOpacity, SafeAreaView, Share, Linking } from 'react-native';
-import { Ionicons } from "@expo/vector-icons"
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import {
+  Text,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  View,
+  StatusBar,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+  Share,
+  Linking,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 const { height } = Dimensions.get("window");
 const { width } = Dimensions.get("window");
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
 import colors from "../config/colors";
-import apiKey from '../key';
-import RenderHTML from 'react-native-render-html';
+import apiKey from "../key";
+import RenderHTML from "react-native-render-html";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function FoodPage({ route, navigation }) {
   const [selected, setSelected] = useState(false);

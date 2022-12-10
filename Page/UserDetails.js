@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import { firebase } from "../firebase";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const UserDetails = ({ navigation }) => {
   const [user, setUser] = useState("");
@@ -36,7 +37,7 @@ const UserDetails = ({ navigation }) => {
 
   console.log(user);
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
       <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
         {" "}
       </StatusBar>
@@ -201,7 +202,7 @@ const UserDetails = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

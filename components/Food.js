@@ -13,21 +13,22 @@ import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../firebase";
 
 import colors from "../config/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function Food(props) {
   const [selected, setSelected] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
-    if(props.favorite!=undefined){
-      if(props.favorite.includes(props.foodId)){
+    if (props.favorite != undefined) {
+      if (props.favorite.includes(props.foodId)) {
         setSelected(true);
       }
     }
-  }, [])
+  }, []);
 
-  function handleFavorite(){
-    if(selected==false){
+  function handleFavorite() {
+    if (selected == false) {
       setSelected(!selected);
       firebase
         .firestore()
@@ -103,7 +104,7 @@ function Food(props) {
             style={{
               width: "100%",
               marginBottom: 5,
-              paddingRight: 10,
+              paddingRight: 15,
             }}>
             <Text style={styles.itemName}>{props.name}</Text>
           </View>
@@ -132,7 +133,7 @@ function Food(props) {
                 flexDirection: "row",
                 alignItems: "center",
               }}>
-              <Ionicons name="heart-outline" color="red" size={16} />
+              <Ionicons name="heart" color="red" size={16} />
               <Text style={{ paddingLeft: 4, fontSize: 12, color: "#555555" }}>
                 {props.likes}
               </Text>
