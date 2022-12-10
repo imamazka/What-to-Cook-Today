@@ -129,10 +129,15 @@ const Register = ({ navigation }) => {
               .set({
                 userName: data.userName,
                 email: data.email,
+                phoneNumber: "",
+                country: "",
+                genre: "",
+                address: "",
+                imgProfile: null,
               });
           })
           .catch((error) => {
-            alert(error.message);
+            Alert.alert("Error", error.message);
           });
       } catch (error) {
         Alert.alert("Error", "Something went wrong");

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
 import { firebase } from "../firebase";
+import { Keyboard } from "react-native";
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
@@ -68,6 +69,7 @@ const Login = ({ navigation }) => {
   };
 
   const validate = async () => {
+    Keyboard.dismiss();
     setLoading(true);
     try {
       await firebase

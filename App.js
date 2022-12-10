@@ -15,6 +15,7 @@ import Main from "./Page/Main";
 import UserDetails from "./Page/UserDetails";
 import ForgotPassword from "./Page/ForgotPassword";
 import ResetPassword from "./Page/ResetPassword";
+import AccountInfo from "./Page/AccountInfo";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,7 @@ function App() {
         <Stack.Screen name="FoodPage" component={FoodPage} />
         <Stack.Screen name="FoodList" component={FoodList} />
         <Stack.Screen name="Favorite" component={Favorite} />
+        <Stack.Screen name="AccountInfo" component={AccountInfo} />
         <Stack.Screen name="ResetPassword" component={ResetPassword} />
       </Stack.Navigator>
     );

@@ -73,7 +73,9 @@ const UserDetails = ({ navigation }) => {
             {user.email}
           </Text>
           <View style={{ marginTop: 30 }}>
-            <TouchableOpacity style={{ padding: 10 }}>
+            <TouchableOpacity
+              style={{ padding: 10 }}
+              onPress={() => navigation.navigate("AccountInfo")}>
               <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
                 <View style={{ flex: 1.5 }}>
                   <Icon name="align-justify" size={23} color="#darkGrey" />
