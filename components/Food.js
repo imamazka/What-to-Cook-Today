@@ -133,7 +133,7 @@ function Food(props) {
                 flexDirection: "row",
                 alignItems: "center",
               }}>
-              <Ionicons name="heart" color="red" size={16} />
+              <Ionicons name="heart-outline" color="red" size={16} />
               <Text style={{ paddingLeft: 4, fontSize: 12, color: "#555555" }}>
                 {props.likes}
               </Text>

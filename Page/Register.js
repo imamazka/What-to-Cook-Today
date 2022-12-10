@@ -134,6 +134,9 @@ const Register = ({ navigation }) => {
                 genre: "",
                 address: "",
                 imgProfile: null,
+                favorite: [],
+                ingredientItems: [],
+                finishedItems: [],
               });
           })
           .catch((error) => {

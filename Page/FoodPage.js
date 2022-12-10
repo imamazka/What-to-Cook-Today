@@ -294,7 +294,7 @@ function FoodPage({ route, navigation }) {
           <Text
             style={{
               alignSelf: "center",
-              marginTop: 20,
+              marginTop: 350,
               fontSize: 17,
               fontWeight: "500",
               color: colors.darkGrey,

@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, Image } from 'react-native';
+import { firebase } from "../firebase";
 
 import colors from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
+import IngredientItem from '../components/IngredientItem';
+
+function useMounted() {
+    const [isMounted, setIsMounted] = useState(false)
+    useEffect(() => {
+      setIsMounted(true)
+    }, [])
+    return isMounted
+  }
+import { ImageBackground } from 'react-native';
 
 function ShoppingCart({navigation}) {
 
@@ -10,6 +21,31 @@ function ShoppingCart({navigation}) {
     const [ingredientItems, setIngredientItems] = useState([]);
     const [finishedItems, setFinishedItems] = useState([]);
     const [addItem, setAddItem] = useState(false);
+    const isMounted = useMounted()
+
+    useEffect (() =>{
+        fetchItem();
+    },[]);
+
+    useEffect(() => {
+        if (isMounted) {
+          setItem();
+        }
+     },[ingredientItems,finishedItems]);
+
+    
+    const setItem = () => {
+        firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+            ingredientItems:ingredientItems,
+            finishedItems:finishedItems
+        });
+        console.log ("ingred: "+ingredientItems);
+        console.log ("finish: "+finishedItems);
+    }
 
     const handleAddIngredient = () => {
         Keyboard.dismiss();
@@ -17,12 +53,14 @@ function ShoppingCart({navigation}) {
         setIngredient(null);
         setAddItem(!addItem);
     }
+
     function deleteIngredient(index) {
         let ingredientCopy = [...ingredientItems];
         ingredientCopy.splice(index, 1);
         setIngredientItems(ingredientCopy);
         console.log('deleted');
     }
+
     function completeIngredient(index) {
         finishedItems.push(ingredientItems[index]);
         let ingredientCopy = [...ingredientItems];
@@ -31,13 +69,15 @@ function ShoppingCart({navigation}) {
         console.log('finished');
     }
 
-    function cancelFinished(index) {r
+    function cancelFinished(index) {
         ingredientItems.push(finishedItems[index]);
         let ingredientCopy = [...finishedItems];
         ingredientCopy.splice(index, 1);
         setFinishedItems(ingredientCopy);
+        setItem();
         console.log('cancelled');
     }
+
     function deleteFinished(index) {
         let ingredientCopy = [...finishedItems];
         ingredientCopy.splice(index, 1);
@@ -45,58 +85,80 @@ function ShoppingCart({navigation}) {
         console.log('deleted');
     }
 
-
-    return (
+    const fetchItem = () => {
+        firebase
+         .firestore()
+         .collection("users")
+         .doc(firebase.auth().currentUser.uid)
+         .get()
+         .then((data)=>{
+            console.log("Ini"+ data.data().ingredientItems+ "budi"+data.data().finishedItems)
+            setIngredientItems(data.data().ingredientItems);
+            setFinishedItems(data.data().finishedItems); 
+         });
+     };
+     return (
         <View style={styles.container}>
             <ScrollView>
 
                 <View style={styles.listWrapper}>
                     <Text style={styles.sectionTitle}>Shopping Cart</Text>
-                    <Text style={styles.section}>To Shop</Text>
 
-                    <View>
-                        {
-                            ingredientItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
-                            :
-                            ingredientItems.map((item, index) => (
-                                <TouchableOpacity key={index} style={styles.item}>
-                                    <View style={styles.itemLeft}>
-                                        <Ionicons name={'ellipse-outline'} size={23} color={colors.grey} onPress={() => completeIngredient(index)}></Ionicons>
-                                        <Text style={styles.itemText}>{item}</Text>
-                                    </View>
-
-                                    <TouchableOpacity onPress={() => deleteIngredient(index)}>
-                                        <View style={styles.square}>
-                                            <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
+                    {ingredientItems.length==0 && finishedItems.length==0 ? 
+                        <View style={{ alignItems: 'center', marginVertical: 130, marginHorizontal: 48 }}>
+                            <ImageBackground source={require('../assets/NoItemsCart.png')} style={{width: 250, height: 250, justifyContent: 'flex-end'}}>
+                                <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Your cart is empty</Text>
+                            </ImageBackground>
+                            <Text style={{ textAlign: 'center', fontSize: 14, marginTop: 5, color: '#555555' }}>Add new item to your shopping cart</Text>
+                        </View>
+                    :
+                        <View>
+                            <Text style={styles.section}>To Shop</Text>
+                            <View>
+                            {
+                                ingredientItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
+                                :
+                                ingredientItems.map((item, index) => (
+                                    <TouchableOpacity key={index} style={styles.item}>
+                                        <View style={styles.itemLeft}>
+                                            <Ionicons name={'ellipse-outline'} size={23} color={colors.grey} onPress={() => completeIngredient(index)}></Ionicons>
+                                            <Text style={styles.itemText}>{item}</Text>
                                         </View>
+
+                                        <TouchableOpacity onPress={() => deleteIngredient(index)}>
+                                            <View style={styles.square}>
+                                                <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
+                                            </View>
+                                        </TouchableOpacity>
                                     </TouchableOpacity>
-                                </TouchableOpacity>
-                            ))
-                            
-                        }
-                    </View>
+                                ))
+                                
+                            }
+                        </View>
 
-                    <Text style={styles.section}>Finished</Text>
-                    <View>
-                        {
-                            finishedItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
-                            :
-                            finishedItems.map((item, index) => (
-                                <TouchableOpacity key={index} style={styles.item}>
-                                    <View style={styles.itemLeft}>
-                                        <Ionicons name={'checkmark-circle'} size={23} color={colors.grey} onPress={() => cancelFinished(index)}></Ionicons>
-                                        <Text style={styles.itemFinished}>{item}</Text>
-                                    </View>
-
-                                    <TouchableOpacity onPress={() => deleteFinished(index)}>
-                                        <View style={styles.square}>
-                                            <Ionicons name='trash-outline' size={22} style={{ left: 0.8, color: colors.darkGrey }}></Ionicons>
+                        <Text style={styles.section}>Finished</Text>
+                        <View>
+                            {
+                                finishedItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
+                                :
+                                finishedItems.map((item, index) => (
+                                    <TouchableOpacity key={index} style={styles.item}>
+                                        <View style={styles.itemLeft}>
+                                            <Ionicons name={'checkmark-circle'} size={23} color={colors.grey} onPress={() => cancelFinished(index)}></Ionicons>
+                                            <Text style={styles.itemFinished}>{item}</Text>
                                         </View>
+
+                                        <TouchableOpacity onPress={() => deleteFinished(index)}>
+                                            <View style={styles.square}>
+                                                <Ionicons name='trash-outline' size={22} style={{ left: 0.8, color: colors.darkGrey }}></Ionicons>
+                                            </View>
+                                        </TouchableOpacity>
                                     </TouchableOpacity>
-                                </TouchableOpacity>
-                            ))
-                        }
-                    </View>
+                                ))
+                            }
+                        </View>
+                        </View>
+                    }
 
                 </View>
             </ScrollView>
@@ -158,6 +220,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
+        paddingTop: 25
         //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
     listWrapper: {
@@ -303,3 +366,4 @@ const styles = StyleSheet.create({
 })
 
 export default ShoppingCart;
+

@@ -68,14 +68,16 @@ function IngredientList({ navigation }) {
         onPress={handlePress}
         activeOpacity={selected.length === 0 ? 1 : 0.6}>
         <View
+          onPress={handlePress}
           style={[
             styles.continueWrapper,
             {
               backgroundColor:
-                selected.length === 0 ? colors.lightGrey : colors.mainGreen,
+                selected.length === 0 ? '#f1f1f1' : colors.mainGreen,
             },
           ]}>
           <Text
+            onPress={handlePress}
             style={[
               styles.continueText,
               { color: selected.length === 0 ? colors.black : colors.white },
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+    paddingTop: 15
   },
   sectionTitle: {
     fontSize: 20,
