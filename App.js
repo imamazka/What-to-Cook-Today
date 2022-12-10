@@ -13,6 +13,8 @@ import Home from "./Page/Home";
 import Favorite from "./Page/Favorite";
 import Main from "./Page/Main";
 import UserDetails from "./Page/UserDetails";
+import ForgotPassword from "./Page/ForgotPassword";
+import ResetPassword from "./Page/ResetPassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +39,7 @@ function App() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       </Stack.Navigator>
     );
   } else {
@@ -49,6 +52,7 @@ function App() {
         <Stack.Screen name="FoodPage" component={FoodPage} />
         <Stack.Screen name="FoodList" component={FoodList} />
         <Stack.Screen name="Favorite" component={Favorite} />
+        <Stack.Screen name="ResetPassword" component={ResetPassword} />
       </Stack.Navigator>
     );
   }

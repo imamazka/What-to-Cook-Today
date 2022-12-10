@@ -59,36 +59,38 @@ const Register = ({ navigation }) => {
     password: "",
     confirmPassword: "",
   });
-  const [user, setUser] = useState("");
-  useEffect(() => {
-    getUser();
-  }, []);
-  
-  const getUser = () => {
-    firebase
-      .firestore()
-      .collection("users")
-      .get()
-      .then((data) => {
-        data.docs.forEach((datas) => {
-          setUser(datas.data());
-        });
-      });
-  };
-  console.log(user);
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const validate = () => {
+  const handleOnChange = (text, input) => {
+    setData((prevState) => ({ ...prevState, [input]: text }));
+  };
+
+  const handleOnError = (errorMessage, input) => {
+    setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
+  };
+
+  const validate = async () => {
     let valid = true;
     Keyboard.dismiss();
 
-    if (data.email == user.email) {
+    const emailRegistered = await firebase
+      .firestore()
+      .collection("users")
+      .where("email", "==", data.email)
+      .get();
+    const userNameRegistered = await firebase
+      .firestore()
+      .collection("users")
+      .where("userName", "==", data.userName)
+      .get();
+
+    if (!emailRegistered.empty) {
       handleOnError("Your email already exist", "email");
       valid = false;
     }
-    if (data.userName == user.userName) {
+    if (!userNameRegistered.empty) {
       handleOnError("Your user name already exist", "userName");
       valid = false;
     }
@@ -127,7 +129,6 @@ const Register = ({ navigation }) => {
               .set({
                 userName: data.userName,
                 email: data.email,
-                password: data.password,
               });
           })
           .catch((error) => {
@@ -137,14 +138,6 @@ const Register = ({ navigation }) => {
         Alert.alert("Error", "Something went wrong");
       }
     }, 3000);
-  };
-
-  const handleOnChange = (text, input) => {
-    setData((prevState) => ({ ...prevState, [input]: text }));
-  };
-
-  const handleOnError = (errorMessage, input) => {
-    setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
   };
 
   return (

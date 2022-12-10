@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
     listWrapper: {
         paddingTop: 30,
@@ -197,13 +197,6 @@ const styles = StyleSheet.create({
         right: 25,
         bottom: 15,
         shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 8,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
         elevation: 9,
     },
     inputWrapper: {

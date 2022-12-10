@@ -14,7 +14,6 @@ import { firebase } from "../firebase";
 
 import colors from "../config/colors";
 
-
 function Food(props) {
   const [selected, setSelected] = useState(false);
   const navigation = useNavigation();
@@ -35,23 +34,21 @@ function Food(props) {
         .collection("users")
         .doc(firebase.auth().currentUser.uid)
         .update({
-            favorites: firebase.firestore.FieldValue.arrayUnion(props.foodId)
-        })  
-        console.log("add food ID: "+ props.foodId +" to database");
-    }
-    else{
+          favorites: firebase.firestore.FieldValue.arrayUnion(props.foodId),
+        });
+      console.log("add food ID: " + props.foodId + " to database");
+    } else {
       setSelected(!selected);
       firebase
         .firestore()
         .collection("users")
         .doc(firebase.auth().currentUser.uid)
         .update({
-            favorites: firebase.firestore.FieldValue.arrayRemove(props.foodId)
-        })
-        console.log("remove food ID: "+ props.foodId +" from database");
-    } 
+          favorites: firebase.firestore.FieldValue.arrayRemove(props.foodId),
+        });
+      console.log("remove food ID: " + props.foodId + " from database");
+    }
   }
-
 
   return (
     <TouchableOpacity
@@ -80,18 +77,26 @@ function Food(props) {
         </View>
         {/* food */}
         <View
-          style={{ width: "50%", justifyContent: "center", alignItems: "flex-start", paddingLeft: 10,}}>
+          style={{
+            width: "50%",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            paddingLeft: 10,
+          }}>
           <View style={{ width: "100%" }}>
-            {props.type==null ? <View/> : <Text
-              style={{
-                color: colors.mainGreen,
-                fontSize: 14,
-                fontWeight: "700",
-                textTransform: "capitalize",
-              }}>
-              {props.type}
-            </Text>}
-            
+            {props.type == null ? (
+              <View />
+            ) : (
+              <Text
+                style={{
+                  color: colors.mainGreen,
+                  fontSize: 14,
+                  fontWeight: "700",
+                  textTransform: "capitalize",
+                }}>
+                {props.type}
+              </Text>
+            )}
           </View>
 
           <View
@@ -112,10 +117,10 @@ function Food(props) {
                 alignItems: "flex-start",
                 marginRight: 15,
               }}>
-              <Ionicons name="time-outline" color={colors.black} size={15} />
+              <Ionicons name="time-outline" color={colors.black} size={16} />
               <Text
                 style={{
-                  color: '#555555',
+                  color: "#555555",
                   paddingLeft: 4,
                   fontSize: 12,
                 }}>
@@ -127,8 +132,8 @@ function Food(props) {
                 flexDirection: "row",
                 alignItems: "center",
               }}>
-              <Ionicons name="heart-outline" color="red" size={15} />
-              <Text style={{ paddingLeft: 4, fontSize: 12, color: '#555555' }}>
+              <Ionicons name="heart-outline" color="red" size={16} />
+              <Text style={{ paddingLeft: 4, fontSize: 12, color: "#555555" }}>
                 {props.likes}
               </Text>
             </View>
@@ -145,7 +150,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: colors.white,
     borderRadius: 20,
-    //paddingBottom: 30,
     shadowColor: colors.black,
     shadowOffset: {
       width: 0,
@@ -182,22 +186,10 @@ const styles = StyleSheet.create({
     top: 4,
   },
   time: {
-    //paddingLeft: 20,
-    //top: 15,
     backgroundColor: colors.white,
     alignItems: "center",
-    //justifyContent: 'space-evenly',
-    //borderRadius: 8,
     flexDirection: "row",
   },
-  /* itemIngredient: {
-    fontSize: 14,
-    color: colors.darkGrey,
-    fontWeight: "400",
-    marginTop: 10,
-    top: 5,
-    left: 15,
-  }, */
 });
 
 export default Food;

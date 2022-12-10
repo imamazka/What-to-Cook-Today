@@ -6,14 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Keyboard,
+  Alert,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firebase } from "../firebase";
-import UserDetails from "./UserDetails";
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
@@ -58,26 +56,6 @@ const Login = ({ navigation }) => {
     email: "",
     password: "",
   });
-
-  const [user, setUser] = useState();
-
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  const getUser = () => {
-    firebase
-      .firestore()
-      .collection("users")
-      .get()
-      .then((data) => {
-        data.docs.forEach((datas) => {
-          setUser(datas.data());
-        });
-      });
-  };
-  console.log(user);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -89,33 +67,19 @@ const Login = ({ navigation }) => {
     setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
   };
 
-  const validate = () => {
-    Keyboard.dismiss();
-    let valid = true;
-
-    if (data.email != user.email) {
-      handleOnError("Your email incorrect", "email");
-      valid = false;
-    }
-    if (data.password != user.password) {
-      handleOnError("Your password incorrect", "password");
-      valid = false;
-    }
-    console.log(valid);
-    loginSuccessful();
-    if (valid) loginSuccessful();
-  };
-
-  const loginSuccessful = () => {
+  const validate = async () => {
     setLoading(true);
-    setTimeout(() => {
+    try {
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(data.email, data.password);
+    } catch (error) {
       setLoading(false);
-      try {
-        firebase.auth().signInWithEmailAndPassword(data.email, data.password);
-      } catch (error) {
-        alert(error.message);
-      }
-    }, 3000);
+      //Alert.alert("Error", "Your email or password incorrect");
+      handleOnError("Your email or password incorret", "email");
+      handleOnError("Your email or password incorret", "password");
+      console.error(error);
+    }
   };
 
   return (
@@ -158,7 +122,7 @@ const Login = ({ navigation }) => {
           <TouchableOpacity
             style={Styles.loginButton}
             activeOpacity={0.5}
-            onPress={loginSuccessful}>
+            onPress={validate}>
             <Text style={Styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
