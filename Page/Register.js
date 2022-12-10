@@ -129,6 +129,9 @@ const Register = ({ navigation }) => {
               .set({
                 userName: data.userName,
                 email: data.email,
+                favorite:[],
+                ingredientItems:[],
+                finishedItems:[]
               });
           })
           .catch((error) => {

@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, Image } from 'react-native';
+import { firebase } from "../firebase";
 
 import colors from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
+import IngredientItem from '../components/IngredientItem';
+
+function useMounted() {
+    const [isMounted, setIsMounted] = useState(false)
+    useEffect(() => {
+      setIsMounted(true)
+    }, [])
+    return isMounted
+  }
 
 function ShoppingCart({navigation}) {
 
@@ -10,6 +20,31 @@ function ShoppingCart({navigation}) {
     const [ingredientItems, setIngredientItems] = useState([]);
     const [finishedItems, setFinishedItems] = useState([]);
     const [addItem, setAddItem] = useState(false);
+    const isMounted = useMounted()
+
+    useEffect (() =>{
+        fetchItem();
+    },[]);
+
+    useEffect(() => {
+        if (isMounted) {
+          setItem();
+        }
+     },[ingredientItems,finishedItems]);
+
+    
+    const setItem = () => {
+        firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .update({
+            ingredientItems:ingredientItems,
+            finishedItems:finishedItems
+        });
+        console.log ("ingred: "+ingredientItems);
+        console.log ("finish: "+finishedItems);
+    }
 
     const handleAddIngredient = () => {
         Keyboard.dismiss();
@@ -17,12 +52,14 @@ function ShoppingCart({navigation}) {
         setIngredient(null);
         setAddItem(!addItem);
     }
+
     function deleteIngredient(index) {
         let ingredientCopy = [...ingredientItems];
         ingredientCopy.splice(index, 1);
         setIngredientItems(ingredientCopy);
         console.log('deleted');
     }
+
     function completeIngredient(index) {
         finishedItems.push(ingredientItems[index]);
         let ingredientCopy = [...ingredientItems];
@@ -31,13 +68,15 @@ function ShoppingCart({navigation}) {
         console.log('finished');
     }
 
-    function cancelFinished(index) {r
+    function cancelFinished(index) {
         ingredientItems.push(finishedItems[index]);
         let ingredientCopy = [...finishedItems];
         ingredientCopy.splice(index, 1);
         setFinishedItems(ingredientCopy);
+        setItem();
         console.log('cancelled');
     }
+
     function deleteFinished(index) {
         let ingredientCopy = [...finishedItems];
         ingredientCopy.splice(index, 1);
@@ -45,6 +84,18 @@ function ShoppingCart({navigation}) {
         console.log('deleted');
     }
 
+    const fetchItem = () => {
+        firebase
+         .firestore()
+         .collection("users")
+         .doc(firebase.auth().currentUser.uid)
+         .get()
+         .then((data)=>{
+            console.log("Ini"+ data.data().ingredientItems+ "budi"+data.data().finishedItems)
+            setIngredientItems(data.data().ingredientItems);
+            setFinishedItems(data.data().finishedItems); 
+         });
+     };
 
     return (
         <View style={styles.container}>
@@ -56,6 +107,7 @@ function ShoppingCart({navigation}) {
 
                     <View>
                         {
+                            ingredientItems==undefined ? <Text style={styles.empty}>-- Empty  --</Text> : 
                             ingredientItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
                             :
                             ingredientItems.map((item, index) => (
@@ -79,6 +131,7 @@ function ShoppingCart({navigation}) {
                     <Text style={styles.section}>Finished</Text>
                     <View>
                         {
+                            finishedItems==undefined ?  <Text style={styles.empty}>-- Empty  --</Text> : 
                             finishedItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
                             :
                             finishedItems.map((item, index) => (
@@ -158,7 +211,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
-        //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
     listWrapper: {
         paddingTop: 30,
@@ -197,6 +250,13 @@ const styles = StyleSheet.create({
         right: 25,
         bottom: 15,
         shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },
+        shadowOpacity: 0.41,
+        shadowRadius: 9.11,
+        elevation: 14,
         elevation: 9,
     },
     inputWrapper: {
