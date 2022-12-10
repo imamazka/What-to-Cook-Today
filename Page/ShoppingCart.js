@@ -41,7 +41,7 @@ function ShoppingCart({navigation}) {
         .update({
             ingredientItems:ingredientItems,
             finishedItems:finishedItems
-        });
+        });add
         console.log ("ingred: "+ingredientItems);
         console.log ("finish: "+finishedItems);
     }
