@@ -17,6 +17,7 @@ import Food from "../components/Food";
 import apiKey from "../key";
 import mealTypes from "../assets/dummy data/meal_types";
 import { firebase } from "../firebase";
+import { ImageBackground } from "react-native";
 
 const Search = (props) => {
   return (
@@ -28,7 +29,7 @@ const Search = (props) => {
         paddingHorizontal: 13,
         borderRadius: 20,
         alignItems: "center",
-        marginTop: 15,
+        marginTop: 25,
         height: 35,
       }}>
       <Ionicons name="search" size={20} />
@@ -43,8 +44,10 @@ const Search = (props) => {
     </View>
   );
 };
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Main = ({ navigation }) => {
+
   const [searchQuery, setSearchQuery] = useState("");
   const [type, setType] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
@@ -73,7 +76,7 @@ const Main = ({ navigation }) => {
 
   useEffect(() => {
     getRandomList();
-  }, [])
+  }, []);
 
   const getRandomList = async () => {
     getFavorite();
@@ -114,17 +117,44 @@ const Main = ({ navigation }) => {
     }
   };
 
+  console.log(searchQuery);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Search
-          placeholder="Search"
-          onChangeText={onChangeSearch}
-          onSubmitEditing={submitSearch}
-          value={searchQuery}
-        />
         <View
-          style={{marginTop: 10}}>
+          style={{
+            marginHorizontal: 20,
+            marginTop: 15,
+            height: 35,
+          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "#DEFDEA",
+              alignItems: "center",
+              paddingHorizontal: 13,
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: colors.mainGreen,
+            }}>
+            <Ionicons name="search" size={20} color="#969696" />
+            <TextInput
+              style={{ flex: 1, marginLeft: 6 }}
+              blurOnSubmit={false}
+              placeholder="Search"
+              value={searchQuery}
+              onChangeText={(text) => setSearchQuery(text)}
+              onSubmitEditing={submitSearch}
+            />
+
+            {searchQuery && (
+              <TouchableOpacity onPress={() => setSearchQuery("")}>
+                <Ionicons name="close" size={20} color="#969696" />
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+        <View style={{ marginTop: 10 }}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {mealTypes.map((types) => (
               <TouchableOpacity
@@ -136,10 +166,14 @@ const Main = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-
         <View style={styles.itemWrapper}>
-          {listData == null ? (
-            <Text style={{ alignSelf: "center" }}>Loading...</Text>
+          {listData==null || listData.length==0 ? (
+            <View style={{ alignItems: 'center', marginVertical: 120, marginHorizontal: 48 }}>
+              <ImageBackground source={require('../assets/NoSearchResult.png')} style={{width: 250, height: 250, justifyContent: 'flex-end'}}>
+                <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>No results found</Text>
+              </ImageBackground>
+              <Text style={{ textAlign: 'center', fontSize: 14, marginTop: 5, color: '#555555' }}>Try search another food to find what are you looking for</Text>
+            </View>
           ) : (
             listData.map((item) => (
               <Food
@@ -194,7 +228,7 @@ const Main = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
