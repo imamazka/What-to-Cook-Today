@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, ScrollView, Platform, StatusBar, KeyboardAvoidi
 
 import colors from '../config/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { ImageBackground } from 'react-native';
 
 function ShoppingCart({navigation}) {
 
@@ -31,7 +32,7 @@ function ShoppingCart({navigation}) {
         console.log('finished');
     }
 
-    function cancelFinished(index) {r
+    function cancelFinished(index) {
         ingredientItems.push(finishedItems[index]);
         let ingredientCopy = [...finishedItems];
         ingredientCopy.splice(index, 1);
@@ -52,51 +53,62 @@ function ShoppingCart({navigation}) {
 
                 <View style={styles.listWrapper}>
                     <Text style={styles.sectionTitle}>Shopping Cart</Text>
-                    <Text style={styles.section}>To Shop</Text>
 
-                    <View>
-                        {
-                            ingredientItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
-                            :
-                            ingredientItems.map((item, index) => (
-                                <TouchableOpacity key={index} style={styles.item}>
-                                    <View style={styles.itemLeft}>
-                                        <Ionicons name={'ellipse-outline'} size={23} color={colors.grey} onPress={() => completeIngredient(index)}></Ionicons>
-                                        <Text style={styles.itemText}>{item}</Text>
-                                    </View>
-
-                                    <TouchableOpacity onPress={() => deleteIngredient(index)}>
-                                        <View style={styles.square}>
-                                            <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
+                    {ingredientItems.length==0 && finishedItems.length==0 ? 
+                        <View style={{ alignItems: 'center', marginVertical: 130, marginHorizontal: 48 }}>
+                            <ImageBackground source={require('../assets/NoItemsCart.png')} style={{width: 250, height: 250, justifyContent: 'flex-end'}}>
+                                <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Your cart is empty</Text>
+                            </ImageBackground>
+                            <Text style={{ textAlign: 'center', fontSize: 14, marginTop: 5, color: '#555555' }}>Add new item to your shopping cart</Text>
+                        </View>
+                    :
+                        <View>
+                            <Text style={styles.section}>To Shop</Text>
+                            <View>
+                            {
+                                ingredientItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
+                                :
+                                ingredientItems.map((item, index) => (
+                                    <TouchableOpacity key={index} style={styles.item}>
+                                        <View style={styles.itemLeft}>
+                                            <Ionicons name={'ellipse-outline'} size={23} color={colors.grey} onPress={() => completeIngredient(index)}></Ionicons>
+                                            <Text style={styles.itemText}>{item}</Text>
                                         </View>
+
+                                        <TouchableOpacity onPress={() => deleteIngredient(index)}>
+                                            <View style={styles.square}>
+                                                <Ionicons name='trash-outline' size={22} style={{ left: 0.8 }}></Ionicons>
+                                            </View>
+                                        </TouchableOpacity>
                                     </TouchableOpacity>
-                                </TouchableOpacity>
-                            ))
-                            
-                        }
-                    </View>
+                                ))
+                                
+                            }
+                        </View>
 
-                    <Text style={styles.section}>Finished</Text>
-                    <View>
-                        {
-                            finishedItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
-                            :
-                            finishedItems.map((item, index) => (
-                                <TouchableOpacity key={index} style={styles.item}>
-                                    <View style={styles.itemLeft}>
-                                        <Ionicons name={'checkmark-circle'} size={23} color={colors.grey} onPress={() => cancelFinished(index)}></Ionicons>
-                                        <Text style={styles.itemFinished}>{item}</Text>
-                                    </View>
-
-                                    <TouchableOpacity onPress={() => deleteFinished(index)}>
-                                        <View style={styles.square}>
-                                            <Ionicons name='trash-outline' size={22} style={{ left: 0.8, color: colors.darkGrey }}></Ionicons>
+                        <Text style={styles.section}>Finished</Text>
+                        <View>
+                            {
+                                finishedItems.length==0 ? <Text style={styles.empty}>-- Empty  --</Text>
+                                :
+                                finishedItems.map((item, index) => (
+                                    <TouchableOpacity key={index} style={styles.item}>
+                                        <View style={styles.itemLeft}>
+                                            <Ionicons name={'checkmark-circle'} size={23} color={colors.grey} onPress={() => cancelFinished(index)}></Ionicons>
+                                            <Text style={styles.itemFinished}>{item}</Text>
                                         </View>
+
+                                        <TouchableOpacity onPress={() => deleteFinished(index)}>
+                                            <View style={styles.square}>
+                                                <Ionicons name='trash-outline' size={22} style={{ left: 0.8, color: colors.darkGrey }}></Ionicons>
+                                            </View>
+                                        </TouchableOpacity>
                                     </TouchableOpacity>
-                                </TouchableOpacity>
-                            ))
-                        }
-                    </View>
+                                ))
+                            }
+                        </View>
+                        </View>
+                    }
 
                 </View>
             </ScrollView>
@@ -158,6 +170,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
+        paddingTop: 25
         //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
     listWrapper: {
