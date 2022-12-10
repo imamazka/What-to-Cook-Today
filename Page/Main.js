@@ -44,13 +44,14 @@ const Search = (props) => {
     </View>
   );
 };
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Main = ({ navigation }) => {
 
-  const [listData, setListData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [type, setType] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
+  const [listData, setListData] = useState([]);
   const [favorite, setFavorite] = useState([]);
 
   useEffect(() => {
@@ -75,7 +76,7 @@ const Main = ({ navigation }) => {
 
   useEffect(() => {
     getRandomList();
-  }, [])
+  }, []);
 
   const getRandomList = async () => {
     getFavorite();
@@ -116,17 +117,44 @@ const Main = ({ navigation }) => {
     }
   };
 
+  console.log(searchQuery);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Search
-          placeholder="Search"
-          onChangeText={onChangeSearch}
-          onSubmitEditing={submitSearch}
-          value={searchQuery}
-        />
         <View
-          style={{marginTop: 10}}>
+          style={{
+            marginHorizontal: 20,
+            marginTop: 15,
+            height: 35,
+          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "#DEFDEA",
+              alignItems: "center",
+              paddingHorizontal: 13,
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: colors.mainGreen,
+            }}>
+            <Ionicons name="search" size={20} color="#969696" />
+            <TextInput
+              style={{ flex: 1, marginLeft: 6 }}
+              blurOnSubmit={false}
+              placeholder="Search"
+              value={searchQuery}
+              onChangeText={(text) => setSearchQuery(text)}
+              onSubmitEditing={submitSearch}
+            />
+
+            {searchQuery && (
+              <TouchableOpacity onPress={() => setSearchQuery("")}>
+                <Ionicons name="close" size={20} color="#969696" />
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+        <View style={{ marginTop: 10 }}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {mealTypes.map((types) => (
               <TouchableOpacity
@@ -138,7 +166,6 @@ const Main = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-
         <View style={styles.itemWrapper}>
           {listData==null || listData.length==0 ? (
             <View style={{ alignItems: 'center', marginVertical: 120, marginHorizontal: 48 }}>
@@ -201,7 +228,7 @@ const Main = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

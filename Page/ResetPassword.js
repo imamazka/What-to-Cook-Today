@@ -1,6 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { useState, useEffect } from "react";
+import { ScrollView } from "react-native";
 import {
   TouchableOpacity,
   View,
@@ -10,6 +11,7 @@ import {
   Alert,
 } from "react-native";
 import { Icon } from "react-native-elements";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "../firebase";
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
@@ -50,90 +52,114 @@ const InputText = ({ password, error, ...props }) => {
 };
 
 const ResetPassword = ({ navigation }) => {
-  const [data, setData] = useState({ password: "", confirmPassword: "" });
+  const [data, setData] = useState({
+    currentPassword: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [errors, setErrors] = useState({});
   const currentUser = firebase.auth().currentUser;
-
-  const handleOnError = (errorMessage, input) => {
-    setErrors((...prevState) => ({ ...prevState, [input]: errorMessage }));
-  };
+  const emailCred = firebase.auth.EmailAuthProvider.credential(
+    currentUser.email,
+    data.currentPassword
+  );
 
   const handleOnChange = (text, input) => {
     setData((prevState) => ({ ...prevState, [input]: text }));
   };
 
-  console.log(currentUser);
-
   const validate = () => {
     if (data.confirmPassword != data.password) {
-      handleOnError("Your password is not same", "password");
-      handleOnError("Your password is not same", "confirmPassword");
-    } else if (currentUser) {
-      currentUser
-        .updatePassword(data.password)
-        .then(() =>
-          Alert.alert(
-            "Password Updated",
-            "Your password has been changed successfully. Use your new password to log in"
-          )
-        )
-        .catch((error) => Alert.alert("Error", "Something went wrong!!!"));
+      Alert.alert(
+        "Error",
+        "Your new password and confirm password are not same"
+      );
+    } else if (data.password == data.currentPassword) {
+      Alert.alert(
+        "Error",
+        "Your new password must be different with your current password"
+      );
     } else {
-      Alert.alert("Error", "Please enter a new password");
+      firebase
+        .auth()
+        .currentUser.reauthenticateWithCredential(emailCred)
+        .then(() => {
+          currentUser.updatePassword(data.password);
+          Alert.alert(
+            "Password Updated!",
+            "Your password has been changed successfully. Use your new password to log in."
+          );
+          navigation.navigate("UserDetails");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
     }
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", paddingHorizontal: 20 }}>
-      <View style={{ marginTop: 25 }}>
-        <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
-          <Feather name="arrow-left" size={30} />
-        </TouchableOpacity>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <Icon name="lock" size={200} />
-        <Text style={{ fontSize: 15 }}>Please enter your new password</Text>
-      </View>
-      <InputText
-        placeholder="New password"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={(text) => handleOnChange(text, "password")}
-        password
-        error={errors.password}
-      />
-      <InputText
-        placeholder="Confirm password"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={(text) => handleOnChange(text, "confirmPassword")}
-        password
-        error={errors.confirmPassword}
-      />
-      <View style={{ alignSelf: "center", flexDirection: "row" }}>
-        <TouchableOpacity
-          style={{
-            height: 50,
-            backgroundColor: "#22CB65",
-            borderRadius: 30,
-            justifyContent: "center",
-            marginTop: 20,
-            flex: 1,
-          }}
-          activeOpacity={0.5}
-          onPress={validate}>
-          <Text
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginHorizontal: 20 }}>
+        <View style={{ marginTop: 25 }}>
+          <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
+            <Feather name="arrow-left" size={30} />
+          </TouchableOpacity>
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <Icon name="lock" size={200} />
+          <Text style={{ fontSize: 15 }}>Please enter your new password</Text>
+        </View>
+        <InputText
+          placeholder="Current password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(text) => handleOnChange(text, "currentPassword")}
+          password
+          error={errors.currentPassword}
+        />
+        <InputText
+          placeholder="New password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(text) => handleOnChange(text, "password")}
+          password
+          error={errors.password}
+        />
+        <InputText
+          placeholder="Confirm password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(text) => handleOnChange(text, "confirmPassword")}
+          password
+          error={errors.confirmPassword}
+        />
+        <View style={{ alignSelf: "center", flexDirection: "row" }}>
+          <TouchableOpacity
             style={{
-              color: "#FFF",
-              textAlign: "center",
-              fontSize: 20,
-              fontWeight: "500",
-            }}>
-            Create Password
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+              height: 50,
+              backgroundColor: "#22CB65",
+              borderRadius: 30,
+              justifyContent: "center",
+              marginVertical: 20,
+              flex: 1,
+            }}
+            activeOpacity={0.5}
+            onPress={validate}>
+            <Text
+              style={{
+                color: "#FFF",
+                textAlign: "center",
+                fontSize: 20,
+                fontWeight: "500",
+              }}>
+              Create Password
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -144,7 +170,7 @@ const Styles = StyleSheet.create({
     height: 50,
     paddingLeft: 20,
     //paddingRight: 20,
-    elevation: 6,
+    elevation: 5,
   },
 });
 
