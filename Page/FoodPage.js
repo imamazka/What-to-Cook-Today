@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Text, Image, ImageBackground, StyleSheet, View, StatusBar, ScrollView, Dimensions, TouchableOpacity, SafeAreaView, Share, Linking } from 'react-native';
-import { Ionicons } from "@expo/vector-icons"
+import { Ionicons } from "@expo/vector-icons";
+import {LinearGradient} from 'expo-linear-gradient';
 const { height } = Dimensions.get("window");
 const { width } = Dimensions.get("window");
 
@@ -8,8 +9,7 @@ import colors from '../config/colors';
 //import foodData from '../assets/dummy data/test_details';
 import apiKey from '../key';
 import RenderHTML from 'react-native-render-html';
-import { BackgroundImage } from '@rneui/base';
-import {LinearGradient} from 'expo-linear-gradient';
+
 
 function FoodPage({ route, navigation }) {
 

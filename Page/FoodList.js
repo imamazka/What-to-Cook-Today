@@ -4,9 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { firebase } from "../firebase";
 
 import colors from '../config/colors';
-import recipe from '../assets/dummy data/test_foodList';
 import FoodFiltered from '../components/FoodFiltered';
-import foodFiltered from '../assets/dummy data/test_foodFiltered';
 import apiKey from '../key';
 
 function FoodList({ route, navigation }) {
@@ -46,11 +44,12 @@ function FoodList({ route, navigation }) {
     return (
         <View style={styles.container}>
             <ScrollView>
-                <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingTop: 20, }}>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginHorizontal: 20, paddingTop: 20, justifyContent: 'space-between'}}>
                     <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('IngredientList')}>
-                        <Ionicons name="arrow-back-outline" size={25} color={colors.darkGrey}/>
+                        <Ionicons name="arrow-back-outline" size={24}/>
                     </TouchableOpacity>
-                    <Text style={styles.sectionText}>Based on your ingredient :</Text>
+                    <Text style={styles.sectionText}>Based on your ingredients</Text>
+                    <View style={{width:40, height:40}}></View>
                 </View>
 
                 <View style={styles.wrapper}>
@@ -63,6 +62,7 @@ function FoodList({ route, navigation }) {
                                 rating={item.likes}
                                 owned={item.usedIngredientCount}
                                 missing={item.missedIngredientCount}
+                                ingredients={item.missedIngredients.concat(item.usedIngredients)}
                                 favorite={favorite}>
                             </FoodFiltered>
                     ))}
@@ -77,10 +77,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
+        //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
     },
     wrapper: {
-        padding: 20,
+        marginHorizontal: 20,
+        marginTop: 10
     },
     backButton: {
         height: 40,
@@ -88,22 +89,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 40,
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
-        elevation: 9,
     },
     sectionText: {
-        fontSize: 18,
+        fontSize: 19,
         fontWeight: "bold",
         color: colors.black,
-        paddingLeft: 20
     },
 })
 

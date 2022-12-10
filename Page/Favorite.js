@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { StatusBar, View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { Ionicons } from "@expo/vector-icons"
 
 import colors from '../config/colors';
 import Food from '../components/Food';
-//import listData from '../assets/dummy data/test_foodList';
 import apiKey from '../key';
 import { firebase } from "../firebase";
 
@@ -14,9 +13,13 @@ function Favorite({navigation}) {
     const [ids, setIds] = useState([]);
     //const ids = '639637,641202,662075,663313,635675'; //change to id on user data
 
-     useEffect(() => {
+    useEffect(() => {
         getFavorite();
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        getFavoriteList();
+    }, [ids]);
     
     const getFavorite = () => {
        firebase
@@ -26,7 +29,8 @@ function Favorite({navigation}) {
         .get()
         .then((data)=>{
             setIds(data.data().favorites);
-            console.log("db favorite: " + data.data().favorites)
+            console.log("db favorites: " + data.data().favorites)
+            console.log(data.data().favorites)
         });
     };
 
@@ -46,28 +50,34 @@ function Favorite({navigation}) {
     return (
         <View style={styles.container}>
             <ScrollView>
-                <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingTop: 20, justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', paddingTop: 15, marginHorizontal: 24, justifyContent: 'space-between' }}>
                     <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('UserDetails')}>
-                        <Ionicons name="arrow-back-outline" size={25} color={colors.darkGrey}/>
+                        <Ionicons name="arrow-back-outline" size={24} color={colors.black}/>
                     </TouchableOpacity>
-                    <Text style={styles.sectionText}>Your favorites</Text>
-                    <TouchableOpacity style={styles.shareButton} onPress={getFavoriteList}>
-                        <Ionicons name="share-outline" size={25} color={colors.darkGrey}/>
-                    </TouchableOpacity>
+                    <Text style={styles.sectionText}>Favorites</Text>
+                    <View style={{ height: 40, width: 40 }}></View>
                 </View>
 
-                <View style={styles.itemWrapper}>
-                    {listData==undefined ? <Text style={{ alignSelf: 'center' }}>Loading...</Text> 
-                        : listData.map(item => (
-                            <Food 
-                                key={item.id}
-                                foodId={item.id} 
-                                imageUri={item.image} 
-                                name={item.title}
-                                type={item.dishTypes[0]} 
-                                likes={item.aggregateLikes}
-                                time={item.readyInMinutes}>
-                            </Food>))
+                <View style={{padding: 20,}}>
+                    {listData==undefined || ids=='' ?
+                        <View style={{ alignItems: 'center', marginVertical: 150, marginHorizontal: 48 }}>
+                            <ImageBackground source={require('../assets/EmptyInbox.png')} style={{width: 250, height: 250, justifyContent: 'flex-end'}}>
+                                <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Your favorite is empty</Text>
+                                <Text style={{ textAlign: 'center', fontSize: 14, marginTop: 3, color: '#555555' }}>Explore the recipes and add them to favorite to show them here</Text>
+                            </ImageBackground>
+                        </View>
+                        : 
+                        listData.map(item => (
+                        <Food 
+                            key={item.id}
+                            foodId={item.id} 
+                            imageUri={item.image} 
+                            name={item.title}
+                            type={item.dishTypes[0]} 
+                            likes={item.aggregateLikes}
+                            time={item.readyInMinutes}
+                            favorite={ids}>
+                        </Food>))
                     }
                 </View>
                 
@@ -80,27 +90,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
-        //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
-    },
-    itemWrapper: {
-        padding: 20,
+        flexDirection: 'row'
     },
     backButton: {
         height: 40,
         width: 40,
-        backgroundColor: colors.white,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 40,
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
-        elevation: 9,
     },
     shareButton: {
         right: 20,
@@ -111,20 +107,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 40,
         shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.41,
-        shadowRadius: 9.11,
-        elevation: 14,
         elevation: 9,
     },
     sectionText: {
-        fontSize: 18,
+        fontSize: 19,
         fontWeight: "bold",
         color: colors.black,
-        paddingLeft: 20
+        flexDirection: 'row', 
+        alignSelf: 'center', 
+        justifyContent: 'center',
     },
 })
 

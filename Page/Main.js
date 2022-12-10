@@ -50,6 +50,7 @@ const Main  = ({ navigation }) => {
   const onChangeSearch = (query) => setSearchQuery(query);
   const [listData, setListData] = useState([]);
   const [favorite, setFavorite] = useState([]); 
+  const searchType = useState('');
 
   useEffect(() => {
     getFavorite();
@@ -71,7 +72,12 @@ const Main  = ({ navigation }) => {
   const urlSearch = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&query=${searchQuery}&addRecipeInformation=true&number=10`;
   const urlFilter = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&type=${type}&addRecipeInformation=true&number=10`;
 
+  useEffect(() => {
+    getRandomList();
+  }, [])
+
   const getRandomList = async () => {
+    getFavorite();
     try {
       const response = await fetch(urlRandom);
       const json = await response.json();
@@ -83,6 +89,7 @@ const Main  = ({ navigation }) => {
   };
 
   const submitSearch = async () => {
+    getFavorite();
     Keyboard.dismiss();
     try {
       const response = await fetch(urlSearch);
@@ -95,6 +102,7 @@ const Main  = ({ navigation }) => {
   };
 
   const submitType = async (type) => {
+    getFavorite();
     setType(type);
     console.log(type);
     try {
@@ -131,8 +139,6 @@ const Main  = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-        
-
 
         <View style={styles.itemWrapper}>
           {listData == null ?

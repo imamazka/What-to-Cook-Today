@@ -7,24 +7,29 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-const { width } = Dimensions.get("window");
+import { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../firebase";
 
 import colors from "../config/colors";
-import { useEffect } from "react";
-const ITEM_WIDTH = width / 2 - 10 * 2.3;
+
 
 function Food(props) {
   const [selected, setSelected] = useState(false);
   const navigation = useNavigation();
-  
-// console.log(selected);
+
+  useEffect(() => {
+    if(props.favorite!=undefined){
+      if(props.favorite.includes(props.foodId)){
+        setSelected(true);
+      }
+    }
+  }, [])
+
   function handleFavorite(){
     if(selected==false){
       setSelected(!selected);
-      // props.favorite.push(props.foodId)
       firebase
         .firestore()
         .collection("users")
@@ -36,10 +41,6 @@ function Food(props) {
     }
     else{
       setSelected(!selected);
-      // const index = props.favorite.indexOf(props.foodId);
-      // if (index > -1) {
-      //   props.favorite.splice(index, 1)
-      // }
       firebase
         .firestore()
         .collection("users")
@@ -170,7 +171,6 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 3,
   },
-
   itemName: {
     fontSize: 17,
     fontWeight: "bold",
