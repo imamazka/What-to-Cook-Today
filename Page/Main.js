@@ -125,6 +125,7 @@ const Main = ({ navigation }) => {
             marginHorizontal: 20,
             marginTop: 15,
             height: 35,
+            marginBottom: 2,
           }}>
           <View
             style={{
@@ -136,6 +137,8 @@ const Main = ({ navigation }) => {
               borderRadius: 20,
               borderWidth: 1,
               borderColor: colors.mainGreen,
+              height: 38,
+              justifyContent: "center",
             }}>
             <Ionicons name="search" size={20} color="#969696" />
             <TextInput
@@ -144,7 +147,7 @@ const Main = ({ navigation }) => {
                 marginLeft: 6,
               }}
               blurOnSubmit={false}
-              placeholder="Search"
+              placeholder="Search any food"
               value={searchQuery}
               onChangeText={(text) => setSearchQuery(text)}
               onSubmitEditing={submitSearch}
@@ -279,7 +282,7 @@ const styles = StyleSheet.create({
   },
   itemWrapper: {
     marginHorizontal: 20,
-    marginTop: 15,
+    marginTop: 10,
   },
   navBar: {
     width: "100%",

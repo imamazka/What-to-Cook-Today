@@ -299,7 +299,7 @@ function FoodPage({ route, navigation }) {
               fontWeight: "500",
               color: colors.darkGrey,
             }}>
-            Loading....
+            Loading...
           </Text>
         )}
       </View>

@@ -11,6 +11,13 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
+/**
+ * Page shown to user when they first time open the app.
+ * 
+ * @param {navigation} navigation to next screen 
+ * 
+ */
+
 const Home = ({ navigation }) => {
   const { width, height } = useWindowDimensions();
   return (
