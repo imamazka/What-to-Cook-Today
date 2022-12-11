@@ -59,7 +59,7 @@ function Favorite({navigation}) {
                 </View>
 
                 <View style={{padding: 20,}}>
-                    {listData==undefined || ids=='' ?
+                    {listData==undefined || ids==undefined || listData=='' ?
                         <View style={{ alignItems: 'center', marginVertical: 150, marginHorizontal: 48 }}>
                             <ImageBackground source={require('../assets/EmptyInbox.png')} style={{width: 250, height: 250, justifyContent: 'flex-end'}}>
                                 <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Your favorite is empty</Text>

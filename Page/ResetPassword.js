@@ -101,48 +101,54 @@ const ResetPassword = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginHorizontal: 20 }}>
-        <View style={{ marginTop: 25 }}>
+        style={{ }}>
+        <View style={{ marginTop: 25, marginLeft: 20 }}>
           <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
             <Feather name="arrow-left" size={30} />
           </TouchableOpacity>
         </View>
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center", justifyContent: 'center', marginTop: 10 }}>
           <Icon name="lock" size={200} />
           <Text style={{ fontSize: 15 }}>Please enter your new password</Text>
         </View>
-        <InputText
-          placeholder="Current password"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={(text) => handleOnChange(text, "currentPassword")}
-          password
-          error={errors.currentPassword}
-        />
-        <InputText
-          placeholder="New password"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={(text) => handleOnChange(text, "password")}
-          password
-          error={errors.password}
-        />
-        <InputText
-          placeholder="Confirm password"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={(text) => handleOnChange(text, "confirmPassword")}
-          password
-          error={errors.confirmPassword}
-        />
-        <View style={{ alignSelf: "center", flexDirection: "row" }}>
+        <View style={{marginHorizontal: 20, marginTop: 20}}>
+          <InputText
+            placeholder="Current password"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={(text) => handleOnChange(text, "currentPassword")}
+            password
+            error={errors.currentPassword}
+          />
+        </View>
+        <View style={{marginHorizontal: 20}}>
+          <InputText
+            placeholder="New password"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={(text) => handleOnChange(text, "password")}
+            password
+            error={errors.password}
+          />
+        </View>
+        <View style={{marginHorizontal: 20}}>
+          <InputText
+            placeholder="Confirm password"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={(text) => handleOnChange(text, "confirmPassword")}
+            password
+            error={errors.confirmPassword}
+          />
+        </View>
+        <View style={{ alignSelf: "center", flexDirection: "row", marginHorizontal: 20 }}>
           <TouchableOpacity
             style={{
               height: 50,
               backgroundColor: "#22CB65",
               borderRadius: 30,
               justifyContent: "center",
-              marginVertical: 20,
+              marginVertical: 50,
               flex: 1,
             }}
             activeOpacity={0.5}
