@@ -16,7 +16,7 @@ import { firebase } from "../firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const UserDetails = ({ navigation }) => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
   useEffect(() => {
     getUser();
   }, []);
@@ -30,7 +30,6 @@ const UserDetails = ({ navigation }) => {
       .then((data) => {
         if (data.exists) {
           setUser(data.data());
-          console.log(data);
         } else console.log("user doesnt exist");
       });
   };
@@ -53,10 +52,18 @@ const UserDetails = ({ navigation }) => {
             alignItems: "center",
             marginVertical: 10,
           }}>
-          <Image
-            source={require("../assets/defaultProfilePicture.png")}
-            style={Styles.profileImage}
-          />
+          {user.imgProfile == null ? (
+            <Image
+              source={require("../assets/defaultProfilePicture.png")}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 100 / 2,
+                borderWidth: 3,
+                borderColor: "#FFFFFF",
+              }}
+            />
+          ) : null}
         </View>
         <View>
           <Text
@@ -223,15 +230,6 @@ const Styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 25,
     fontWeight: "500",
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-    borderWidth: 3,
-    borderColor: "#FFFFFF",
-    // position: 'absolute',
-    // zIndex: 2
   },
   itemWrapper: {
     padding: 20,

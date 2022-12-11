@@ -13,6 +13,7 @@ import {
 import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "../firebase";
+import { Ionicons } from "@expo/vector-icons";
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
   return (
@@ -102,10 +103,20 @@ const ResetPassword = ({ navigation }) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ marginHorizontal: 20 }}>
-        <View style={{ marginTop: 25 }}>
-          <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
-            <Feather name="arrow-left" size={30} />
+        <View
+          style={{
+            flexDirection: "row",
+            paddingTop: 15,
+            marginBottom: 20,
+            justifyContent: "space-between",
+          }}>
+          <TouchableOpacity
+            style={Styles.backButton}
+            onPress={() => navigation.navigate("UserDetails")}>
+            <Ionicons name="arrow-back-outline" size={24} color={"black"} />
           </TouchableOpacity>
+          <Text style={Styles.sectionText}>Security</Text>
+          <Ionicons name="arrow-back-outline" size={24} color={"white"} />
         </View>
         <View style={{ alignItems: "center" }}>
           <Icon name="lock" size={200} />
@@ -164,6 +175,18 @@ const ResetPassword = ({ navigation }) => {
 };
 
 const Styles = StyleSheet.create({
+  backButton: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  sectionText: {
+    fontSize: 19,
+    fontWeight: "bold",
+    color: "black",
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "center",
+  },
   inputText: {
     backgroundColor: "#F6F6F6",
     borderRadius: 30,

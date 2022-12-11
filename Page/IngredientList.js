@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import ingredients from "../assets/dummy data/ingredients";
 import IngredientItem from "../components/IngredientItem";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function IngredientList({ navigation }) {
   const [selected, setSelected] = useState([]);
@@ -24,9 +25,9 @@ function IngredientList({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={{ paddingTop: 30 }}>
+        <View style={{ marginTop: 10 }}>
           <Text style={styles.sectionTitle}>Select your ingredients!</Text>
 
           <View style={styles.info}>
@@ -36,7 +37,11 @@ function IngredientList({ navigation }) {
             </Text>
           </View>
 
-          <View style={{ padding: 5, marginBottom: 40 }}>
+          <View
+            style={{
+              padding: 5,
+              marginBottom: selected.length === 0 ? 0 : 40,
+            }}>
             {ingredients.map((category) => (
               <View style={styles.categoriesWrapper} key={category.id}>
                 <View style={styles.categoryTitleWrapper}>
@@ -73,7 +78,8 @@ function IngredientList({ navigation }) {
             styles.continueWrapper,
             {
               backgroundColor:
-                selected.length === 0 ? '#f1f1f1' : colors.mainGreen,
+                selected.length === 0 ? "#f1f1f1" : colors.mainGreen,
+              opacity: selected.length === 0 ? 0 : 1,
             },
           ]}>
           <Text
@@ -126,7 +132,7 @@ function IngredientList({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -134,33 +140,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 15
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 27.5,
     fontWeight: "bold",
-    left: 10,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    marginBottom: 8,
+    marginHorizontal: 20,
+    marginTop: 10,
   },
   info: {
-    marginHorizontal: 24,
     marginBottom: 15,
+    marginHorizontal: 20,
     paddingHorizontal: 10,
-    paddingTop: 6,
-    paddingBottom: 8,
+    paddingVertical: 6,
     borderColor: colors.darkGrey,
     borderWidth: 1,
     borderRadius: 7,
   },
   categoriesWrapper: {
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingVertical: 10,
     shadowColor: colors.black,
     elevation: 10,
     borderRadius: 7,
     marginHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 15,
     backgroundColor: colors.white,
   },
   categoryTitleWrapper: {
@@ -176,9 +180,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   categoryTitle: {
-    fontSize: 16,
-    marginLeft: 20,
-    fontWeight: "400",
+    fontSize: 18,
+    marginLeft: 15,
+    fontWeight: "700",
     textTransform: "capitalize",
   },
   itemWrapper: {

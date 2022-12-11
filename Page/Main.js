@@ -47,7 +47,6 @@ const Search = (props) => {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Main = ({ navigation }) => {
-
   const [searchQuery, setSearchQuery] = useState("");
   const [type, setType] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
@@ -133,13 +132,17 @@ const Main = ({ navigation }) => {
               backgroundColor: "#DEFDEA",
               alignItems: "center",
               paddingHorizontal: 13,
+              height: 37,
               borderRadius: 20,
               borderWidth: 1,
               borderColor: colors.mainGreen,
             }}>
             <Ionicons name="search" size={20} color="#969696" />
             <TextInput
-              style={{ flex: 1, marginLeft: 6 }}
+              style={{
+                flex: 1,
+                marginLeft: 6,
+              }}
               blurOnSubmit={false}
               placeholder="Search"
               value={searchQuery}
@@ -167,12 +170,34 @@ const Main = ({ navigation }) => {
           </ScrollView>
         </View>
         <View style={styles.itemWrapper}>
-          {listData==null || listData.length==0 ? (
-            <View style={{ alignItems: 'center', marginVertical: 120, marginHorizontal: 48 }}>
-              <ImageBackground source={require('../assets/NoSearchResult.png')} style={{width: 250, height: 250, justifyContent: 'flex-end'}}>
-                <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>No results found</Text>
+          {listData == null || listData.length == 0 ? (
+            <View
+              style={{
+                alignItems: "center",
+                marginVertical: 120,
+                marginHorizontal: 48,
+              }}>
+              <ImageBackground
+                source={require("../assets/NoSearchResult.png")}
+                style={{ width: 250, height: 250, justifyContent: "flex-end" }}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}>
+                  No results found
+                </Text>
               </ImageBackground>
-              <Text style={{ textAlign: 'center', fontSize: 14, marginTop: 5, color: '#555555' }}>Try search another food to find what are you looking for</Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 14,
+                  marginTop: 5,
+                  color: "#555555",
+                }}>
+                Try search another food to find what are you looking for
+              </Text>
             </View>
           ) : (
             listData.map((item) => (
