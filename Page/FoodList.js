@@ -57,7 +57,7 @@ function FoodList({ route, navigation }) {
             flexDirection: "row",
             alignItems: "center",
             marginHorizontal: 20,
-            paddingTop: 20,
+            paddingTop: 15,
             justifyContent: "space-between",
           }}>
           <TouchableOpacity
@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 15,
   },
   wrapper: {
     marginHorizontal: 20,

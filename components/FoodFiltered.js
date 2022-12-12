@@ -67,7 +67,7 @@ function FoodFiltered(props) {
                 <View style={{flexDirection: 'row'}}>
                     <View style={{width: '85%', flexDirection: 'row', flexWrap: 'wrap'}}>
                         {props.ingredients.slice(0, 2).map(item => (
-                            <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center',}} key={item.name}>
                                 <Text style={{color: '#3A3A3B'}}>{item.name}</Text>
                                 <View style={styles.divider}/>
                             </View>
