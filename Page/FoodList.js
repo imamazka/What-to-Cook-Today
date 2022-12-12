@@ -13,19 +13,19 @@ import { firebase } from "../firebase";
 import colors from "../config/colors";
 import FoodFiltered from "../components/FoodFiltered";
 import apiKey from "../key";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 /**
  * Page showing list of foods based on ingredients submitted by user.
- * 
+ *
  * @param {route} route - Parameter from previous page.
  * @param {navigation} navigation - Navigation to another page.
- *  
+ *
  */
 
 function FoodList({ route, navigation }) {
-
-  const { selected } = route.params;            // selected ingredients name list array.
-  const parameter = selected.join();            // convert the ingredients name array to string.
+  const { selected } = route.params; // selected ingredients name list array.
+  const parameter = selected.join(); // convert the ingredients name array to string.
   const [listData, setListData] = useState([]); // list of food retrieved from web api.
   const [favorite, setFavorite] = useState([]); // list of food id favorited by user.
 
@@ -61,13 +61,14 @@ function FoodList({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             marginHorizontal: 20,
+            marginTop: 10,
             justifyContent: "space-between",
           }}>
           <TouchableOpacity
@@ -76,7 +77,7 @@ function FoodList({ route, navigation }) {
             <Ionicons name="arrow-back-outline" size={24} />
           </TouchableOpacity>
           <Text style={styles.sectionText}>Based on your ingredients</Text>
-          <View style={{ width: 40, height: 40 }}></View>
+          <Ionicons name="arrow-back-outline" size={24} color="white" />
         </View>
 
         <View style={styles.wrapper}>
@@ -94,7 +95,7 @@ function FoodList({ route, navigation }) {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -102,15 +103,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 35,
   },
   wrapper: {
     marginHorizontal: 20,
-    marginTop: 10,
+    marginTop: 15,
   },
   backButton: {
-    height: 40,
-    width: 40,
     backgroundColor: colors.white,
     justifyContent: "center",
     alignItems: "center",

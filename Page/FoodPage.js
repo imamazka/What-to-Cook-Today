@@ -23,17 +23,16 @@ import apiKey from "../key";
 
 /**
  * Food details page.
- * 
+ *
  * @param {route} route - Parameter from previous page.
- * @param {navigation} navigation - Navigation to another page. 
- *  
+ * @param {navigation} navigation - Navigation to another page.
+ *
  */
 
 function FoodPage({ route, navigation }) {
-
   const [selected, setSelected] = useState(false); // section button selected state.
-  const { foodId } = route.params;                 // get food id from parameter.
-  const [foodData, setFoodData] = useState([]);    // detail data of food retrieved from web api.
+  const { foodId } = route.params; // get food id from parameter.
+  const [foodData, setFoodData] = useState([]); // detail data of food retrieved from web api.
 
   // request url to retrieve food details based on food id from web api.
   const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=${apiKey}&includeNutrition=true`;
@@ -405,9 +404,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     backgroundColor: "#f1f1f1",
     marginTop: 13,
-    paddingLeft: 5,
-    paddingRight: 15,
-    paddingVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     borderRadius: 20,
   },
   visitButton: {
