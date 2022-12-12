@@ -14,14 +14,25 @@ import colors from "../config/colors";
 import FoodFiltered from "../components/FoodFiltered";
 import apiKey from "../key";
 
-function FoodList({ route, navigation }) {
-  const { selected } = route.params;
-  const [listData, setListData] = useState([]);
-  const parameter = selected.join();
-  const [favorite, setFavorite] = useState([]);
+/**
+ * Page showing list of foods based on ingredients submitted by user.
+ * 
+ * @param {route} route - Parameter from previous page.
+ * @param {navigation} navigation - Navigation to another page.
+ *  
+ */
 
+function FoodList({ route, navigation }) {
+
+  const { selected } = route.params;            // selected ingredients name list array.
+  const parameter = selected.join();            // convert the ingredients name array to string.
+  const [listData, setListData] = useState([]); // list of food retrieved from web api.
+  const [favorite, setFavorite] = useState([]); // list of food id favorited by user.
+
+  // request url from web api to retrieve foods based on ingredients.
   const url = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${parameter}&number=10&rangking=2&ignorePantry=true`;
 
+  // get favorite ids from database and food search list from web api trigger.
   useEffect(() => {
     getFavorite();
 
@@ -36,6 +47,7 @@ function FoodList({ route, navigation }) {
       });
   }, [parameter]);
 
+  // get favorited food id from database.
   const getFavorite = () => {
     firebase
       .firestore()
@@ -47,7 +59,6 @@ function FoodList({ route, navigation }) {
         console.log("db favorite: " + data.data().favorites);
       });
   };
-  console.log(typeof listData.missedIngredients);
 
   return (
     <View style={styles.container}>
@@ -57,7 +68,6 @@ function FoodList({ route, navigation }) {
             flexDirection: "row",
             alignItems: "center",
             marginHorizontal: 20,
-            paddingTop: 15,
             justifyContent: "space-between",
           }}>
           <TouchableOpacity
@@ -92,6 +102,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+    paddingTop: 35,
   },
   wrapper: {
     marginHorizontal: 20,

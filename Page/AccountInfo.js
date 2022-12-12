@@ -1,18 +1,22 @@
 import "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { ScrollView, TextInput, Text, Alert } from "react-native";
-import { ImageBackground } from "react-native";
-import { TouchableOpacity } from "react-native";
-import { StyleSheet, View } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { ScrollView, TextInput, Text, Alert, ImageBackground, TouchableOpacity, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "../firebase";
 import { Picker } from "@react-native-picker/picker";
-import countries from "../assets/dummy data/countries";
 import Spinner from "react-native-loading-spinner-overlay";
 import Modal from "react-native-modal";
 import * as ImagePicker from "expo-image-picker";
+
+import countries from "../assets/dummy data/countries";
+
+/**
+ * User account info page.
+ * 
+ * @param {navigation} navigation - Navigation to another page.
+ * 
+ */
 
 const AccountInfo = ({ navigation }) => {
   const [data, setData] = useState({});

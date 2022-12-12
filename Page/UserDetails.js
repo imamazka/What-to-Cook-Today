@@ -10,17 +10,28 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Ionicons } from "@expo/vector-icons";
-
-import colors from "../config/colors";
 import { firebase } from "../firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import colors from "../config/colors";
+
+/**
+ * User details page.
+ * 
+ * @param {navigation} navigation - Navigation to another page.
+ * 
+ */
+
 const UserDetails = ({ navigation }) => {
-  const [user, setUser] = useState({});
+
+  const [user, setUser] = useState({}); // user data object.
+
+  // retrieve user data from database trigger when page load.
   useEffect(() => {
     getUser();
   }, []);
 
+  // retrieve user data from database.
   const getUser = () => {
     firebase
       .firestore()
@@ -34,7 +45,6 @@ const UserDetails = ({ navigation }) => {
       });
   };
 
-  console.log(user);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
       <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>

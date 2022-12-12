@@ -14,7 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 /**
  * Page shown to user when they first time open the app.
  * 
- * @param {navigation} navigation to next screen 
+ * @param {navigation} navigation - navigation props to another screen 
  * 
  */
 
@@ -44,21 +44,9 @@ const Home = ({ navigation }) => {
                 What To Cook Today?
               </Text>
             </View>
-            {/* <View style={{ alignItems: "center", marginTop: 20 }}>
-            <Image
-              source={require("../assets/ingridient.jpg")}
-              style={{
-                width: 350,
-                height: 350,
-                borderRadius: 350 / 2,
-                resizeMode: "cover",
-              }}
-            />
-          </View> */}
             <View
               style={{
                 alignSelf: "center",
-                //backgroundColor: "red",
                 flexDirection: "row",
               }}>
               <TouchableOpacity

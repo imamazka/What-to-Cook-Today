@@ -13,25 +13,32 @@ import {
   Linking,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-const { height } = Dimensions.get("window");
-const { width } = Dimensions.get("window");
 import { LinearGradient } from "expo-linear-gradient";
-
-import colors from "../config/colors";
-import apiKey from "../key";
 import RenderHTML from "react-native-render-html";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const { width, height } = Dimensions.get("window");
+import colors from "../config/colors";
+import apiKey from "../key";
+
+/**
+ * Food details page.
+ * 
+ * @param {route} route - Parameter from previous page.
+ * @param {navigation} navigation - Navigation to another page. 
+ *  
+ */
+
 function FoodPage({ route, navigation }) {
-  const [selected, setSelected] = useState(false);
 
-  const { foodId } = route.params;
-  console.log("Food ID: " + foodId);
+  const [selected, setSelected] = useState(false); // section button selected state.
+  const { foodId } = route.params;                 // get food id from parameter.
+  const [foodData, setFoodData] = useState([]);    // detail data of food retrieved from web api.
 
-  const [foodData, setFoodData] = useState([]);
-
+  // request url to retrieve food details based on food id from web api.
   const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=${apiKey}&includeNutrition=true`;
 
+  // retrieve food details from web api trigger.
   useEffect(() => {
     fetch(url)
       .then((response) => response.json())
@@ -44,12 +51,14 @@ function FoodPage({ route, navigation }) {
       });
   }, [foodId]);
 
-  var html = foodData.instructions;
+  var html = foodData.instructions; // recipe instruction text (retrieved in html format).
 
+  // convert '\n' on instructions to new paragraph html tag.
   if (foodData.extendedIngredients) {
     html = html.replace(/(?:\r\n|\r|\n)/g, "<p>");
   }
 
+  // share button handler to share food url link.
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -69,6 +78,7 @@ function FoodPage({ route, navigation }) {
     }
   };
 
+  // open food url link in default browser button handler.
   function loadInBrowser() {
     Linking.openURL(foodData.sourceUrl).catch((err) =>
       console.error("Couldn't load page", err)

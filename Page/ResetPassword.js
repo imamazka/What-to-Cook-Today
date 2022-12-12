@@ -1,7 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import React from "react";
-import { useState, useEffect } from "react";
-import { ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   View,
@@ -9,11 +7,23 @@ import {
   TextInput,
   StyleSheet,
   Alert,
+  ScrollView
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "../firebase";
 import { Ionicons } from "@expo/vector-icons";
+
+/**
+ * Reset password page.
+ * 
+ * @param {password} password
+ * @param {error} error
+ * @param {...props} props
+ * @param {navigation} navigation - Navigation to another page. 
+ *  
+ */
+
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
   return (

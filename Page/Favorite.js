@@ -10,25 +10,38 @@ import {
   ImageBackground,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { firebase } from "../firebase";
 
 import colors from "../config/colors";
 import Food from "../components/Food";
 import apiKey from "../key";
-import { firebase } from "../firebase";
+
+/**
+ * List of favorite food page.
+ * 
+ * @param {navigation} navigation - Navigation to another page. 
+ * 
+ */
 
 function Favorite({ navigation }) {
-  const [listData, setListData] = useState([]);
-  const [ids, setIds] = useState([]);
-  //const ids = '639637,641202,662075,663313,635675'; //change to id on user data
 
+  const [listData, setListData] = useState([]); // list of food retrieved from web api based on user favorite food ids.
+  const [ids, setIds] = useState([]);           // list of food id favorited by user.
+
+  // request url to get list of food based on bulk of ids.
+  const url = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${ids}`;
+
+  // get favorite ids from database trigger.
   useEffect(() => {
     getFavorite();
   }, []);
 
+  // get list of food from web api.
   useEffect(() => {
     getFavoriteList();
   }, [ids]);
 
+  // get favorite ids on user data from database.
   const getFavorite = () => {
     firebase
       .firestore()
@@ -42,8 +55,7 @@ function Favorite({ navigation }) {
       });
   };
 
-  const url = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${ids}`;
-
+  // get food list from web api based on ids.
   const getFavoriteList = async () => {
     try {
       const response = await fetch(url);

@@ -14,6 +14,16 @@ import { Feather } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
 import { firebase } from "../firebase";
 
+/**
+ * Register page if user did not have any account
+ * 
+ * @param {password} param0 
+ * @param {error} error
+ * @param {...props} props
+ * @param {navigation} navigation - navigation to another page
+ * 
+ */
+
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
   return (

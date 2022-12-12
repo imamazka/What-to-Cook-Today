@@ -10,15 +10,24 @@ import {
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import colors from "../config/colors";
 import ingredients from "../assets/dummy data/ingredients";
 import IngredientItem from "../components/IngredientItem";
-import { SafeAreaView } from "react-native-safe-area-context";
+
+/**
+ * Page used by user to submit their already have ingredients.
+ * 
+ * @param {navigation} navigation - navigation to another page. 
+ * 
+ */
 
 function IngredientList({ navigation }) {
-  const [selected, setSelected] = useState([]);
 
+  const [selected, setSelected] = useState([]);   // list of already have ingredients selected by user.
+
+  // continue button on press handler to show search result.
   const handlePress = () => {
     if (selected.length === 0) return;
     else navigation.navigate("FoodList", { selected: selected });

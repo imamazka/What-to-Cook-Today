@@ -14,6 +14,16 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { firebase } from "../firebase";
 import { Keyboard } from "react-native";
 
+/**
+ * Login page for user. If didn't have any account, can be redirected to register page
+ * 
+ * @param {password} password
+ * @param {error} error
+ * @param {...props} props
+ * @param {navigation} navigation - navigation to another screen
+ * 
+ */
+
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
   return (

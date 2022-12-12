@@ -3,16 +3,25 @@ import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
 import colors from "../config/colors";
 
+/**
+ * Selectable ingredient item component from IngredientList page.
+ * 
+ * @param {props} props - Props from IngredientList page.
+ * 
+ */
+
 const IngredientItem = (props) => {
 
-    const [select, setSelect] = useState(false);
+    const [select, setSelect] = useState(false);    // selected item state.
 
+    // add selected item name to selected list, and color handler.
     function handleSelected(item) {
         props.setSelected([...props.selected, item]);
         setSelect(!select);
         console.log('selected');
     }
 
+    // deselect item name to selected list, and color handler.
     function handleDeselect(item) {
         const index = props.selected.indexOf(item);
         if (index > -1) { // only splice array when item is found

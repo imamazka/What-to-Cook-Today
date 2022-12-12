@@ -13,10 +13,17 @@ import {
   Image,
 } from "react-native";
 import { firebase } from "../firebase";
+import { Ionicons } from "@expo/vector-icons";
+import { ImageBackground } from "react-native";
+import { Alert } from "react-native";
 
 import colors from "../config/colors";
-import { Ionicons } from "@expo/vector-icons";
-import IngredientItem from "../components/IngredientItem";
+
+/**
+ * Shopping cart page, used by user to list their to-do's shop list.
+ * 
+ * @param {navigation} navigation - Navigation to another screen. 
+ */
 
 function useMounted() {
   const [isMounted, setIsMounted] = useState(false);
@@ -25,16 +32,16 @@ function useMounted() {
   }, []);
   return isMounted;
 }
-import { ImageBackground } from "react-native";
-import { Alert } from "react-native";
 
 function ShoppingCart({ navigation }) {
-  const [ingredient, setIngredient] = useState();
-  const [ingredientItems, setIngredientItems] = useState([]);
-  const [finishedItems, setFinishedItems] = useState([]);
-  const [addItem, setAddItem] = useState(false);
+
+  const [ingredient, setIngredient] = useState();             // newly added to-do item.
+  const [ingredientItems, setIngredientItems] = useState([]); // list of unfinished to-do items.
+  const [finishedItems, setFinishedItems] = useState([]);     // list of finished to-do items.
+  const [addItem, setAddItem] = useState(false);              // bottom navigation will hide if user input new item.
   const isMounted = useMounted();
 
+  // get list from user database trigger when page load.
   useEffect(() => {
     fetchItem();
   }, []);
@@ -58,6 +65,7 @@ function ShoppingCart({ navigation }) {
     console.log("finish: " + finishedItems);
   };
 
+  // new add item handler.
   const handleAddIngredient = () => {
     Keyboard.dismiss();
     setIngredientItems([...ingredientItems, ingredient]);
@@ -65,6 +73,7 @@ function ShoppingCart({ navigation }) {
     setAddItem(!addItem);
   };
 
+  // delete item from unfinished list.
   function deleteIngredient(index) {
     let ingredientCopy = [...ingredientItems];
     ingredientCopy.splice(index, 1);
@@ -72,6 +81,7 @@ function ShoppingCart({ navigation }) {
     console.log("deleted");
   }
 
+  // move item from unfinished to finished list.
   function completeIngredient(index) {
     finishedItems.push(ingredientItems[index]);
     let ingredientCopy = [...ingredientItems];
@@ -80,6 +90,7 @@ function ShoppingCart({ navigation }) {
     console.log("finished");
   }
 
+  // move item from finished to unfinished list.
   function cancelFinished(index) {
     ingredientItems.push(finishedItems[index]);
     let ingredientCopy = [...finishedItems];
@@ -89,6 +100,7 @@ function ShoppingCart({ navigation }) {
     console.log("cancelled");
   }
 
+  // delete item from finished list.
   function deleteFinished(index) {
     let ingredientCopy = [...finishedItems];
     ingredientCopy.splice(index, 1);
@@ -114,6 +126,7 @@ function ShoppingCart({ navigation }) {
       });
   };
   console.log(ingredientItems);
+  
   return (
     <View style={styles.container}>
       <ScrollView>

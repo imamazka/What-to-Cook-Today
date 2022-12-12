@@ -1,6 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   View,
@@ -10,8 +9,18 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
-import colors from "../config/colors";
 import { firebase } from "../firebase";
+
+import colors from "../config/colors";
+
+/**
+ * Forgot password page.
+ * 
+ * @param {error} error
+ * @param {...props} props
+ * @param {navigation} navigation - Navigation to another page.
+ * 
+ */
 
 const InputText = ({ error, ...props }) => {
   return (

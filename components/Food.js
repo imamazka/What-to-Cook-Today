@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -7,18 +7,26 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../firebase";
-
-import colors from "../config/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-function Food(props) {
-  const [selected, setSelected] = useState(false);
-  const navigation = useNavigation();
+import colors from "../config/colors";
 
+/**
+ * Food component from Main page.
+ * 
+ * @param {props} props - Props from Main page.
+ * 
+ */
+
+function Food(props) {
+
+  const navigation = useNavigation();               // navigation to another page.
+  const [selected, setSelected] = useState(false);  // add to favorite state to change button color.
+
+  // change favorite button color if already favorited trigger.
   useEffect(() => {
     if (props.favorite != undefined) {
       if (props.favorite.includes(props.foodId)) {
@@ -27,6 +35,7 @@ function Food(props) {
     }
   }, []);
 
+  // food favorite handler to user database.
   function handleFavorite() {
     if (selected == false) {
       setSelected(!selected);

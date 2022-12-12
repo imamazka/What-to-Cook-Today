@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
 const { width } = Dimensions.get("window");
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
@@ -7,22 +7,30 @@ import { firebase } from "../firebase";
 import {LinearGradient} from 'expo-linear-gradient';
 
 import colors from '../config/colors';
-import { ImageBackground } from 'react-native';
 const ITEM_WIDTH = width/2 - 10 * 2.3;
+
+/**
+ * Food component from FoodList page.
+ * 
+ * @param {props} props - Props from FoodList page.
+ * 
+ */
 
 function FoodFiltered(props) {
     
-    const [selected, setSelected] = useState(false);
-    const navigation = useNavigation();
+    const navigation = useNavigation();               // navigation to another page.
+    const [selected, setSelected] = useState(false);    // add to favorite state to change button color.
 
+    // change favorite button color if already favorited trigger.
     useEffect(() => {
         if(props.favorite!=undefined){
           if(props.favorite.includes(props.foodId)){
             setSelected(true);
           }
         }
-      }, [])
+    }, [])
 
+    // food favorite handler to user database.
     function handleFavorite(){
         if(selected==false){
           setSelected(!selected);

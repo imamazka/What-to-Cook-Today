@@ -12,12 +12,23 @@ import {
   TextInput,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { firebase } from "../firebase";
+import { ImageBackground } from "react-native";
+
 import colors from "../config/colors";
 import Food from "../components/Food";
 import apiKey from "../key";
 import mealTypes from "../assets/dummy data/meal_types";
-import { firebase } from "../firebase";
-import { ImageBackground } from "react-native";
+
+/**
+ * First page user enter after login.
+ * Used to show random recipes, search by name, and search by category.
+ * 
+ * @param {props} props - Search bar props
+ * @param {navigation} navigation - Navigation to another page
+ * 
+ */
 
 const Search = (props) => {
   return (
@@ -44,19 +55,26 @@ const Search = (props) => {
     </View>
   );
 };
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const Main = ({ navigation }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [type, setType] = useState("");
-  const onChangeSearch = (query) => setSearchQuery(query);
-  const [listData, setListData] = useState([]);
-  const [favorite, setFavorite] = useState([]);
 
+  const [searchQuery, setSearchQuery] = useState("");       // submitted food search entered by user.
+  const [type, setType] = useState("");                     // typed search entered by user.
+  const onChangeSearch = (query) => setSearchQuery(query);
+  const [listData, setListData] = useState([]);             // list of foods retrieved from the web api, based on random, name, category search.
+  const [favorite, setFavorite] = useState([]);             // list of favorited food id saved on the user account.
+
+  // 3 types of request url based on 3 type of search.
+  const urlRandom = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10`;
+  const urlSearch = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&query=${searchQuery}&addRecipeInformation=true&number=10`;
+  const urlFilter = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&type=${type}&addRecipeInformation=true&number=10`;
+
+  // get favorited ids trigger when page load trigger.
   useEffect(() => {
     getFavorite();
   }, []);
 
+  // get favorited ids from database.
   const getFavorite = () => {
     firebase
       .firestore()
@@ -69,14 +87,12 @@ const Main = ({ navigation }) => {
       });
   };
 
-  const urlRandom = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10`;
-  const urlSearch = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&query=${searchQuery}&addRecipeInformation=true&number=10`;
-  const urlFilter = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&type=${type}&addRecipeInformation=true&number=10`;
-
+  // get random list of foods when page load trigger.
   useEffect(() => {
     getRandomList();
   }, []);
 
+  // get random list of foods from web api.
   const getRandomList = async () => {
     getFavorite();
     try {
@@ -89,6 +105,7 @@ const Main = ({ navigation }) => {
     }
   };
 
+  // get food search by name from web api.
   const submitSearch = async () => {
     getFavorite();
     Keyboard.dismiss();
@@ -102,6 +119,7 @@ const Main = ({ navigation }) => {
     }
   };
 
+  // get food list filtered by categories from web api.
   const submitType = async (type) => {
     getFavorite();
     setType(type);
