@@ -18,15 +18,14 @@ import apiKey from "../key";
 
 /**
  * List of favorite food page.
- * 
- * @param {navigation} navigation - Navigation to another page. 
- * 
+ *
+ * @param {navigation} navigation - Navigation to another page.
+ *
  */
 
 function Favorite({ navigation }) {
-
   const [listData, setListData] = useState([]); // list of food retrieved from web api based on user favorite food ids.
-  const [ids, setIds] = useState([]);           // list of food id favorited by user.
+  const [ids, setIds] = useState([]); // list of food id favorited by user.
 
   // request url to get list of food based on bulk of ids.
   const url = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${ids}`;
@@ -88,7 +87,7 @@ function Favorite({ navigation }) {
         </View>
 
         <View style={{ padding: 20 }}>
-          {listData == undefined || ids == "" ? (
+          {listData == undefined || ids == undefined ? (
             <View
               style={{
                 alignItems: "center",
