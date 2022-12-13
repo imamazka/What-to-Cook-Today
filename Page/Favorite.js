@@ -14,7 +14,6 @@ import { firebase } from "../firebase";
 
 import colors from "../config/colors";
 import Food from "../components/Food";
-import apiKey from "../key";
 
 /**
  * List of favorite food page.
@@ -23,23 +22,61 @@ import apiKey from "../key";
  *
  */
 
+function useMounted() {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  return isMounted;
+}
+
 function Favorite({ navigation }) {
   const [listData, setListData] = useState([]); // list of food retrieved from web api based on user favorite food ids.
   const [ids, setIds] = useState([]); // list of food id favorited by user.
+  const [apiKey, setData] = useState(""); //key needed to retrieve food from API
+  const isMounted = useMounted();  // state to trigger second use effect
+
 
   // request url to get list of food based on bulk of ids.
   const url = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${ids}`;
 
-  // get favorite ids from database trigger.
+  // get favorite ids and apiKey from database trigger.
+
   useEffect(() => {
-    getFavorite();
+    getApiKey();
+    console.log("sa");
+
   }, []);
 
   // get list of food from web api.
   useEffect(() => {
-    getFavoriteList();
+    if (isMounted) {
+      getFavorite();
+      console.log("fa");
+
+    }
+  }, [apiKey]);
+  
+  //run after apiKey is triggered
+  useEffect(() => {
+    if (isMounted) {
+      getFavoriteList();
+      console.log("ha");
+    }
   }, [ids]);
 
+    //get api key from database
+    const getApiKey = () => {
+      firebase
+      .firestore()
+      .collection("api")
+      .doc("apiKeys")
+      .get()
+      .then((data) => {
+        setData(data.data().key);
+      });
+    }
+  
   // get favorite ids on user data from database.
   const getFavorite = () => {
     firebase
@@ -50,7 +87,6 @@ function Favorite({ navigation }) {
       .then((data) => {
         setIds(data.data().favorites);
         console.log("db favorites: " + data.data().favorites);
-        console.log(data.data().favorites);
       });
   };
 
@@ -87,7 +123,7 @@ function Favorite({ navigation }) {
         </View>
 
         <View style={{ padding: 20 }}>
-          {listData == undefined || ids == undefined ? (
+          {listData == undefined || ids == undefined || listData == '' ? (
             <View
               style={{
                 alignItems: "center",

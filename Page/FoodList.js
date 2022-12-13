@@ -12,7 +12,6 @@ import { firebase } from "../firebase";
 
 import colors from "../config/colors";
 import FoodFiltered from "../components/FoodFiltered";
-import apiKey from "../key";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 /**
@@ -23,20 +22,38 @@ import { SafeAreaView } from "react-native-safe-area-context";
  *
  */
 
+
+function useMounted() {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  return isMounted;
+}
+
 function FoodList({ route, navigation }) {
   const { selected } = route.params; // selected ingredients name list array.
   const parameter = selected.join(); // convert the ingredients name array to string.
   const [listData, setListData] = useState([]); // list of food retrieved from web api.
   const [favorite, setFavorite] = useState([]); // list of food id favorited by user.
+  const [apiKey, setData] = useState(""); //key needed to retrieve food from API
+  const isMounted = useMounted();                             // state to trigger second use effect
+
+
 
   // request url from web api to retrieve foods based on ingredients.
   const url = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${parameter}&number=10&rangking=2&ignorePantry=true`;
 
   // get favorite ids from database and food search list from web api trigger.
   useEffect(() => {
-    getFavorite();
+    getApiKey();
+  },[]);
 
-    fetch(url)
+  //run after apiKey is triggered
+  useEffect(() => {
+    if (isMounted) {
+      getFavorite();
+      fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setListData(data);
@@ -45,7 +62,33 @@ function FoodList({ route, navigation }) {
       .catch(() => {
         console.log("error");
       });
-  }, [parameter]);
+    }
+  }, [apiKey, parameter]);
+
+  // useEffect(() => {
+    // getFavorite();
+    // fetch(url)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setListData(data);
+    //     console.log("fetched");
+    //   })
+    //   .catch(() => {
+    //     console.log("error");
+    //   });
+  // }, [parameter]);
+
+  //get api key from database
+  const getApiKey = () => {
+    firebase
+    .firestore()
+    .collection("api")
+    .doc("apiKeys")
+    .get()
+    .then((data) => {
+      setData(data.data().key);
+    });
+  }
 
   // get favorited food id from database.
   const getFavorite = () => {
