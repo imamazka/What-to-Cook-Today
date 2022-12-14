@@ -77,6 +77,7 @@ const Main = ({ navigation }) => {
   useEffect(() => {
     getFavorite();
     getRandomList();
+    console.log(urlRandom);
   }, [apiKey]);
 
   //get api key from database
@@ -146,8 +147,6 @@ const Main = ({ navigation }) => {
       console.error(error);
     }
   };
-
-  console.log(searchQuery);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>

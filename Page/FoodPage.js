@@ -16,10 +16,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import RenderHTML from "react-native-render-html";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { firebase } from "../firebase";
 
 const { width, height } = Dimensions.get("window");
 import colors from "../config/colors";
-import apiKey from "../key";
 
 /**
  * Food details page.
@@ -33,9 +33,15 @@ function FoodPage({ route, navigation }) {
   const [selected, setSelected] = useState(false); // section button selected state.
   const { foodId } = route.params; // get food id from parameter.
   const [foodData, setFoodData] = useState([]); // detail data of food retrieved from web api.
+  const [apiKey, setData] = useState(""); //key needed to retrieve food from API
+
 
   // request url to retrieve food details based on food id from web api.
   const url = `https://api.spoonacular.com/recipes/${foodId}/information?apiKey=${apiKey}&includeNutrition=true`;
+
+  useEffect(() => {
+    getApiKey();
+  },[]);
 
   // retrieve food details from web api trigger.
   useEffect(() => {
@@ -48,9 +54,20 @@ function FoodPage({ route, navigation }) {
       .catch(() => {
         console.log("error");
       });
-  }, [foodId]);
+  }, [foodId, apiKey]);
 
   var html = foodData.instructions; // recipe instruction text (retrieved in html format).
+
+  const getApiKey = () => {
+    firebase
+    .firestore()
+    .collection("api")
+    .doc("apiKeys")
+    .get()
+    .then((data) => {
+      setData(data.data().key);
+    });
+  }
 
   // convert '\n' on instructions to new paragraph html tag.
   if (foodData.extendedIngredients) {

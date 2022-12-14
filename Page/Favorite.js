@@ -40,20 +40,16 @@ function Favorite({ navigation }) {
   // request url to get list of food based on bulk of ids.
   const url = `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${ids}`;
 
-  // get favorite ids and apiKey from database trigger.
+  // get apiKey from database trigger.
 
   useEffect(() => {
     getApiKey();
-    console.log("sa");
-
   }, []);
 
   // get list of food from web api.
   useEffect(() => {
     if (isMounted) {
       getFavorite();
-      console.log("fa");
-
     }
   }, [apiKey]);
   
@@ -61,7 +57,6 @@ function Favorite({ navigation }) {
   useEffect(() => {
     if (isMounted) {
       getFavoriteList();
-      console.log("ha");
     }
   }, [ids]);
 

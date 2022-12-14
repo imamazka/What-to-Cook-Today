@@ -63,8 +63,6 @@ function ShoppingCart({ navigation }) {
         ingredientItems: ingredientItems,
         finishedItems: finishedItems,
       });
-    console.log("ingred: " + ingredientItems);
-    console.log("finish: " + finishedItems);
   };
 
   // new add item handler.
@@ -117,12 +115,6 @@ function ShoppingCart({ navigation }) {
       .doc(firebase.auth().currentUser.uid)
       .get()
       .then((data) => {
-        console.log(
-          "Ini" +
-            data.data().ingredientItems +
-            "budi" +
-            data.data().finishedItems
-        );
         setIngredientItems(data.data().ingredientItems);
         setFinishedItems(data.data().finishedItems);
       });
