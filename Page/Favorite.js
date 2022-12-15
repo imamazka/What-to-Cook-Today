@@ -118,7 +118,7 @@ function Favorite({ navigation }) {
         </View>
 
         <View style={{ padding: 20 }}>
-          {listData == undefined || ids == undefined || listData == '' ? (
+          {listData == undefined || ids == undefined || ids == '' ? (
             <View
               style={{
                 alignItems: "center",
