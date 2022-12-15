@@ -39,13 +39,15 @@ function ShoppingCart({ navigation }) {
   const [ingredientItems, setIngredientItems] = useState([]); // list of unfinished to-do items.
   const [finishedItems, setFinishedItems] = useState([]);     // list of finished to-do items.
   const [addItem, setAddItem] = useState(false);              // bottom navigation will hide if user input new item.
-  const isMounted = useMounted();
+  const isMounted = useMounted();                             // state to trigger second use effect
 
   // get list from user database trigger when page load.
   useEffect(() => {
     fetchItem();
   }, []);
 
+
+  //second trigger after first useEffect is triggered.
   useEffect(() => {
     if (isMounted) {
       setItem();
@@ -61,8 +63,6 @@ function ShoppingCart({ navigation }) {
         ingredientItems: ingredientItems,
         finishedItems: finishedItems,
       });
-    console.log("ingred: " + ingredientItems);
-    console.log("finish: " + finishedItems);
   };
 
   // new add item handler.
@@ -115,12 +115,6 @@ function ShoppingCart({ navigation }) {
       .doc(firebase.auth().currentUser.uid)
       .get()
       .then((data) => {
-        console.log(
-          "Ini" +
-            data.data().ingredientItems +
-            "budi" +
-            data.data().finishedItems
-        );
         setIngredientItems(data.data().ingredientItems);
         setFinishedItems(data.data().finishedItems);
       });

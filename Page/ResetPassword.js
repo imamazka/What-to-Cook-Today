@@ -7,7 +7,7 @@ import {
   TextInput,
   StyleSheet,
   Alert,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,12 +16,12 @@ import { Ionicons } from "@expo/vector-icons";
 
 /**
  * Reset password page.
- * 
+ *
  * @param {password} password
  * @param {error} error
  * @param {...props} props
- * @param {navigation} navigation - Navigation to another page. 
- *  
+ * @param {navigation} navigation - Navigation to another page.
+ *
  */
 
 const InputText = ({ password, error, ...props }) => {
@@ -103,7 +103,10 @@ const ResetPassword = ({ navigation }) => {
           navigation.navigate("UserDetails");
         })
         .catch((error) => {
-          alert(error.message);
+          Alert.alert(
+            "Error",
+            "Your current password is wrong. Please input the right password."
+          );
         });
     }
   };

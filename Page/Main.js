@@ -18,7 +18,6 @@ import { ImageBackground } from "react-native";
 
 import colors from "../config/colors";
 import Food from "../components/Food";
-import apiKey from "../key";
 import mealTypes from "../assets/dummy data/meal_types";
 
 /**
@@ -63,16 +62,35 @@ const Main = ({ navigation }) => {
   const onChangeSearch = (query) => setSearchQuery(query);
   const [listData, setListData] = useState([]);             // list of foods retrieved from the web api, based on random, name, category search.
   const [favorite, setFavorite] = useState([]);             // list of favorited food id saved on the user account.
+  const [apiKey, setData] = useState("");                   //key needed to retrieve food from API
 
   // 3 types of request url based on 3 type of search.
   const urlRandom = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10`;
   const urlSearch = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&query=${searchQuery}&addRecipeInformation=true&number=10`;
   const urlFilter = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&type=${type}&addRecipeInformation=true&number=10`;
 
-  // get favorited ids trigger when page load trigger.
+  // get favorited ids and and list of foods when page load trigger.
+  useEffect(() => {
+    getApiKey();
+  });
+
   useEffect(() => {
     getFavorite();
-  }, []);
+    getRandomList();
+    console.log(urlRandom);
+  }, [apiKey]);
+
+  //get api key from database
+    const getApiKey = () => {
+      firebase
+      .firestore()
+      .collection("api")
+      .doc("apiKeys")
+      .get()
+      .then((data) => {
+        setData(data.data().key);
+      });
+    }
 
   // get favorited ids from database.
   const getFavorite = () => {
@@ -83,14 +101,10 @@ const Main = ({ navigation }) => {
       .get()
       .then((data) => {
         setFavorite(data.data().favorites);
-        console.log("db favorite: " + data.data().favorites);
       });
   };
 
-  // get random list of foods when page load trigger.
-  useEffect(() => {
-    getRandomList();
-  }, []);
+
 
   // get random list of foods from web api.
   const getRandomList = async () => {
@@ -133,8 +147,6 @@ const Main = ({ navigation }) => {
       console.error(error);
     }
   };
-
-  console.log(searchQuery);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
