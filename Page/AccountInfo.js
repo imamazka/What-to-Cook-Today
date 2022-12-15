@@ -1,7 +1,16 @@
 import "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect, useRef } from "react";
-import { ScrollView, TextInput, Text, Alert, ImageBackground, TouchableOpacity, StyleSheet, View } from "react-native";
+import {
+  ScrollView,
+  TextInput,
+  Text,
+  Alert,
+  ImageBackground,
+  TouchableOpacity,
+  StyleSheet,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "../firebase";
 import { Picker } from "@react-native-picker/picker";
@@ -13,9 +22,9 @@ import countries from "../assets/dummy data/countries";
 
 /**
  * User account info page.
- * 
+ *
  * @param {navigation} navigation - Navigation to another page.
- * 
+ *
  */
 
 const AccountInfo = ({ navigation }) => {
@@ -221,7 +230,7 @@ const AccountInfo = ({ navigation }) => {
                   </ImageBackground>
                 ) : (
                   <ImageBackground
-                    source={require("../assets/defaultProfilePic.png")}
+                    source={require("../assets/default-profile-photo.jpg")}
                     style={{ width: 140, height: 140 }}
                     imageStyle={{ borderRadius: 70 }}>
                     <View

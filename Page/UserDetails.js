@@ -17,13 +17,12 @@ import colors from "../config/colors";
 
 /**
  * User details page.
- * 
+ *
  * @param {navigation} navigation - Navigation to another page.
- * 
+ *
  */
 
 const UserDetails = ({ navigation }) => {
-
   const [user, setUser] = useState({}); // user data object.
 
   // retrieve user data from database trigger when page load.
@@ -64,7 +63,7 @@ const UserDetails = ({ navigation }) => {
           }}>
           {user.imgProfile == null ? (
             <Image
-              source={require("../assets/defaultProfilePic.png")}
+              source={require("../assets/default-profile-photo.jpg")}
               style={{
                 width: 100,
                 height: 100,
