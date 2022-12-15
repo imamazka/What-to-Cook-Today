@@ -221,7 +221,7 @@ const AccountInfo = ({ navigation }) => {
                   </ImageBackground>
                 ) : (
                   <ImageBackground
-                    source={require("../assets/defaultProfilePicture.png")}
+                    source={require("../assets/defaultProfilePic.png")}
                     style={{ width: 140, height: 140 }}
                     imageStyle={{ borderRadius: 70 }}>
                     <View
