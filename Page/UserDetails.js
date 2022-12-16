@@ -72,7 +72,18 @@ const UserDetails = ({ navigation }) => {
                 borderColor: "#FFFFFF",
               }}
             />
-          ) : null}
+          ) : (
+            <Image
+              source={{ uri: user.imgProfile }}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 100 / 2,
+                borderWidth: 3,
+                borderColor: "#FFFFFF",
+              }}
+            />
+          )}
         </View>
         <View>
           <Text

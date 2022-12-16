@@ -17,7 +17,7 @@ import { Picker } from "@react-native-picker/picker";
 import Spinner from "react-native-loading-spinner-overlay";
 import Modal from "react-native-modal";
 import * as ImagePicker from "expo-image-picker";
-
+import storage from "@react-native-firebase/storage";
 import countries from "../assets/dummy data/countries";
 
 /**
@@ -96,7 +96,36 @@ const AccountInfo = ({ navigation }) => {
     }
   };
 
-  const handleUpdate = () => {
+  const uploadImage = async () => {
+    if (image == null) {
+      return null;
+    }
+    const uploadUri = image;
+    let filename = uploadUri.substring(uploadUri.lastIndexOf("/") + 1);
+
+    // Add timestamp to File Name
+    const extension = filename.split(".").pop();
+    const name = filename.split(".").slice(0, -1).join(".");
+    filename = name + Date.now() + "." + extension;
+
+    try {
+      await firebase.storage().ref(filename).putFile(uploadUri);
+
+      const url = await firebase.storage().ref(filename).getDownloadURL();
+
+      return url;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  };
+
+  const handleUpdate = async () => {
+    let imgUrl = await uploadImage();
+
+    if (imgUrl == null && data.imgProfile) {
+      imgUrl = data.imgProfile;
+    }
     setLoading(true);
     try {
       setLoading(false);
@@ -111,7 +140,7 @@ const AccountInfo = ({ navigation }) => {
           country: data.country,
           genre: data.genre,
           address: data.address,
-          imgProfile: data.imgProfile,
+          imgProfile: imgUrl,
         })
         .then(() => {
           Alert.alert(
@@ -204,7 +233,7 @@ const AccountInfo = ({ navigation }) => {
                 }}>
                 {image != null ? (
                   <ImageBackground
-                    source={{ uri: image }}
+                    source={{ uri: image ? image : data.imgProfile }}
                     style={{ width: 140, height: 140 }}
                     imageStyle={{ borderRadius: 70 }}>
                     <View
