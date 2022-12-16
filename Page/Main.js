@@ -149,6 +149,9 @@ const Main = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
+        {" "}
+      </StatusBar>
       <ScrollView>
         <View
           style={{

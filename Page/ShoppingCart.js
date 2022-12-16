@@ -123,6 +123,9 @@ function ShoppingCart({ navigation }) {
   
   return (
     <View style={styles.container}>
+      <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
+        {" "}
+      </StatusBar>
       <ScrollView>
         <View style={styles.listWrapper}>
           <Text style={styles.sectionTitle}>Shopping Cart</Text>

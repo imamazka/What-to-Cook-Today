@@ -8,9 +8,11 @@ import {
   ImageBackground,
   useWindowDimensions,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
+import colors from "../config/colors";
 
 /**
  * Page shown to user when they first time open the app.
@@ -23,6 +25,9 @@ const Home = ({ navigation }) => {
   const { width, height } = useWindowDimensions();
   return (
     <SafeAreaView>
+      <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
+        {" "}
+      </StatusBar>
       <ImageBackground
         source={require("../assets/Background.jpg")}
         style={{ width: width, height: "100%", justifyContent: "flex-end" }}>
