@@ -64,7 +64,7 @@ const UserDetails = ({ navigation }) => {
           }}>
           {user.imgProfile == null ? (
             <Image
-              source={require("../assets/defaultProfilePic.png")}
+              source={require("../assets/defaultProfilePicture.jpg")}
               style={{
                 width: 100,
                 height: 100,
