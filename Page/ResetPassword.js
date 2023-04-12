@@ -1,5 +1,4 @@
-import { Feather } from "@expo/vector-icons";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   TouchableOpacity,
   View,
@@ -12,7 +11,11 @@ import {
 import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "../firebase";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
+import { useFonts, Inter_700Bold, Inter_400Regular } from '@expo-google-fonts/inter';
+import { Poppins_500Medium } from '@expo-google-fonts/poppins';
+
+import colors from "../config/colors";
 
 /**
  * Reset password page.
@@ -25,7 +28,9 @@ import { Ionicons } from "@expo/vector-icons";
  */
 
 const InputText = ({ password, error, ...props }) => {
+
   const [hidePassword, setHidePassword] = useState(password);
+
   return (
     <View style={{ marginTop: 22 }}>
       <View
@@ -63,11 +68,13 @@ const InputText = ({ password, error, ...props }) => {
 };
 
 const ResetPassword = ({ navigation }) => {
+
   const [data, setData] = useState({
     currentPassword: "",
     password: "",
     confirmPassword: "",
   });
+
   const [errors, setErrors] = useState({});
   const currentUser = firebase.auth().currentUser;
   const emailCred = firebase.auth.EmailAuthProvider.credential(
@@ -111,117 +118,129 @@ const ResetPassword = ({ navigation }) => {
     }
   };
 
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ marginHorizontal: 20 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingTop: 15,
-            marginBottom: 20,
-            justifyContent: "space-between",
-          }}>
-          <TouchableOpacity
-            style={Styles.backButton}
-            onPress={() => navigation.navigate("UserDetails")}>
-            <Ionicons name="arrow-back-outline" size={24} color={"black"} />
-          </TouchableOpacity>
-          <Text style={Styles.sectionText}>Security</Text>
-          <Ionicons name="arrow-back-outline" size={24} color={"white"} />
-        </View>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 10,
-          }}>
-          <Icon name="lock" size={200} />
-          <Text style={{ fontSize: 15 }}>Please enter your new password</Text>
-        </View>
-        <View style={{ marginHorizontal: 20, marginTop: 20 }}>
-          <InputText
-            placeholder="Current password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={(text) => handleOnChange(text, "currentPassword")}
-            password
-            error={errors.currentPassword}
-          />
-        </View>
-        <View style={{ marginHorizontal: 20 }}>
-          <InputText
-            placeholder="New password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={(text) => handleOnChange(text, "password")}
-            password
-            error={errors.password}
-          />
-        </View>
-        <View style={{ marginHorizontal: 20 }}>
-          <InputText
-            placeholder="Confirm password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={(text) => handleOnChange(text, "confirmPassword")}
-            password
-            error={errors.confirmPassword}
-          />
-        </View>
-        <View
-          style={{
-            alignSelf: "center",
-            flexDirection: "row",
-            marginHorizontal: 20,
-          }}>
-          <TouchableOpacity
+  let [fontsLoaded] = useFonts({
+    Inter_700Bold,
+    Inter_400Regular,
+    Poppins_500Medium
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ paddingHorizontal: 10 }}>
+          <View
             style={{
-              height: 50,
-              backgroundColor: "#22CB65",
-              borderRadius: 30,
+              flexDirection: "row",
+              paddingTop: 15,
+              marginBottom: 20,
+              justifyContent: "space-between",
+            }}>
+            <TouchableOpacity
+              style={Styles.backButton}
+              onPress={() => navigation.navigate("UserDetails")}>
+              <Feather name='arrow-left' size={24} color={colors.topBarItem}></Feather>
+            </TouchableOpacity>
+            <Text style={Styles.sectionText}>Security</Text>
+            <Ionicons name="arrow-back-outline" size={24} color={"white"} />
+          </View>
+          <View
+            style={{
+              alignItems: "center",
               justifyContent: "center",
-              marginVertical: 50,
-              flex: 1,
-            }}
-            activeOpacity={0.5}
-            onPress={validate}>
-            <Text
+              marginTop: 10,
+            }}>
+            <Icon name="lock" size={200} />
+            <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 15 }}>Please enter your new password</Text>
+          </View>
+          <View style={{ marginHorizontal: 20, marginTop: 20 }}>
+            <InputText
+              placeholder="Current password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={(text) => handleOnChange(text, "currentPassword")}
+              password
+              error={errors.currentPassword}
+            />
+          </View>
+          <View style={{ marginHorizontal: 20 }}>
+            <InputText
+              placeholder="New password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={(text) => handleOnChange(text, "password")}
+              password
+              error={errors.password}
+            />
+          </View>
+          <View style={{ marginHorizontal: 20 }}>
+            <InputText
+              placeholder="Confirm password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={(text) => handleOnChange(text, "confirmPassword")}
+              password
+              error={errors.confirmPassword}
+            />
+          </View>
+          <View
+            style={{
+              alignSelf: "center",
+              flexDirection: "row",
+              marginHorizontal: 20,
+            }}>
+            <TouchableOpacity
               style={{
-                color: "#FFF",
-                textAlign: "center",
-                fontSize: 20,
-                fontWeight: "500",
-              }}>
-              Create Password
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+                height: 50,
+                backgroundColor: colors.mainYellow,
+                borderRadius: 30,
+                justifyContent: "center",
+                marginVertical: 50,
+                flex: 1,
+              }}
+              activeOpacity={0.5}
+              onPress={validate}>
+              <Text
+                style={{
+                  color: colors.white,
+                  textAlign: "center",
+                  fontFamily: 'Poppins_500Medium',
+                  fontSize: 20,
+                  top: 2
+                }}>
+                Create Password
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 };
 
 const Styles = StyleSheet.create({
   backButton: {
     justifyContent: "center",
-    alignItems: "center",
+    left: 15
   },
   sectionText: {
+    fontFamily: 'Inter_700Bold',
     fontSize: 19,
-    fontWeight: "bold",
-    color: "black",
+    color: colors.topBarItem,
     flexDirection: "row",
     alignSelf: "center",
     justifyContent: "center",
   },
   inputText: {
-    backgroundColor: "#F6F6F6",
+    backgroundColor: colors.inputShades,
     borderRadius: 30,
     height: 50,
     paddingLeft: 20,
-    //paddingRight: 20,
     elevation: 5,
   },
 });

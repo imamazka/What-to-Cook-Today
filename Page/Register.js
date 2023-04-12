@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,11 +8,14 @@ import {
   ScrollView,
   Alert,
   Keyboard,
+  StatusBar
 } from "react-native";
-import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
 import { firebase } from "../firebase";
+import { useFonts, Poppins_700Bold, Poppins_500Medium } from '@expo-google-fonts/poppins';
+
+import colors from "../config/colors";
 
 /**
  * Register page if user did not have any account
@@ -63,6 +66,7 @@ const InputText = ({ password, error, ...props }) => {
 };
 
 const Register = ({ navigation }) => {
+
   const [data, setData] = useState({
     userName: "",
     email: "",
@@ -158,125 +162,138 @@ const Register = ({ navigation }) => {
     }, 3000);
   };
 
-  return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        justifyContent: "center",
-        backgroundColor: "#fff",
-      }}>
-      <Spinner visible={loading} />
-      <View
-        style={{
-          backgroundColor: "#FFF",
+  let [fontsLoaded] = useFonts({
+    Poppins_700Bold,
+    Poppins_500Medium
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else {
+    return (
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          backgroundColor: colors.white,
         }}>
+        <StatusBar barStyle={"dark-content"} backgroundColor={colors.white}>
+          {" "}
+        </StatusBar>
+        <Spinner visible={loading} />
         <View
           style={{
-            alignItems: "center",
+            backgroundColor: colors.white,
           }}>
-          <Text style={[Styles.loginText]}>REGISTER</Text>
+          <View
+            style={{
+              alignItems: "center",
+            }}>
+            <Text style={[Styles.loginText]}>REGISTER</Text>
+          </View>
+          <InputText
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Username"
+            onChangeText={(text) => handleOnChange(text, "userName")}
+            error={errors.userName}
+          />
+          <InputText
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Email"
+            onChangeText={(text) => handleOnChange(text, "email")}
+            error={errors.email}
+            keyboardType="email-address"
+          />
+          <InputText
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Password"
+            onChangeText={(text) => handleOnChange(text, "password")}
+            password
+            error={errors.password}
+          />
+          <InputText
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Confirm Password"
+            onChangeText={(text) => handleOnChange(text, "confirmPassword")}
+            password
+            error={errors.confirmPassword}
+          />
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <TouchableOpacity
+              style={Styles.loginButton}
+              activeOpacity={0.7}
+              onPress={validate}>
+              <Text style={Styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              marginTop: 15,
+              flexDirection: "row",
+            }}>
+            <Text style={Styles.signUpFoot}>Already have an account? </Text>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate("Login")}>
+              <Text
+                style={[
+                  Styles.signUpFoot,
+                  {
+                    color: colors.mainYellow,
+                    textDecorationLine: "underline",
+                    fontWeight: "800",
+                  },
+                ]}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <InputText
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Username"
-          onChangeText={(text) => handleOnChange(text, "userName")}
-          error={errors.userName}
-        />
-        <InputText
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Email"
-          onChangeText={(text) => handleOnChange(text, "email")}
-          error={errors.email}
-          keyboardType="email-address"
-        />
-        <InputText
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Password"
-          onChangeText={(text) => handleOnChange(text, "password")}
-          password
-          error={errors.password}
-        />
-        <InputText
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Confirm Password"
-          onChangeText={(text) => handleOnChange(text, "confirmPassword")}
-          password
-          error={errors.confirmPassword}
-        />
-        <View style={{ alignItems: "center", flexDirection: "row" }}>
-          <TouchableOpacity
-            style={Styles.loginButton}
-            activeOpacity={0.7}
-            onPress={validate}>
-            <Text style={Styles.buttonText}>Register</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
-            marginTop: 15,
-            flexDirection: "row",
-          }}>
-          <Text style={Styles.signUpFoot}>Already have an account? </Text>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate("Login")}>
-            <Text
-              style={[
-                Styles.signUpFoot,
-                {
-                  color: "#0C40F9",
-                  textDecorationLine: "underline",
-                  fontWeight: "800",
-                },
-              ]}>
-              Sign In
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
-  );
+      </ScrollView>
+    );
+  }
 };
 
 const Styles = StyleSheet.create({
   loginText: {
     fontSize: 45,
-    fontWeight: "bold",
-    color: "#22CB65",
-    //fontFamily: 'NotoSans-Bold'
+    color: colors.mainYellow,
+    fontFamily: 'Poppins_700Bold',
+    bottom: 30
   },
   inputText: {
-    backgroundColor: "#F6F6F6",
+    backgroundColor: colors.inputShades,
     borderRadius: 30,
     height: 50,
     paddingLeft: 20,
-    //paddingRight: 20,
     elevation: 6,
   },
   loginButton: {
     height: 50,
-    backgroundColor: "#22CB65",
+    backgroundColor: colors.mainYellow,
     borderRadius: 30,
-    marginTop: 34,
+    marginTop: 60,
     justifyContent: "center",
     flex: 1,
     marginHorizontal: 30,
   },
   buttonText: {
-    //fontFamily: 'NotoSans-Medium',
-    color: "#FFF",
+    fontFamily: 'Poppins_500Medium',
+    color: colors.white,
     textAlign: "center",
     fontSize: 20,
-    fontWeight: "500",
+    top: 2
   },
   signUpFoot: {
+    fontFamily: 'Poppins_500Medium',
     fontSize: 13,
-    fontWeight: "500",
   },
 });
 

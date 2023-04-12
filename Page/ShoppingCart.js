@@ -4,18 +4,16 @@ import {
   StyleSheet,
   Text,
   ScrollView,
-  Platform,
   StatusBar,
   KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
   Keyboard,
-  Image,
+  ImageBackground
 } from "react-native";
 import { firebase } from "../firebase";
-import { Ionicons } from "@expo/vector-icons";
-import { ImageBackground } from "react-native";
-import { Alert } from "react-native";
+import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from '@expo-google-fonts/inter';
+import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons';
 
 import colors from "../config/colors";
 
@@ -46,7 +44,6 @@ function ShoppingCart({ navigation }) {
     fetchItem();
   }, []);
 
-
   //second trigger after first useEffect is triggered.
   useEffect(() => {
     if (isMounted) {
@@ -54,6 +51,21 @@ function ShoppingCart({ navigation }) {
     }
   }, [ingredientItems, finishedItems]);
 
+  // get item from user database.
+  const fetchItem = () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then((data) => {
+        setIngredientItems(data.data().ingredientItems);
+        setFinishedItems(data.data().finishedItems);
+      });
+  };
+  console.log(ingredientItems);
+
+  // update item from user database.
   const setItem = () => {
     firebase
       .firestore()
@@ -108,200 +120,188 @@ function ShoppingCart({ navigation }) {
     console.log("deleted");
   }
 
-  const fetchItem = () => {
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(firebase.auth().currentUser.uid)
-      .get()
-      .then((data) => {
-        setIngredientItems(data.data().ingredientItems);
-        setFinishedItems(data.data().finishedItems);
-      });
-  };
-  console.log(ingredientItems);
-  
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
-        {" "}
-      </StatusBar>
-      <ScrollView>
-        <View style={styles.listWrapper}>
-          <Text style={styles.sectionTitle}>Shopping Cart</Text>
+  let [fontsLoaded] = useFonts({
+    Inter_700Bold,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold
+  });
 
-          {ingredientItems.length == 0 && finishedItems.length == 0 ? (
-            <View
-              style={{
-                alignItems: "center",
-                marginVertical: 130,
-                marginHorizontal: 48,
-              }}>
-              <ImageBackground
-                source={require("../assets/NoItemsCart.png")}
-                style={{
-                  width: 250,
-                  height: 250,
-                  justifyContent: "flex-end",
-                }}>
-                <Text
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else {
+      return (
+        <View style={styles.container}>
+          <StatusBar barStyle={"dark-content"} backgroundColor={colors.white}>
+            {" "}
+          </StatusBar>
+          <ScrollView>
+            <View style={styles.listWrapper}>
+              <Text style={styles.sectionTitle}>Shopping Cart</Text>
+
+              {ingredientItems.length == 0 && finishedItems.length == 0 ? (
+                <View
                   style={{
-                    textAlign: "center",
-                    fontSize: 18,
-                    fontWeight: "bold",
+                    alignItems: "center",
+                    marginVertical: 130,
+                    marginHorizontal: 48,
                   }}>
-                  Your cart is empty
-                </Text>
-              </ImageBackground>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 14,
-                  marginTop: 5,
-                  color: "#555555",
-                }}>
-                Add new item to your shopping cart
-              </Text>
+                  <ImageBackground
+                    source={require("../assets/NoItemsCart.png")}
+                    style={{
+                      width: 350,
+                      height: 250,
+                      justifyContent: "flex-end",
+                    }}>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontFamily: 'Inter_700Bold'
+                      }}>
+                      Your cart is empty
+                    </Text>
+                  </ImageBackground>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter_400Regular',
+                      textAlign: "center",
+                      fontSize: 14,
+                      marginTop: 5,
+                      color: "#555555",
+                    }}>
+                    Add new item to your shopping cart
+                  </Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.section}>To Shop</Text>
+                  <View>
+                    {ingredientItems.length == 0 ? (
+                      <Text style={styles.empty}>-- Empty --</Text>
+                    ) : (
+                      ingredientItems.map((item, index) => (
+                        <TouchableOpacity key={index} style={styles.item}>
+                          <View style={styles.itemLeft}>
+                            <Ionicons
+                              name={"ellipse-outline"}
+                              size={23}
+                              color={colors.grey}
+                              onPress={() => completeIngredient(index)}></Ionicons>
+                            <Text style={styles.itemText}>{item}</Text>
+                          </View>
+
+                          <TouchableOpacity onPress={() => deleteIngredient(index)}>
+                            <View style={styles.square}>
+                              <Ionicons
+                                name="trash-outline"
+                                size={22}
+                                style={{ left: 0.8 }}></Ionicons>
+                            </View>
+                          </TouchableOpacity>
+                        </TouchableOpacity>
+                      ))
+                    )}
+                  </View>
+
+                  <Text style={styles.section}>Finished</Text>
+                  <View>
+                    {finishedItems.length == 0 ? (
+                      <Text style={styles.empty}>-- Empty --</Text>
+                    ) : (
+                      finishedItems.map((item, index) => (
+                        <TouchableOpacity key={index} style={styles.item}>
+                          <View style={styles.itemLeft}>
+                            <Ionicons
+                              name={"checkmark-circle"}
+                              size={23}
+                              color={colors.grey}
+                              onPress={() => cancelFinished(index)}></Ionicons>
+                            <Text style={styles.itemFinished}>{item}</Text>
+                          </View>
+
+                          <TouchableOpacity onPress={() => deleteFinished(index)}>
+                            <View style={styles.square}>
+                              <Ionicons
+                                name="trash-outline"
+                                size={22}
+                                style={{
+                                  left: 0.8,
+                                  color: colors.darkGrey,
+                                }}></Ionicons>
+                            </View>
+                          </TouchableOpacity>
+                        </TouchableOpacity>
+                      ))
+                    )}
+                  </View>
+                </View>
+              )}
             </View>
+          </ScrollView>
+          {addItem ? (
+            <KeyboardAvoidingView>
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder={"Input new item"}
+                  value={ingredient}
+                  onChangeText={(text) => setIngredient(text)}
+                  onSubmitEditing={handleAddIngredient}></TextInput>
+                <TouchableOpacity
+                  style={styles.confirmButton}
+                  onPress={() => handleAddIngredient()}>
+                  <Ionicons
+                    name="add-outline"
+                    size={20}
+                    color={colors.black}></Ionicons>
+                </TouchableOpacity>
+              </View>
+            </KeyboardAvoidingView>
           ) : (
             <View>
-              <Text style={styles.section}>To Shop</Text>
-              <View>
-                {ingredientItems.length == 0 ? (
-                  <Text style={styles.empty}>-- Empty --</Text>
-                ) : (
-                  ingredientItems.map((item, index) => (
-                    <TouchableOpacity key={index} style={styles.item}>
-                      <View style={styles.itemLeft}>
-                        <Ionicons
-                          name={"ellipse-outline"}
-                          size={23}
-                          color={colors.grey}
-                          onPress={() => completeIngredient(index)}></Ionicons>
-                        <Text style={styles.itemText}>{item}</Text>
-                      </View>
+              <TouchableOpacity onPress={() => setAddItem(true)}>
+                <View style={styles.addButton}>
+                  <Ionicons
+                    name="add-outline"
+                    size={23}
+                    onPress={() => setAddItem(true)}></Ionicons>
+                </View>
+              </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => deleteIngredient(index)}>
-                        <View style={styles.square}>
-                          <Ionicons
-                            name="trash-outline"
-                            size={22}
-                            style={{ left: 0.8 }}></Ionicons>
-                        </View>
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  ))
-                )}
-              </View>
+              <View style={styles.navBar}>
+                <View style={styles.navWrapper}>
+                  <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate("Welcome")}>
+                  <Feather name="home" size={22} color={colors.white}></Feather>
+                  </TouchableOpacity>
 
-              <Text style={styles.section}>Finished</Text>
-              <View>
-                {finishedItems.length == 0 ? (
-                  <Text style={styles.empty}>-- Empty --</Text>
-                ) : (
-                  finishedItems.map((item, index) => (
-                    <TouchableOpacity key={index} style={styles.item}>
-                      <View style={styles.itemLeft}>
-                        <Ionicons
-                          name={"checkmark-circle"}
-                          size={23}
-                          color={colors.grey}
-                          onPress={() => cancelFinished(index)}></Ionicons>
-                        <Text style={styles.itemFinished}>{item}</Text>
-                      </View>
+                  <TouchableOpacity
+                    style={{ padding: 5 }}
+                    onPress={() => navigation.navigate("IngredientList")}>
+                    <MaterialCommunityIcons name="fridge-outline" size={25} color="white" />
+                  </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => deleteFinished(index)}>
-                        <View style={styles.square}>
-                          <Ionicons
-                            name="trash-outline"
-                            size={22}
-                            style={{
-                              left: 0.8,
-                              color: colors.darkGrey,
-                            }}></Ionicons>
-                        </View>
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  ))
-                )}
+                  <TouchableOpacity>
+                    <View style={styles.sectionWrapper}>
+                    <Feather name="shopping-cart" size={22} color={colors.mainYellow} style={{right: 4}}></Feather>
+                    <Text style={styles.sectionText}>Cart</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={{ padding: 5 }}
+                    onPress={() => navigation.navigate("UserDetails")}>
+                    <Feather name="user" size={22} color={colors.white}></Feather>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           )}
         </View>
-      </ScrollView>
-      {addItem ? (
-        <KeyboardAvoidingView>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              placeholder={"Input new item"}
-              value={ingredient}
-              onChangeText={(text) => setIngredient(text)}
-              onSubmitEditing={handleAddIngredient}></TextInput>
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => handleAddIngredient()}>
-              <Ionicons
-                name="add-outline"
-                size={20}
-                color={colors.black}></Ionicons>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      ) : (
-        <View>
-          <TouchableOpacity onPress={() => setAddItem(true)}>
-            <View style={styles.addButton}>
-              <Ionicons
-                name="add-outline"
-                size={23}
-                onPress={() => setAddItem(true)}></Ionicons>
-            </View>
-          </TouchableOpacity>
-
-          <View style={styles.navBar}>
-            <View style={styles.navWrapper}>
-              <TouchableOpacity onPress={() => navigation.navigate("Main")}>
-                <Ionicons
-                  name="home-outline"
-                  color={colors.white}
-                  size={24}
-                  style={{ padding: 5 }}></Ionicons>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{ padding: 5 }}
-                onPress={() => navigation.navigate("IngredientList")}>
-                <Image
-                  style={styles.pantry}
-                  source={require("../assets/fridge-white.png")}></Image>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={{ padding: 5, right: 4 }}>
-                <View style={styles.sectionWrapper}>
-                  <Ionicons
-                    name="cart-outline"
-                    color={colors.mainGreen}
-                    size={24}
-                    style={{ right: 4 }}></Ionicons>
-                  <Text style={styles.sectionText}>Cart</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{ padding: 5 }}
-                onPress={() => navigation.navigate("UserDetails")}>
-                <Ionicons
-                  name="person-outline"
-                  color={colors.white}
-                  size={24}></Ionicons>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )}
-    </View>
-  );
+      );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -314,15 +314,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   sectionTitle: {
+    fontFamily: 'Inter_700Bold',
     fontSize: 20,
-    fontWeight: "bold",
-    color: colors.black,
+    color: colors.topBarItem,
     marginBottom: 10,
     alignSelf: "center",
   },
   section: {
+    fontFamily: 'Inter_600SemiBold',
     fontSize: 16,
-    fontWeight: "500",
     marginLeft: 10,
     marginTop: 30,
     color: "#3a3a3b",
@@ -330,6 +330,7 @@ const styles = StyleSheet.create({
   empty: {
     alignSelf: "center",
     color: colors.grey,
+    fontFamily: 'Inter_500Medium',
     fontSize: 14,
     marginVertical: 20,
   },
@@ -380,14 +381,14 @@ const styles = StyleSheet.create({
   },
   navBar: {
     width: "100%",
-    backgroundColor: colors.mainGreen,
+    backgroundColor: colors.mainYellow,
   },
   navWrapper: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    padding: 2,
+    padding: 8,
   },
   sectionWrapper: {
     backgroundColor: colors.white,
@@ -397,17 +398,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    left: 7,
   },
   sectionText: {
     fontSize: 13,
-    color: colors.mainGreen,
+    color: colors.mainYellow,
     left: 3,
     fontWeight: "500",
-  },
-  pantry: {
-    width: 23,
-    height: 23,
   },
   item: {
     backgroundColor: "#f1f1f1",
@@ -428,6 +424,7 @@ const styles = StyleSheet.create({
   itemText: {
     maxWidth: "80%",
     marginLeft: 15,
+    fontFamily: 'Inter_400Regular',
     fontSize: 15,
     textDecorationLine: "none",
     color: colors.black,
@@ -444,6 +441,7 @@ const styles = StyleSheet.create({
   itemFinished: {
     maxWidth: "80%",
     marginLeft: 15,
+    fontFamily: 'Inter_400Regular',
     fontSize: 15,
     textDecorationLine: "none",
     color: colors.darkGrey,

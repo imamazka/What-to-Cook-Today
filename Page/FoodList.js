@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
-  StatusBar,
   View,
   StyleSheet,
   ScrollView,
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { firebase } from "../firebase";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useFonts, Inter_700Bold } from '@expo-google-fonts/inter';
 
 import colors from "../config/colors";
 import FoodFiltered from "../components/FoodFiltered";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 /**
  * Page showing list of foods based on ingredients submitted by user.
@@ -21,7 +21,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
  * @param {navigation} navigation - Navigation to another page.
  *
  */
-
 
 function useMounted() {
   const [isMounted, setIsMounted] = useState(false);
@@ -38,8 +37,6 @@ function FoodList({ route, navigation }) {
   const [favorite, setFavorite] = useState([]); // list of food id favorited by user.
   const [apiKey, setData] = useState(""); //key needed to retrieve food from API
   const isMounted = useMounted();                             // state to trigger second use effect
-
-
 
   // request url from web api to retrieve foods based on ingredients.
   const url = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${parameter}&number=10&rangking=2&ignorePantry=true`;
@@ -64,19 +61,6 @@ function FoodList({ route, navigation }) {
       });
     }
   }, [apiKey, parameter]);
-
-  // useEffect(() => {
-    // getFavorite();
-    // fetch(url)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setListData(data);
-    //     console.log("fetched");
-    //   })
-    //   .catch(() => {
-    //     console.log("error");
-    //   });
-  // }, [parameter]);
 
   //get api key from database
   const getApiKey = () => {
@@ -103,49 +87,61 @@ function FoodList({ route, navigation }) {
       });
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginHorizontal: 20,
-            marginTop: 10,
-            justifyContent: "space-between",
-          }}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate("IngredientList")}>
-            <Ionicons name="arrow-back-outline" size={24} />
-          </TouchableOpacity>
-          <Text style={styles.sectionText}>Based on your ingredients</Text>
-          <Ionicons name="arrow-back-outline" size={24} color="white" />
-        </View>
+  let [fontsLoaded] = useFonts({
+    Inter_700Bold,
+  });
 
-        <View style={styles.wrapper}>
-          {listData.map((item) => (
-            <FoodFiltered
-              key={item.id}
-              foodId={item.id}
-              imageUri={item.image}
-              name={item.title}
-              rating={item.likes}
-              owned={item.usedIngredientCount}
-              missing={item.missedIngredientCount}
-              ingredients={item.missedIngredients.concat(item.usedIngredients)}
-              favorite={favorite}></FoodFiltered>
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View
+            style={styles.top}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.navigate("IngredientList")}>
+              <Feather name='arrow-left' size={24} color={colors.topBarItem}></Feather>
+            </TouchableOpacity>
+            <Text style={styles.sectionText}>Based on your ingredients</Text>
+            <Feather name='arrow-left' size={24} color={colors.white}></Feather>
+          </View>
+
+          <View style={styles.wrapper}>
+            {listData.map((item) => (
+              <FoodFiltered
+                key={item.id}
+                foodId={item.id}
+                imageUri={item.image}
+                name={item.title}
+                rating={item.likes}
+                owned={item.usedIngredientCount}
+                missing={item.missedIngredientCount}
+                ingredients={item.missedIngredients.concat(item.usedIngredients)}
+                favorite={favorite}></FoodFiltered>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  top: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 20,
+    marginTop: 15,
+    marginBottom: 5,
+    justifyContent: "space-between",
   },
   wrapper: {
     marginHorizontal: 20,
@@ -157,9 +153,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sectionText: {
+    fontFamily: 'Inter_700Bold',
     fontSize: 19,
-    fontWeight: "bold",
-    color: colors.black,
+    color: colors.topBarItem,
   },
 });
 

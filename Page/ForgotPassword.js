@@ -1,5 +1,4 @@
-import { Feather } from "@expo/vector-icons";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   TouchableOpacity,
   View,
@@ -7,9 +6,10 @@ import {
   TextInput,
   Alert,
   ActivityIndicator,
+  StatusBar
 } from "react-native";
-import Spinner from "react-native-loading-spinner-overlay";
 import { firebase } from "../firebase";
+import { useFonts, Poppins_700Bold, Poppins_500Medium } from '@expo-google-fonts/poppins';
 
 import colors from "../config/colors";
 
@@ -30,11 +30,10 @@ const InputText = ({ error, ...props }) => {
           flexDirection: "row",
           alignItems: "center",
           paddingRight: 20,
-          backgroundColor: "#F6F6F6",
+          backgroundColor: colors.inputShades,
           borderRadius: 30,
           height: 50,
           paddingLeft: 20,
-          //paddingRight: 20,
           elevation: 6,
         }}>
         <TextInput style={{ flex: 1 }} {...props} />
@@ -50,6 +49,7 @@ const InputText = ({ error, ...props }) => {
 };
 
 const ForgotPassword = ({ navigation }) => {
+
   const [email, setEmail] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
@@ -88,54 +88,66 @@ const ForgotPassword = ({ navigation }) => {
 
   console.log(user);
 
-  return (
-    <View style={{ flex: 1, backgroundColor: "white", paddingHorizontal: 20 }}>
-      {loading && <ActivityIndicator />}
-      <View style={{ marginTop: 25 }}>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Feather name="arrow-left" size={30} />
-        </TouchableOpacity>
-      </View>
-      <Text
-        style={{ color: colors.mainGreen, fontSize: 50, fontWeight: "bold" }}>
-        Forget Password
-      </Text>
-      <Text style={{ fontSize: 15 }}>
-        Please enter your email to reset your password
-      </Text>
-      <InputText
-        placeholder="Input your email"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={(text) => setEmail(text)}
-        keyboardType="email-address"
-        error={errors.email}
-      />
-      <View style={{ alignSelf: "center", flexDirection: "row" }}>
-        <TouchableOpacity
-          style={{
-            height: 50,
-            backgroundColor: "#22CB65",
-            borderRadius: 30,
-            justifyContent: "center",
-            marginTop: 20,
-            flex: 1,
-          }}
-          activeOpacity={0.5}
-          onPress={handleSubmit}>
+  let [fontsLoaded] = useFonts({
+    Poppins_700Bold,
+    Poppins_500Medium
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.white, paddingHorizontal: 20, justifyContent: 'center'}}>
+        {loading && <ActivityIndicator />}
+        <StatusBar barStyle={"dark-content"} backgroundColor={colors.white}>
+          {" "}
+        </StatusBar>
+        <View style={{ justifyContent:'center' }}>
           <Text
-            style={{
-              color: "#FFF",
-              textAlign: "center",
-              fontSize: 20,
-              fontWeight: "500",
-            }}>
-            Reset Password
+            style={{ color: colors.mainYellow, fontFamily: 'Poppins_700Bold', fontSize: 38, alignSelf: 'center' }}>
+            Forgot Password
           </Text>
-        </TouchableOpacity>
+          <Text style={{ fontFamily: 'Poppins_500Medium', fontSize: 12, paddingTop: 65, paddingBottom: 5, alignSelf: 'center' }}>
+            Please enter your email to reset your password
+          </Text>
+          <InputText
+            placeholder="Input your email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={(text) => setEmail(text)}
+            keyboardType="email-address"
+            error={errors.email}
+          />
+          <View style={{ alignSelf: "center", flexDirection: "row" }}>
+            <TouchableOpacity
+              style={{
+                height: 50,
+                backgroundColor: colors.mainYellow,
+                borderRadius: 30,
+                justifyContent: "center",
+                marginTop: 70,
+                flex: 1,
+              }}
+              activeOpacity={0.5}
+              onPress={handleSubmit}>
+              <Text
+                style={{
+                  color: colors.white,
+                  textAlign: "center",
+                  fontFamily: 'Poppins_500Medium',
+                  fontSize: 20,
+                  top: 2
+                }}>
+                Reset Password
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 };
 
 export default ForgotPassword;

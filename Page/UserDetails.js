@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   Image,
   StatusBar,
-  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Ionicons } from "@expo/vector-icons";
 import { firebase } from "../firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFonts, Poppins_600SemiBold, Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons';
 
 import colors from "../config/colors";
 
@@ -44,219 +44,214 @@ const UserDetails = ({ navigation }) => {
       });
   };
 
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
-      <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
-        {" "}
-      </StatusBar>
-      <View style={{ flex: 0.1, backgroundColor: colors.white, marginTop: 30 }}>
-        <Text style={{ fontWeight: "bold", fontSize: 30, textAlign: "center" }}>
-          My Account
-        </Text>
-      </View>
-      <View style={{ flex: 1, backgroundColor: colors.white }}>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginVertical: 10,
-          }}>
-          {user.imgProfile == null ? (
-            <Image
-              source={require("../assets/default-profile-photo.jpg")}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 100 / 2,
-                borderWidth: 3,
-                borderColor: "#FFFFFF",
-              }}
-            />
-          ) : (
-            <Image
-              source={{ uri: user.imgProfile }}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 100 / 2,
-                borderWidth: 3,
-                borderColor: "#FFFFFF",
-              }}
-            />
-          )}
+  let [fontsLoaded] = useFonts({
+    Poppins_600SemiBold,
+    Poppins_400Regular
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+        <StatusBar barStyle={"dark-content"} backgroundColor={colors.white}>
+            {" "}
+        </StatusBar>
+        <View style={{ flex: 0.1, backgroundColor: colors.white, marginTop: 30 }}>
+          <Text style={{ fontFamily: 'Poppins_600SemiBold', fontSize: 30, textAlign: "center", color: colors.mainYellow }}>
+            My Account
+          </Text>
         </View>
-        <View>
-          <Text
-            style={{ fontWeight: "bold", fontSize: 18, textAlign: "center" }}>
-            {user.userName}
-          </Text>
-          <Text
+        <View style={{ flex: 1, backgroundColor: colors.white }}>
+          <View
             style={{
-              fontWeight: "bold",
-              fontSize: 13,
-              textAlign: "center",
-              color: colors.grey,
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 10,
+              marginTop: 20
             }}>
-            {user.email}
-          </Text>
-          <View style={{ marginTop: 30 }}>
+            {user.imgProfile == null ? (
+              <Image
+                source={require("../assets/defaultProfile.png")}
+                style={{
+                  width: 100,
+                  height: 100,
+                }}
+              />
+            ) : (
+              <Image
+                source={{ uri: user.imgProfile }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 100 / 2,
+                  borderWidth: 3,
+                  borderColor: colors.white,
+                }}
+              />
+            )}
+          </View>
+          <View>
+            <Text
+              style={{ fontFamily: 'Poppins_600SemiBold', fontSize: 18, textAlign: "center" }}>
+              {user.userName}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Poppins_400Regular',
+                fontSize: 13,
+                textAlign: "center",
+                color: '#6C6982',
+              }}>
+              {user.email}
+            </Text>
+            <View style={{ marginTop: 40 }}>
+              <TouchableOpacity
+                style={{ padding: 10 }}
+                onPress={() => navigation.navigate("AccountInfo")}>
+                <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
+                  <View style={{ flex: 1.5 }}>
+                  <Ionicons
+                    name="person-outline"
+                    size={24}/>
+                  </View>
+                  <View style={{ justifyContent: "center", flex: 10 }}>
+                    <Text style={{ fontFamily: 'Poppins_400Regular', fontSize: 14 }}>Account Details</Text>
+                  </View>
+                  <View style={{ flex: 1, justifyContent: "center" }}>
+                    <Icon name="angle-right" size={23} color="#darkGrey" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{ padding: 10 }}
+                onPress={() => navigation.navigate("Favorite")}>
+                <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
+                  <View style={{ flex: 1.5 }}>
+                  <Ionicons
+                    name="bookmark-outline"
+                    size={24}/>
+                  </View>
+                  <View style={{ justifyContent: "center", flex: 10 }}>
+                    <Text style={{ fontFamily: 'Poppins_400Regular', fontSize: 14 }}>Favorite</Text>
+                  </View>
+                  <View style={{ flex: 1, justifyContent: "center" }}>
+                    <Icon name="angle-right" size={23} color="#darkGrey" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ResetPassword")}
+                style={{ padding: 10 }}>
+                <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
+                  <View style={{ flex: 1.5 }}>
+                  <Ionicons
+                    name="lock-closed-outline"
+                    size={24}/>
+                  </View>
+                  <View style={{ justifyContent: "center", flex: 10 }}>
+                    <Text style={{ fontFamily: 'Poppins_400Regular', fontSize: 14 }}>Password</Text>
+                  </View>
+                  <View style={{ flex: 1, justifyContent: "center" }}>
+                    <Icon name="angle-right" size={23} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={{ padding: 10 }}>
+                <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
+                  <View style={{ flex: 1.5 }}>
+                  <Ionicons
+                    name="mail-outline"
+                    size={24}/>
+                  </View>
+                  <View style={{ justifyContent: "center", flex: 10 }}>
+                    <Text style={{ fontFamily: 'Poppins_400Regular', fontSize: 14 }}>Contact Us</Text>
+                  </View>
+                  <View style={{ flex: 1, justifyContent: "center" }}>
+                    <Icon name="angle-right" size={23} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={{ padding: 10 }}>
+                <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
+                  <View style={{ flex: 1.5 }}>
+                  <Ionicons
+                    name="information-circle-outline"
+                    size={24}/>
+                  </View>
+                  <View style={{ justifyContent: "center", flex: 10 }}>
+                    <Text style={{ fontFamily: 'Poppins_400Regular', fontSize: 14 }}>About App</Text>
+                  </View>
+                  <View style={{ flex: 1, justifyContent: "center" }}>
+                    <Icon name="angle-right" size={23} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{ padding: 10 }}
+                onPress={() => firebase.auth().signOut()}>
+                <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
+                  <View style={{ flex: 1.5 }}>
+                  <Ionicons
+                    name="log-out-outline"
+                    size={24}/>
+                  </View>
+                  <View style={{ justifyContent: "center", flex: 10 }}>
+                    <Text style={{ fontFamily: 'Poppins_400Regular', fontSize: 14 }}>Logout</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Icon name="angle-right" size={23} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View style={Styles.navBar}>
+          <View style={Styles.navWrapper}>
             <TouchableOpacity
-              style={{ padding: 10 }}
-              onPress={() => navigation.navigate("AccountInfo")}>
-              <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
-                <View style={{ flex: 1.5 }}>
-                  <Icon name="align-justify" size={23} color="#darkGrey" />
-                </View>
-                <View style={{ justifyContent: "center", flex: 10 }}>
-                  <Text>Account Info</Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                  <Icon name="angle-right" size={23} color="#darkGrey" />
-                </View>
-              </View>
+              style={{ padding: 5 }}
+              onPress={() => navigation.navigate("Welcome")}>
+              <Feather name="home" size={22} color={colors.white}></Feather>
             </TouchableOpacity>
-
             <TouchableOpacity
-              style={{ padding: 10 }}
-              onPress={() => navigation.navigate("Favorite")}>
-              <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
-                <View style={{ flex: 1.5 }}>
-                  <Icon name="bookmark" size={29} color="#darkGrey" />
-                </View>
-                <View style={{ justifyContent: "center", flex: 10 }}>
-                  <Text>Favorite</Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                  <Icon name="angle-right" size={23} color="#darkGrey" />
-                </View>
-              </View>
+              style={{ padding: 5 }}
+              onPress={() => navigation.navigate("IngredientList")}>
+              <MaterialCommunityIcons name="fridge-outline" size={25} color="white" />
             </TouchableOpacity>
-
             <TouchableOpacity
-              onPress={() => navigation.navigate("ResetPassword")}
-              style={{ padding: 10 }}>
-              <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
-                <View style={{ flex: 1.5 }}>
-                  <Icon name="lock" size={30} color="#darkGrey" />
-                </View>
-                <View style={{ justifyContent: "center", flex: 10 }}>
-                  <Text>Security</Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                  <Icon name="angle-right" size={23} />
-                </View>
-              </View>
+              style={{ padding: 5 }}
+              onPress={() => navigation.navigate("ShoppingCart")}>
+              <Feather name="shopping-cart" size={22} color={colors.white}></Feather>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{ padding: 10 }}>
-              <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
-                <View style={{ flex: 1.5 }}>
-                  <Icon name="address-book" size={28} />
-                </View>
-                <View style={{ justifyContent: "center", flex: 10 }}>
-                  <Text>Contact Us</Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                  <Icon name="angle-right" size={23} />
-                </View>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={{ padding: 10 }}>
-              <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
-                <View style={{ flex: 1.5 }}>
-                  <Icon name="mobile" size={45} />
-                </View>
-                <View style={{ justifyContent: "center", flex: 10 }}>
-                  <Text>About App</Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                  <Icon name="angle-right" size={23} />
-                </View>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{ padding: 10 }}
-              onPress={() => firebase.auth().signOut()}>
-              <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
-                <View style={{ flex: 1.5 }}>
-                  <Icon name="sign-out" size={30} />
-                </View>
-                <View style={{ justifyContent: "center", flex: 10 }}>
-                  <Text>Logout</Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Icon name="angle-right" size={23} />
-                </View>
+            <TouchableOpacity>
+              <View style={Styles.sectionWrapper}>
+              <Feather name="user" size={22} color={colors.mainYellow} style={{right: 4}}></Feather>
+              <Text style={Styles.sectionText}>User</Text>
               </View>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
-      <View style={Styles.navBar}>
-        <View style={Styles.navWrapper}>
-          <TouchableOpacity
-            style={{ padding: 5 }}
-            onPress={() => navigation.navigate("Main")}>
-            <Ionicons
-              name="home-outline"
-              color={colors.white}
-              size={24}></Ionicons>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ padding: 5 }}
-            onPress={() => navigation.navigate("IngredientList")}>
-            <Image
-              style={Styles.pantry}
-              source={require("../assets/fridge-white.png")}></Image>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ padding: 5 }}
-            onPress={() => navigation.navigate("ShoppingCart")}>
-            <Ionicons
-              name="cart-outline"
-              color={colors.white}
-              size={24}></Ionicons>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={Styles.sectionWrapper}>
-              <Ionicons
-                name="person-outline"
-                color={colors.mainGreen}
-                size={22}
-                style={{ right: 4 }}></Ionicons>
-              <Text style={Styles.sectionText}>User</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 };
 
 const Styles = StyleSheet.create({
-  button: {
-    width: 180,
-    height: 50,
-    backgroundColor: "#22CB65",
-    borderRadius: 30,
-    marginTop: 34,
-    justifyContent: "center",
-  },
-  buttonText: {
-    //fontFamily: 'NotoSans-Medium',
-    color: "#FFF",
-    textAlign: "center",
-    fontSize: 25,
-    fontWeight: "500",
-  },
   itemWrapper: {
     padding: 20,
   },
   navBar: {
     width: "100%",
-    backgroundColor: colors.mainGreen,
+    backgroundColor: colors.mainYellow,
   },
   navWrapper: {
     width: "100%",
@@ -276,13 +271,9 @@ const Styles = StyleSheet.create({
   },
   sectionText: {
     fontSize: 13,
-    color: colors.mainGreen,
+    color: colors.mainYellow,
     left: 4,
     fontWeight: "500",
-  },
-  pantry: {
-    width: 23,
-    height: 23,
   },
 });
 

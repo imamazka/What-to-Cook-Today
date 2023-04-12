@@ -4,16 +4,17 @@ import {
   StyleSheet,
   Text,
   ScrollView,
-  Platform,
   StatusBar,
   TouchableOpacity,
   Image,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFonts, Inter_700Bold, Inter_400Regular } from '@expo-google-fonts/inter';
+import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 
 import colors from "../config/colors";
-import ingredients from "../assets/dummy data/ingredients";
+import ingredients from "../assets/data/ingredients";
 import IngredientItem from "../components/IngredientItem";
 
 /**
@@ -33,119 +34,123 @@ function IngredientList({ navigation }) {
     else navigation.navigate("FoodList", { selected: selected });
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
-        {" "}
-      </StatusBar>
-      <ScrollView>
-        <View style={{ marginTop: 10 }}>
-          <Text style={styles.sectionTitle}>Select your ingredients!</Text>
+  /*
+  const handleRemove = () => {
+    setSelected([]);
+  }*/
 
-          <View style={styles.info}>
-            <Text style={{ color: "#555555" }}>
-              We assume you already have typical pantry items. Such as water,
-              salt, flour, etc.
-            </Text>
-          </View>
+  let [fontsLoaded] = useFonts({
+    Inter_700Bold,
+    Inter_400Regular,
+    Poppins_400Regular
+  });
 
-          <View
-            style={{
-              padding: 5,
-              marginBottom: selected.length === 0 ? 0 : 40,
-            }}>
-            {ingredients.map((category) => (
-              <View style={styles.categoriesWrapper} key={category.id}>
-                <View style={styles.categoryTitleWrapper}>
-                  <Image source={category.image} style={styles.categoryImage} />
-                  <Text style={styles.categoryTitle}>{category.name}</Text>
-                </View>
-                <View
-                  style={{
-                    height: 0.75,
-                    width: "100%",
-                    backgroundColor: colors.black,
-                  }}></View>
-                <View style={styles.itemWrapper}>
-                  {category.children.map((item) => (
-                    <IngredientItem
-                      key={item.id}
-                      name={item.name}
-                      selected={selected}
-                      setSelected={setSelected}></IngredientItem>
-                  ))}
-                </View>
-              </View>
-            ))}
-          </View>
-        </View>
-      </ScrollView>
+  if (!fontsLoaded) {
+    return null;
+  }
 
-      <TouchableOpacity
-        onPress={handlePress}
-        activeOpacity={selected.length === 0 ? 1 : 0.6}>
-        <View
-          onPress={handlePress}
-          style={[
-            styles.continueWrapper,
+  else {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle={"dark-content"} backgroundColor={colors.white}>
+          {" "}
+        </StatusBar>
+        <ScrollView>
+          <View style={{ marginTop: 15 }}>
+            <Text style={styles.sectionTitle}>Select Your Ingredients!</Text>
             {
-              backgroundColor:
-                selected.length === 0 ? "#f1f1f1" : colors.mainGreen,
-              opacity: selected.length === 0 ? 0 : 1,
-            },
-          ]}>
-          <Text
+            /*selected.length === 0 ? (<View></View>) : 
+              (<TouchableOpacity style={styles.removeWrapper} onPress={handleRemove}>
+                <Text style={{fontSize: 12, color: colors.white}}>Remove All</Text>
+                <Feather name='x' size={15} color={colors.white} style={{top: 0.75}}></Feather>
+              </TouchableOpacity>
+              )*/
+            }
+            <View
+              style={{ padding: 5, marginBottom: selected.length === 0 ? 0 : 40 }}>
+              {ingredients.map((category) => (
+                <View style={styles.categoriesWrapper} key={category.id}>
+                  <View style={styles.categoryTitleWrapper}>
+                    <Image source={category.image} style={styles.categoryImage} />
+                    <Text style={styles.categoryTitle}>{category.name}</Text>
+                  </View>
+                  <View style={{height: 0.75, width: "100%", backgroundColor: colors.black}}></View>
+                  <View style={styles.itemWrapper}>
+                    {category.children.map((item) => (
+                      <IngredientItem
+                        key={item.id}
+                        name={item.name}
+                        selected={selected}
+                        //remove={false}
+                        setSelected={setSelected}></IngredientItem>
+                    ))}
+                  </View>
+                </View>
+              ))}
+              <View style={styles.info}>
+              <Text style={{ color: "#555555", fontFamily: 'Inter_400Regular' }}>
+                * We assume you already have typical pantry items. Such as water,
+                salt, flour, etc.
+              </Text>
+            </View>
+            </View>
+          </View>
+        </ScrollView>
+
+        <TouchableOpacity
+          onPress={handlePress}
+          activeOpacity={selected.length === 0 ? 1 : 0.6}>
+          <View
             onPress={handlePress}
             style={[
-              styles.continueText,
-              { color: selected.length === 0 ? colors.black : colors.white },
+              styles.continueWrapper,
+              {
+                backgroundColor:
+                  selected.length === 0 ? "#f1f1f1" : colors.mainYellow,
+                opacity: selected.length === 0 ? 0 : 1,
+              },
             ]}>
-            Continue
-          </Text>
-        </View>
-      </TouchableOpacity>
+            <Text
+              onPress={handlePress}
+              style={[
+                styles.continueText,
+                { color: selected.length === 0 ? colors.black : colors.white },
+              ]}>
+              Continue
+            </Text>
+          </View>
+        </TouchableOpacity>
 
-      <View style={styles.navBar}>
-        <View style={styles.navWrapper}>
-          <TouchableOpacity
-            style={{ padding: 5 }}
-            onPress={() => navigation.navigate("Main")}>
-            <Ionicons
-              name="home-outline"
-              color={colors.white}
-              size={24}
-              style={{ right: 4 }}></Ionicons>
-          </TouchableOpacity>
+        <View style={styles.navBar}>
+          <View style={styles.navWrapper}>
+            <TouchableOpacity
+              style={{ padding: 5 }}
+              onPress={() => navigation.navigate("Welcome")}>
+              <Feather name="home" size={22} color={colors.white}></Feather>
+            </TouchableOpacity>
 
-          <TouchableOpacity>
-            <View style={styles.sectionWrapper}>
-              <Image
-                style={styles.pantry}
-                source={require("../assets/fridge-green.png")}></Image>
+            <TouchableOpacity>
+              <View style={styles.sectionWrapper}>
+              <MaterialCommunityIcons name="fridge-outline" size={25} color={colors.mainYellow} style={{right: 4}} />
               <Text style={styles.sectionText}>Pantry</Text>
-            </View>
-          </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={{ padding: 5 }}
-            onPress={() => navigation.navigate("ShoppingCart")}>
-            <Ionicons
-              name="cart-outline"
-              color={colors.white}
-              size={24}></Ionicons>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ padding: 5 }}
-            onPress={() => navigation.navigate("UserDetails")}>
-            <Ionicons
-              name="person-outline"
-              color={colors.white}
-              size={24}></Ionicons>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{ padding: 5 }}
+              onPress={() => navigation.navigate("ShoppingCart")}>
+              <Feather name="shopping-cart" size={22} color={colors.white}></Feather>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ padding: 5 }}
+              onPress={() => navigation.navigate("UserDetails")}>
+              <Feather name="user" size={22} color={colors.white}></Feather>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -154,11 +159,26 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   sectionTitle: {
-    fontSize: 27.5,
-    fontWeight: "bold",
-    marginBottom: 8,
+    fontFamily: 'Inter_700Bold',
+    fontSize: 25,
+    marginBottom: 15,
     marginHorizontal: 24,
     marginTop: 10,
+    color: colors.mainYellow,
+    alignSelf: 'center'
+  },
+  removeWrapper: {
+    height: 20, 
+    width: 90, 
+    borderRadius: 8,
+    backgroundColor: colors.mainYellow, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-around',
+    paddingHorizontal: 3,
+    alignSelf: 'flex-end',
+    marginRight: 25,
+    marginBottom: 5,
   },
   info: {
     marginBottom: 15,
@@ -167,14 +187,14 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderColor: colors.darkGrey,
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 10,
   },
   categoriesWrapper: {
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingVertical: 13,
     shadowColor: colors.black,
     elevation: 10,
-    borderRadius: 7,
+    borderRadius: 10,
     marginHorizontal: 20,
     marginBottom: 15,
     backgroundColor: colors.white,
@@ -183,7 +203,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 15,
-    //justifyContent: 'space-between'
   },
   categoryImage: {
     width: 40,
@@ -192,10 +211,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   categoryTitle: {
+    fontFamily: 'Inter_700Bold',
     fontSize: 18,
     marginLeft: 15,
-    fontWeight: "700",
     textTransform: "capitalize",
+    color: colors.topBarItem
   },
   itemWrapper: {
     marginHorizontal: 5,
@@ -208,7 +228,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 70,
     position: "absolute",
-    bottom: 13,
+    bottom: 11,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
@@ -217,19 +237,20 @@ const styles = StyleSheet.create({
   },
   continueText: {
     fontSize: 20,
-
-    fontWeight: "bold",
+    fontFamily: 'Poppins_400Regular',
+    top: 2
   },
   navBar: {
     width: "100%",
-    backgroundColor: colors.mainGreen,
+    backgroundColor: colors.mainYellow,
   },
   navWrapper: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 6
   },
   sectionWrapper: {
     backgroundColor: colors.white,
@@ -242,14 +263,9 @@ const styles = StyleSheet.create({
   },
   sectionText: {
     fontSize: 13,
-    color: colors.mainGreen,
+    color: colors.mainYellow,
     left: 0,
     fontWeight: "500",
-  },
-  pantry: {
-    width: 23,
-    height: 23,
-    right: 4,
   },
 });
 

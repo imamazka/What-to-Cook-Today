@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {
   View,
   TouchableOpacity,
@@ -11,6 +11,7 @@ import {
   StatusBar,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useFonts, Poppins_500Medium } from '@expo-google-fonts/poppins';
 
 import colors from "../config/colors";
 
@@ -22,39 +23,34 @@ import colors from "../config/colors";
  */
 
 const Home = ({ navigation }) => {
+  
   const { width, height } = useWindowDimensions();
-  return (
-    <SafeAreaView>
-      <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
-        {" "}
-      </StatusBar>
-      <ImageBackground
-        source={require("../assets/Background.jpg")}
-        style={{ width: width, height: "100%", justifyContent: "flex-end" }}>
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.75)"]}
-          style={{ height: "90%", width: "100%", justifyContent: "flex-end" }}>
-          <View style={{}}>
-            <View
-              style={{
-                alignSelf: "center",
-                marginBottom: 20,
-              }}>
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 45,
-                  fontWeight: "900",
-                  textAlign: "center",
-                }}>
-                What To Cook Today?
-              </Text>
-            </View>
-            <View
-              style={{
-                alignSelf: "center",
-                flexDirection: "row",
-              }}>
+  
+  let [fontsLoaded] = useFonts({
+    Poppins_500Medium,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else{
+    return (
+      <SafeAreaView>
+        <StatusBar barStyle={"light-content"} backgroundColor={colors.black}>
+          {" "}
+        </StatusBar>
+        <ImageBackground
+          source={require("../assets/Background.jpg")}
+          style={{ width: width, height: "100%", justifyContent: "flex-end" }}>
+          <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
+            style={{ height: "90%", width: "100%", justifyContent: 'space-between' }}>
+            <Image 
+              source={require("../assets/logo.png")}
+              style={{ width: 250, height: 250, alignSelf: 'center', top: 32 }}>
+            </Image>
+            <View style={{ flexDirection: "row", alignSelf: 'flex-end', bottom: 30 }}>
               <TouchableOpacity
                 style={styles.loginButton}
                 activeOpacity={0.7}
@@ -62,11 +58,11 @@ const Home = ({ navigation }) => {
                 <Text style={styles.buttonText}>Get Started</Text>
               </TouchableOpacity>
             </View>
-          </View>
-        </LinearGradient>
-      </ImageBackground>
-    </SafeAreaView>
-  );
+          </LinearGradient>
+        </ImageBackground>
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -74,11 +70,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
   },
   loginButton: {
     height: 50,
-    backgroundColor: "#22CB65",
+    backgroundColor: colors.mainYellow,
     borderRadius: 30,
     marginHorizontal: 30,
     marginBottom: 35,
@@ -86,12 +82,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonText: {
-    //fontFamily: 'NotoSans-Medium',
-    color: "#FFF",
+    color: colors.white,
     textAlign: "center",
-    fontSize: 21,
-    fontWeight: "400",
-    //fontFamily: "Poppins-Medium",
+    fontSize: 20,
+    fontFamily: "Poppins_500Medium",
+    top: 2
   },
 });
 

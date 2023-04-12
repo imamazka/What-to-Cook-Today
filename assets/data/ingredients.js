@@ -1,7 +1,7 @@
 const ingredients = [
     {
         id: 0,
-        name: 'pantry',
+        name: 'pantries',
         image: require('../pantry.png'),
         children: [
             {id: 1001, name: 'butter'},
@@ -88,7 +88,7 @@ const ingredients = [
     },
     {
         id: 5,
-        name: 'fish',
+        name: 'fishes',
         image: require('../fish.png'),
         children: [
             {id: 15076, name: 'salmon'},

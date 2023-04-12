@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,13 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Alert,
+  Keyboard,
+  StatusBar
 } from "react-native";
-import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
 import { firebase } from "../firebase";
-import { Keyboard } from "react-native";
+import { useFonts, Poppins_700Bold, Poppins_500Medium } from '@expo-google-fonts/poppins';
+
+import colors from "../config/colors";
 
 /**
  * Login page for user. If didn't have any account, can be redirected to register page
@@ -26,6 +28,7 @@ import { Keyboard } from "react-native";
 
 const InputText = ({ password, error, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
+
   return (
     <View style={{ marginTop: 22, marginHorizontal: 30 }}>
       <View
@@ -63,10 +66,8 @@ const InputText = ({ password, error, ...props }) => {
 };
 
 const Login = ({ navigation }) => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+
+  const [data, setData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -87,99 +88,105 @@ const Login = ({ navigation }) => {
         .signInWithEmailAndPassword(data.email, data.password);
     } catch (error) {
       setLoading(false);
-      //Alert.alert("Error", "Your email or password incorrect");
-      handleOnError("Your email or password incorret", "email");
-      handleOnError("Your email or password incorret", "password");
+      handleOnError("Your email or password incorrect", "email");
+      handleOnError("Your email or password incorrect", "password");
       console.error(error);
     }
   };
 
-  return (
-    <ScrollView
-      showsVerticalScrollIndicator={true}
-      contentContainerStyle={{
-        flexGrow: 1,
-        justifyContent: "center",
-        backgroundColor: "#fff",
-      }}>
-      <Spinner visible={loading} />
-      <View style={{ backgroundColor: "#FFF" }}>
-        <View style={{ alignItems: "center" }}>
-          <Text style={Styles.loginText}>LOGIN</Text>
+  let [fontsLoaded] = useFonts({
+    Poppins_700Bold,
+    Poppins_500Medium
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={true}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          backgroundColor: colors.white,
+        }}>
+        <StatusBar barStyle={"dark-content"} backgroundColor={colors.white}>
+          {" "}
+        </StatusBar>
+        <Spinner visible={loading} />
+        <View style={{ backgroundColor: colors.white }}>
+          <View style={{ alignItems: "center", bottom: 25 }}>
+            <Text style={Styles.loginText}>LOGIN</Text>
+          </View>
+          <InputText
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Email"
+            onChangeText={(text) => handleOnChange(text, "email")}
+            error={errors.email}
+            keyboardType="email-address"
+          />
+          <InputText
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Password"
+            onChangeText={(text) => handleOnChange(text, "password")}
+            error={errors.password}
+            password
+          />
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate("ForgotPassword")}>
+              <Text style={Styles.forgotPass}>forgot password?</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ alignSelf: "center", flexDirection: "row" }}>
+            <TouchableOpacity
+              style={Styles.loginButton}
+              activeOpacity={0.5}
+              onPress={validate}>
+              <Text style={Styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{ alignSelf: "center", marginTop: 15, flexDirection: "row" }}>
+            <Text style={Styles.signUpFoot}>Doesn't have any account? </Text>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate("Register")}>
+              <Text
+                style={[
+                  Styles.signUpFoot, {color: colors.mainYellow, textDecorationLine: "underline", fontWeight: "800"}
+                ]}>
+                Sign Up
+              </Text>
+            </TouchableOpacity>
+            <Text style={Styles.signUpFoot}> now</Text>
+          </View>
         </View>
-        <InputText
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Email"
-          onChangeText={(text) => handleOnChange(text, "email")}
-          error={errors.email}
-          keyboardType="email-address"
-        />
-        <InputText
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Password"
-          onChangeText={(text) => handleOnChange(text, "password")}
-          error={errors.password}
-          password
-        />
-        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate("ForgotPassword")}>
-            <Text style={Styles.forgotPass}>forgot password?</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ alignSelf: "center", flexDirection: "row" }}>
-          <TouchableOpacity
-            style={Styles.loginButton}
-            activeOpacity={0.5}
-            onPress={validate}>
-            <Text style={Styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{ alignSelf: "center", marginTop: 15, flexDirection: "row" }}>
-          <Text style={Styles.signUpFoot}>Doesn't have any account? </Text>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate("Register")}>
-            <Text
-              style={[
-                Styles.signUpFoot,
-                {
-                  color: "#0C40F9",
-                  textDecorationLine: "underline",
-                  fontWeight: "800",
-                },
-              ]}>
-              Sign Up
-            </Text>
-          </TouchableOpacity>
-          <Text style={Styles.signUpFoot}> now</Text>
-        </View>
-      </View>
-    </ScrollView>
-  );
+      </ScrollView>
+    );
+  }
 };
 
 const Styles = StyleSheet.create({
   loginText: {
-    fontSize: 45,
-    fontWeight: "bold",
-    color: "#22CB65",
-    //fontFamily: 'NotoSans-Bold'
+    fontSize: 40,
+    color: colors.mainYellow,
+    fontFamily: 'Poppins_700Bold',
   },
   inputText: {
-    backgroundColor: "#F6F6F6",
+    backgroundColor: colors.inputShades,
     borderRadius: 30,
     height: 50,
     paddingLeft: 20,
-    //paddingRight: 20,
     elevation: 6,
   },
   forgotPass: {
-    //fontFamily: 'NotoSans-Medium',
+    fontFamily: 'Poppins_500Medium',
     fontSize: 12,
     fontWeight: "500",
     marginTop: 10,
@@ -187,24 +194,25 @@ const Styles = StyleSheet.create({
   },
   loginButton: {
     height: 50,
-    backgroundColor: "#22CB65",
+    backgroundColor: colors.mainYellow,
     borderRadius: 30,
     marginTop: 34,
-    justifyContent: "center",
+    justifyContent: 'center',
     flex: 1,
     marginHorizontal: 30,
+    alignContent: 'center'
   },
   buttonText: {
-    //fontFamily: 'NotoSans-Medium',
-    color: "#FFF",
+    fontFamily: 'Poppins_500Medium',
+    color: colors.white,
     textAlign: "center",
     fontSize: 20,
-    fontWeight: "500",
+    top: 2
   },
-
   signUpFoot: {
+    fontFamily: 'Poppins_500Medium',
     fontSize: 13,
-    fontWeight: "500",
+    top: 10
   },
 });
 

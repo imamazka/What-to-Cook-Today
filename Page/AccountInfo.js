@@ -1,5 +1,4 @@
 import "react-native-gesture-handler";
-import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect, useRef } from "react";
 import {
   ScrollView,
@@ -10,6 +9,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   View,
+  StatusBar
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { firebase } from "../firebase";
@@ -18,7 +18,12 @@ import Spinner from "react-native-loading-spinner-overlay";
 import Modal from "react-native-modal";
 import * as ImagePicker from "expo-image-picker";
 import storage from "@react-native-firebase/storage";
-import countries from "../assets/dummy data/countries";
+import { Ionicons, Feather } from "@expo/vector-icons";
+import { useFonts, Inter_700Bold } from '@expo-google-fonts/inter';
+import { Poppins_500Medium } from '@expo-google-fonts/poppins';
+
+import countries from "../assets/data/countries";
+import colors from "../config/colors";
 
 /**
  * User account info page.
@@ -155,266 +160,270 @@ const AccountInfo = ({ navigation }) => {
   };
   console.log(data);
 
-  return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        opacity: isOpen ? 0.5 : 1,
-        backgroundColor: isOpen ? "lightgrey" : "white",
-      }}>
-      <Spinner visible={loading} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Modal
-          onBackdropPress={() => setIsOpen(false)}
-          onBackButtonPress={() => setIsOpen(false)}
-          isVisible={isOpen}
-          swipeDirection="down"
-          onSwipeComplete={toggleModal}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          animationInTiming={600}
-          animationOutTiming={500}
-          backdropTransitionInTiming={700}
-          backdropTransitionOutTiming={500}
-          style={style.modal}>
-          <View style={style.modalContent}>
-            <View style={style.center}>
-              <View style={style.barIcon} />
-              <View style={{ alignItems: "center", marginVertical: 15 }}>
-                <Text style={style.panelTitle}>Upload Photo</Text>
-                <Text style={style.panelSubtitle}>
-                  Choose Your Profile Picture
-                </Text>
-              </View>
-              <TouchableOpacity
-                style={style.panelButton}
-                onPress={takePhotoFromCamera}>
-                <Text style={style.panelButtonTitle}>Take Photo</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={style.panelButton}
-                onPress={choosePhotoFromLibrary}>
-                <Text style={style.panelButtonTitle}>Choose From Library</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-        <View style={{ marginHorizontal: 20 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              paddingTop: 15,
-              marginBottom: 20,
-              justifyContent: "space-between",
-            }}>
-            <TouchableOpacity
-              style={style.backButton}
-              onPress={() => navigation.navigate("UserDetails")}>
-              <Ionicons name="arrow-back-outline" size={24} color={"black"} />
-            </TouchableOpacity>
-            <Text style={style.sectionText}>Account Info</Text>
-            <Ionicons
-              name="arrow-back-outline"
-              size={24}
-              color={isOpen ? "lightgrey" : "white"}
-              style={{ opacity: isOpen ? 0.5 : 1 }}
-            />
-          </View>
-          <View style={{ alignItems: "center", marginTop: 10 }}>
-            <TouchableOpacity onPress={toggleModal} activeOpacity={0.6}>
-              <View
-                style={{
-                  width: 140,
-                  height: 140,
-                  borderRadius: 70,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 15,
-                }}>
-                {image != null ? (
-                  <ImageBackground
-                    source={{ uri: image ? image : data.imgProfile }}
-                    style={{ width: 140, height: 140 }}
-                    imageStyle={{ borderRadius: 70 }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}>
-                      <Ionicons
-                        name="camera"
-                        size={35}
-                        color="white"
-                        style={{
-                          opacity: 0.7,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderWidth: 1,
-                          borderColor: "white",
-                          borderRadius: 10,
-                        }}
-                      />
-                    </View>
-                  </ImageBackground>
-                ) : (
-                  <ImageBackground
-                    source={require("../assets/default-profile-photo.jpg")}
-                    style={{ width: 140, height: 140 }}
-                    imageStyle={{ borderRadius: 70 }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}>
-                      <Ionicons
-                        name="camera"
-                        size={35}
-                        color="white"
-                        style={{
-                          opacity: 0.7,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderWidth: 1,
-                          borderColor: "white",
-                          borderRadius: 10,
-                        }}
-                      />
-                    </View>
-                  </ImageBackground>
-                )}
-              </View>
-            </TouchableOpacity>
-            <View style={style.inputContainer}>
-              <Ionicons name="person-outline" size={25} />
-              <TextInput
-                value={data ? data.userName : ""}
-                placeholder="Username"
-                placeholderTextColor="#aaa"
-                autoCorrect={false}
-                onChangeText={(text) => setData({ ...data, userName: text })}
-                style={style.input}
-              />
-            </View>
-            <View style={style.inputContainer}>
-              <Ionicons name="mail-outline" size={25} />
-              <TextInput
-                value={data ? data.email : ""}
-                placeholder="Email"
-                placeholderTextColor="#aaa"
-                autoCorrect={false}
-                editable={false}
-                onChangeText={(text) => setData({ ...data, email: text })}
-                style={[style.input, { color: "black" }]}
-              />
-            </View>
-            <View style={style.inputContainer}>
-              <Ionicons name="call-outline" size={25} />
-              <TextInput
-                value={data ? data.phoneNumber : ""}
-                placeholder="Phone Number"
-                placeholderTextColor="#aaa"
-                autoCorrect={false}
-                onChangeText={(text) => phoneNumberFormat(text)}
-                keyboardType="number-pad"
-                style={style.input}
-              />
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginVertical: 10,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  marginRight: 5,
-                }}>
-                <Picker
-                  placeholder="Select a country"
-                  selectedValue={data ? data.country : ""}
-                  style={{ width: "50%", flexGrow: 1 }}
-                  onValueChange={(itemValue) =>
-                    setData({ ...data, country: itemValue })
-                  }>
-                  <Picker.Item
-                    label="Select a country"
-                    enabled={false}
-                    color="#aaa"
-                  />
-                  {Object.keys(countries).map((code) => (
-                    <Picker.Item
-                      label={countries[code].country}
-                      value={code}
-                      key={code}
-                    />
-                  ))}
-                </Picker>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginVertical: 10,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                }}>
-                <Picker
-                  placeholder="Select a gender"
-                  selectedValue={data ? data.genre : "Female"}
-                  style={{ width: "50%", flexGrow: 1 }}
-                  onValueChange={(itemValue, itemIndex) =>
-                    setData({ ...data, genre: itemValue })
-                  }>
-                  <Picker.Item
-                    label="Select a gender"
-                    enabled={false}
-                    color="#aaa"
-                  />
-                  <Picker.Item label="Female" value="Female" />
-                  <Picker.Item label="Male" value="Male" />
-                </Picker>
+  let [fontsLoaded] = useFonts({
+    Inter_700Bold,
+    Poppins_500Medium
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  else {
+    return (
+      <SafeAreaView
+        style={{
+          flex: 1,
+          opacity: isOpen ? 0.5 : 1,
+          backgroundColor: isOpen ? "lightgrey" : "white",
+        }}>
+        <StatusBar barStyle={"dark-content"} backgroundColor={colors.white}>
+          {" "}
+        </StatusBar>
+        <Spinner visible={loading} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Modal
+            onBackdropPress={() => setIsOpen(false)}
+            onBackButtonPress={() => setIsOpen(false)}
+            isVisible={isOpen}
+            swipeDirection="down"
+            onSwipeComplete={toggleModal}
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
+            animationInTiming={600}
+            animationOutTiming={500}
+            backdropTransitionInTiming={700}
+            backdropTransitionOutTiming={500}
+            style={style.modal}>
+            <View style={style.modalContent}>
+              <View style={style.center}>
+                <View style={style.barIcon} />
+                <View style={{ alignItems: "center", marginVertical: 15 }}>
+                  <Text style={style.panelTitle}>Upload Photo</Text>
+                  <Text style={style.panelSubtitle}>
+                    Choose Your Profile Picture
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={style.panelButton}
+                  onPress={takePhotoFromCamera}>
+                  <Text style={style.panelButtonTitle}>Take Photo</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={style.panelButton}
+                  onPress={choosePhotoFromLibrary}>
+                  <Text style={style.panelButtonTitle}>Choose From Library</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={style.inputContainer}>
-              <Ionicons name="home-outline" size={25} />
-              <TextInput
-                value={data ? data.address : ""}
-                placeholder="Address"
-                placeholderTextColor="#aaa"
-                autoCorrect={false}
-                multiline={true}
-                onChangeText={(text) => setData({ ...data, address: text })}
-                style={[style.input, {}]}
-              />
-            </View>
-          </View>
-          <View style={{ alignSelf: "center", flexDirection: "row" }}>
-            <TouchableOpacity
+          </Modal>
+          <View style={{ marginHorizontal: 20 }}>
+            <View
               style={{
-                height: 50,
-                backgroundColor: "#22CB65",
-                borderRadius: 30,
-                justifyContent: "center",
-                marginVertical: 20,
-                flex: 1,
-              }}
-              activeOpacity={0.6}
-              onPress={handleUpdate}>
-              <Text
+                flexDirection: "row",
+                paddingTop: 15,
+                marginBottom: 20,
+                justifyContent: "space-between",
+              }}>
+              <TouchableOpacity
+                style={style.backButton}
+                onPress={() => navigation.navigate("UserDetails")}>
+                <Feather name='arrow-left' size={24} color={colors.topBarItem}></Feather>
+              </TouchableOpacity>
+              <Text style={style.sectionText}>Account Info</Text>
+              <Ionicons
+                name="arrow-back-outline"
+                size={24}
+                color={isOpen ? "lightgrey" : "white"}
+                style={{ opacity: isOpen ? 0.5 : 1 }}
+              />
+            </View>
+            <View style={{ alignItems: "center", marginTop: 10 }}>
+              <TouchableOpacity onPress={toggleModal} activeOpacity={0.6}>
+                <View
+                  style={{
+                    width: 140,
+                    height: 140,
+                    borderRadius: 70,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: 15,
+                  }}>
+                  {image != null ? (
+                    <ImageBackground
+                      source={{ uri: image ? image : data.imgProfile }}
+                      style={{ width: 140, height: 140 }}
+                      imageStyle={{ borderRadius: 70 }}>
+                      <View
+                        style={{
+                          flex: 1,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}>
+                        <Ionicons
+                          name="camera"
+                          size={35}
+                          color="white"
+                          style={{
+                            opacity: 0.7,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderWidth: 1,
+                            borderColor: "white",
+                            borderRadius: 10,
+                          }}
+                        />
+                      </View>
+                    </ImageBackground>
+                  ) : (
+                    <ImageBackground
+                      source={require("../assets/defaultProfile.png")}
+                      style={{ width: 140, height: 140 }}
+                      imageStyle={{ borderRadius: 70 }}>
+                      <View
+                        style={{
+                          flex: 1,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}>
+                      </View>
+                    </ImageBackground>
+                  )}
+                </View>
+              </TouchableOpacity>
+              <View style={style.inputContainer}>
+                <Ionicons name="person-outline" size={25} />
+                <TextInput
+                  value={data ? data.userName : ""}
+                  placeholder="Username"
+                  placeholderTextColor="#aaa"
+                  autoCorrect={false}
+                  onChangeText={(text) => setData({ ...data, userName: text })}
+                  style={style.input}
+                />
+              </View>
+              <View style={style.inputContainer}>
+                <Ionicons name="mail-outline" size={25} />
+                <TextInput
+                  value={data ? data.email : ""}
+                  placeholder="Email"
+                  placeholderTextColor="#aaa"
+                  autoCorrect={false}
+                  editable={false}
+                  onChangeText={(text) => setData({ ...data, email: text })}
+                  style={[style.input, { color: "black" }]}
+                />
+              </View>
+              <View style={style.inputContainer}>
+                <Ionicons name="call-outline" size={25} />
+                <TextInput
+                  value={data ? data.phoneNumber : ""}
+                  placeholder="Phone Number"
+                  placeholderTextColor="#aaa"
+                  autoCorrect={false}
+                  onChangeText={(text) => phoneNumberFormat(text)}
+                  keyboardType="number-pad"
+                  style={style.input}
+                />
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginVertical: 10,
+                    borderWidth: 1,
+                    borderColor: '#9e9e9e',
+                    borderRadius: 8,
+                    marginRight: 5,
+                  }}>
+                  <Picker
+                    placeholder="Select a country"
+                    selectedValue={data ? data.country : ""}
+                    style={{ width: "50%", flexGrow: 1 }}
+                    onValueChange={(itemValue) =>
+                      setData({ ...data, country: itemValue })
+                    }>
+                    <Picker.Item
+                      label="Select a country"
+                      enabled={false}
+                      color="#aaa"
+                    />
+                    {Object.keys(countries).map((code) => (
+                      <Picker.Item
+                        label={countries[code].country}
+                        value={code}
+                        key={code}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginVertical: 10,
+                    borderWidth: 1,
+                    borderColor: '#9e9e9e',
+                    borderRadius: 8,
+                  }}>
+                  <Picker
+                    placeholder="Select a gender"
+                    selectedValue={data ? data.genre : "Female"}
+                    style={{ width: "50%", flexGrow: 1 }}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setData({ ...data, genre: itemValue })
+                    }>
+                    <Picker.Item
+                      label="Select a gender"
+                      enabled={false}
+                      color="#aaa"
+                    />
+                    <Picker.Item label="Female" value="Female" />
+                    <Picker.Item label="Male" value="Male" />
+                  </Picker>
+                </View>
+              </View>
+              <View style={style.inputContainer}>
+                <Ionicons name="home-outline" size={25} />
+                <TextInput
+                  value={data ? data.address : ""}
+                  placeholder="Address"
+                  placeholderTextColor="#aaa"
+                  autoCorrect={false}
+                  multiline={true}
+                  onChangeText={(text) => setData({ ...data, address: text })}
+                  style={[style.input, {}]}
+                />
+              </View>
+            </View>
+            <View style={{ alignSelf: "center", flexDirection: "row" }}>
+              <TouchableOpacity
                 style={{
-                  color: "#FFF",
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "500",
-                }}>
-                Update Profile
-              </Text>
-            </TouchableOpacity>
+                  height: 50,
+                  backgroundColor: colors.mainYellow,
+                  borderRadius: 30,
+                  justifyContent: "center",
+                  marginVertical: 20,
+                  flex: 1,
+                }}
+                activeOpacity={0.6}
+                onPress={handleUpdate}>
+                <Text
+                  style={{
+                    color: "#FFF",
+                    textAlign: "center",
+                    fontSize: 20,
+                    fontFamily: 'Poppins_500Medium',
+                    top: 2
+                  }}>
+                  Update Profile
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 };
 
 export default AccountInfo;
@@ -460,7 +469,7 @@ const style = StyleSheet.create({
   panelButton: {
     padding: 13,
     borderRadius: 40,
-    backgroundColor: "#22CB65",
+    backgroundColor: colors.mainYellow,
     alignItems: "center",
     marginVertical: 7,
     width: "100%",
@@ -475,9 +484,9 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   sectionText: {
+    fontFamily: 'Inter_700Bold',
     fontSize: 19,
-    fontWeight: "bold",
-    color: "black",
+    color: colors.topBarItem,
     flexDirection: "row",
     alignSelf: "center",
     justifyContent: "center",
@@ -486,8 +495,12 @@ const style = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 10,
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 8,
+    borderColor: '#9e9e9e',
     padding: 10,
   },
-  input: { flex: 1, paddingLeft: 15 },
+  input: { 
+    flex: 1, 
+    paddingLeft: 15 
+  },
 });

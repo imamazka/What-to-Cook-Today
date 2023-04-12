@@ -17,6 +17,7 @@ import UserDetails from "./Page/UserDetails";
 import ForgotPassword from "./Page/ForgotPassword";
 import ResetPassword from "./Page/ResetPassword";
 import AccountInfo from "./Page/AccountInfo";
+import Welcome from "./Page/Welcome";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,7 @@ function App() {
   } else {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="IngredientList" component={IngredientList} />
         <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
