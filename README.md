@@ -11,7 +11,7 @@ Build as a final project for Software Engineering course (ENCE605018), Universit
 
 To run the demo app, simply run
 
-`yarn install && expo start `
+`yarn install && expo start`
 
 And scan the QR code in the Expo client app.
 
